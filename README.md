@@ -6,7 +6,7 @@ Mājaslapa paredzēta cilvēkiem, kas vēlas apspriest kopīgi interesējošus t
 Cilvēki var veidot grupas kurās citi var pievienoties un veidot postus iekš tām.
 
 ## Pašlaik plānotās izmantotās tehnoloģijas:
-HTML
+HTML\n
 CSS
 JS
 C#

@@ -6,11 +6,11 @@ Mājaslapa paredzēta cilvēkiem, kas vēlas apspriest kopīgi interesējošus t
 Cilvēki var veidot grupas kurās citi var pievienoties un veidot postus iekš tām.
 
 ## Pašlaik plānotās izmantotās tehnoloģijas:
-HTML\n
-CSS
-JS
-C#
-.NET
+HTML,
+CSS,
+JS,
+C#,
+.NET,
 ASP.NET
 
 ## Vieta izmantotajiem avotiek kad tie tiks izmantoti:

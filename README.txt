@@ -14,3 +14,6 @@ ASP.NET
 ## Vieta izmantotajiem avotiek kad tie tiks izmantoti:
 
 ## Uzstādīšanas instrukcijas:
+
+
+P.S. es laikam nemāku formatēt README iekš github :(

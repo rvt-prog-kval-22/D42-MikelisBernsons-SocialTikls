@@ -15,5 +15,6 @@ ASP.NET
 
 ## Vieta izmantotajiem avotiek kad tie tiks izmantoti:
 [C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) noteikti tiks izmantota
+[Pamācība YT kā izmantot Entity Framework datu saglabāšanai](https://www.youtube.com/watch?v=ZX7_12fwQLU) 09.12.2021
 ## Uzstādīšanas instrukcijas:
 Pagaidām vēl nav ko uzstādīt :(

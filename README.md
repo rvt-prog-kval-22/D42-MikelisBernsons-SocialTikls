@@ -1,7 +1,6 @@
 # Sociālo diskusiju portāls ar automatizētu datu uzskaites sistēmu - Domātava
 
 Janu kāds skolotājs nāk apskatīt un redz, ka vēl neesmu commitojis reālus projekta failus tas ir tādēļ, ka pašlaik patstāvīgi atsevišķos mazākos projektos cenšos iemācīties kā realizēt dažas šim projektam vajadzīgās funkcionalitātes.
-Kā arī pagāja ilgs laiks līdz vispār šī projekta ideja tika *apstiprināta*
 
 ## Apraksts:
 Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dalīties ar domām un attēliem utml. ar citiem cilvēkiem.

@@ -85,5 +85,12 @@ ASP.NET
 [Pamācība YT kā izmantot Entity Framework datu saglabāšanai](https://www.youtube.com/watch?v=ZX7_12fwQLU) 09.12.2021  
 [Pamācība YT kā izmantot Entity Framework datu saglabāšanai 2](https://www.youtube.com/watch?v=qkJ9keBmQWo) 09.12.2021  
 
-## Uzstādīšanas instrukcijas:
-Pagaidām nav.
+# Uzstādīšanas instrukcijas:
+Projekts tiks veidots uz .NET 5.0
+
+nepieciešamās NuGet pakotnes:
+Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Design
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.VisualStudio.Web.CodeGeneration.Design

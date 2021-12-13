@@ -88,9 +88,9 @@ ASP.NET
 # Uzstādīšanas instrukcijas:
 Projekts tiks veidots uz .NET 5.0
 
-nepieciešamās NuGet pakotnes:
-Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
-Microsoft.EntityFrameworkCore.Design
-Microsoft.EntityFrameworkCore.SqlServer
-Microsoft.EntityFrameworkCore.Tools
-Microsoft.VisualStudio.Web.CodeGeneration.Design
+nepieciešamās NuGet pakotnes:  
+Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore  
+Microsoft.EntityFrameworkCore.Design  
+Microsoft.EntityFrameworkCore.SqlServer  
+Microsoft.EntityFrameworkCore.Tools  
+Microsoft.VisualStudio.Web.CodeGeneration.Design  

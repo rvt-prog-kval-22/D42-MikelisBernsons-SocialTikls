@@ -1,4 +1,4 @@
-# Sociālo diskusiju portāls ar automatizētu datu uzskaites sistēmu - Domātava
+# Sociālo diskusija portāla datu uzskaites automatizēta sistēma - Domātava
 
 Janu kāds skolotājs nāk apskatīt un redz, ka vēl neesmu commitojis reālus projekta failus tas ir tādēļ, ka pašlaik patstāvīgi atsevišķos mazākos projektos cenšos iemācīties kā realizēt dažas šim projektam vajadzīgās funkcionalitātes.
 

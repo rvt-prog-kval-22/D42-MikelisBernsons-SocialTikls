@@ -72,12 +72,13 @@ Parasts lietotājs kurš var apskatīt postus un komentārus
 
 
 ## Pašlaik plānotās izmantotās tehnoloģijas:
-HTML,
-CSS,
-JS,
-C#,
-.NET,
-ASP.NET
+HTML  
+CSS  
+JS  
+C#  
+.NET  
+ASP.NET  
+MSSQL  
 
 ## Izmantotie avoti un kad tie izmantoti:
 [C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) noteikti tiks izmantota  

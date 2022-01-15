@@ -85,6 +85,7 @@ MSSQL
 [Entity Framework datu saglabāšana 1](https://www.youtube.com/watch?v=ZX7_12fwQLU) 09.12.2021  
 [Entity Framework datu saglabāšana 2](https://www.youtube.com/watch?v=qkJ9keBmQWo) 09.12.2021  
 [Identity Serviss lietotāja profila datiem](https://www.youtube.com/watch?v=egITMrwMOPU) 14.12.2021  
+[.NET CORE 6 MVC (2022)](https://www.youtube.com/watch?v=hZ1DASYd9rk)
 
 # Uzstādīšanas instrukcijas:
 Projekts tiks veidots uz .NET 5.0

@@ -17,11 +17,6 @@
             <input asp-for="Description" class="form-control" />
             <span asp-validation-for="Description" class="text-warning"></span>
         </div>
-        <div class="mb-3">
-            <label asp-for="StartDate"></label>
-            <input asp-for="StartDate" class="form-control" />
-            <span asp-validation-for="StartDate" class="text-warning"></span>
-        </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         <a asp-controller="Group" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back

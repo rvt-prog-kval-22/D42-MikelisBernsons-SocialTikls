@@ -10,9 +10,11 @@ namespace BredWeb.Models
         public int Id { get; set; }
         [Required]
         [MaxLength(2000)]
+        [MinLength(4)]
         public string Body { get; set; }
         [Required]
         [MaxLength(100)]
+        [MinLength(3)]
         public string Title { get; set; }
         public DateTime PostDate { get; set; }
         public bool IsEdited { get; set; } = false;

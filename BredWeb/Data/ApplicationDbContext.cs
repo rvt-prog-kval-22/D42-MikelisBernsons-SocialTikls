@@ -1,9 +1,10 @@
 ﻿using BredWeb.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BredWeb.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -16,5 +17,10 @@ namespace BredWeb.Data
         public DbSet<Person> People { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-}
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
+    }
 }

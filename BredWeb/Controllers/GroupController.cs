@@ -32,6 +32,7 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.StartDate = DateTime.Now;
                 _db.Groups.Add(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Group created successfully";

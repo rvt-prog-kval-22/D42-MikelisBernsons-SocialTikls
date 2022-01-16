@@ -88,6 +88,7 @@ MSSQL
 [.NET CORE 6 MVC (2022)](https://www.youtube.com/watch?v=hZ1DASYd9rk)
 [Mājaslapas vizuālā tematika](https://bootswatch.com/solar/)
 [Bootstrap 5 dokumentācija](https://getbootstrap.com/)
+[Favicon](https://icons8.com/icons/set/favicon-cat)
 
 # Uzstādīšanas instrukcijas:
 Projekts tiks veidots uz .NET 5.0

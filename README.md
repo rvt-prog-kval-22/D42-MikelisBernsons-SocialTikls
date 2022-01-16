@@ -81,11 +81,13 @@ ASP.NET
 MSSQL  
 
 ## Izmantotie avoti un kad tie izmantoti:
-[C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) noteikti tiks izmantota  
+[C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) šeit tiek ietverti ļot daudz linki (1 links uz visu) par oficiālo c# dokumentāciju ko nav vērts visu linkot.
 [Entity Framework datu saglabāšana 1](https://www.youtube.com/watch?v=ZX7_12fwQLU) 09.12.2021  
 [Entity Framework datu saglabāšana 2](https://www.youtube.com/watch?v=qkJ9keBmQWo) 09.12.2021  
 [Identity Serviss lietotāja profila datiem](https://www.youtube.com/watch?v=egITMrwMOPU) 14.12.2021  
 [.NET CORE 6 MVC (2022)](https://www.youtube.com/watch?v=hZ1DASYd9rk)
+[Mājaslapas vizuālā tematika](https://bootswatch.com/solar/)
+[Bootstrap 5 dokumentācija](https://getbootstrap.com/)
 
 # Uzstādīšanas instrukcijas:
 Projekts tiks veidots uz .NET 5.0

@@ -17,9 +17,17 @@ namespace BredWeb.Controllers
             this.signInManager = signInManager;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -51,6 +59,30 @@ namespace BredWeb.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
+            return View(obj);
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(Login obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", "Invalid Login details");
+            }
+
             return View(obj);
         }
     }

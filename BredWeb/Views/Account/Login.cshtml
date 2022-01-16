@@ -1,14 +1,14 @@
-﻿@model Register
+﻿@model Login
 
 
 @{
-    ViewData["Title"] = "Register?";
+    ViewData["Title"] = "Login";
 }
 
 <form method="post">
     <div class="bg-dark p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Register</h2>
+            <h2 class="text-primary">Login</h2>
             <hr />
         </div>
         <div asp-validation-summary="All"></div>
@@ -23,11 +23,14 @@
             <span asp-validation-for="Password" class="text-warning"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="ConfirmPassword"></label>
-            <input asp-for="ConfirmPassword" class="form-control" />
-            <span asp-validation-for="ConfirmPassword" class="text-warning"></span>
+            <div class="checkbox">
+                <label asp-for="RememberMe">
+                    <input asp-for="RememberMe" />
+                    @Html.DisplayNameFor(m => m.RememberMe)
+                </label>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:150px">Register</button>
+        <button type="submit" class="btn btn-primary" style="width:150px">Login</button>
         <a asp-controller="Home" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Home Page
         </a>

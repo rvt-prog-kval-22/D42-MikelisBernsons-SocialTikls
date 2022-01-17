@@ -1,4 +1,4 @@
-# sociālo diskusiju portāla datu uzskaites automatizēta sistēma - [Links uz Github](https://github.com/MKBernsons/Breddit)
+# sociālo diskusiju portāla datu uzskaites automatizēta sistēma - [Links uz Github](https://github.com/MKBernsons/Breddit) - Pieejai jautāt caur mykoob.
 
 Janu kāds skolotājs nāk apskatīt un redz, ka vēl neesmu commitojis reālus projekta failus tas ir tādēļ, ka pašlaik patstāvīgi atsevišķos mazākos projektos cenšos iemācīties kā realizēt dažas šim projektam vajadzīgās funkcionalitātes.
 

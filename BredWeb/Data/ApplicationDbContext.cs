@@ -14,10 +14,21 @@ namespace BredWeb.Data
         public DbSet<Person> People { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        //public DbSet<UserIdList> UserIdLists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            //builder.Entity<UserIdList>()
+            //    .HasKey(uid => new { uid.GroupId, uid.PersonId });
+            //builder.Entity<UserIdList>()
+            //    .HasOne(uid => uid.Group)
+            //    .WithMany(g => g.UserIdList)
+            //    .HasForeignKey(uid => uid.GroupId);
+            //builder.Entity<UserIdList>()
+            //    .HasOne(uid => uid.Person)
+            //    .WithMany(p => p.GroupIdList)
+            //    .HasForeignKey(uid => uid.PersonId);
         }
     }
 }

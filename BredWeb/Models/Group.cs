@@ -19,8 +19,7 @@ namespace BredWeb.Models
         [DisplayName("Start Date")]
         public DateTime StartDate { get; set; }
         public string? Creator { get; set; }
-        public List<Person>? UserList { get; set; }
-        public List<Person>? AdminList { get; set; }
+        public List<Person>? UserList { get; set; } = new();
         public int UserCount { get; set; }
         public List<Post>? Posts { get; set; }
     }

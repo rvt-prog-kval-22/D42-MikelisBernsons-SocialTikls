@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
+@model Group
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 Class="text-primary">@Model.Title by -@Model.Creator</h2>
+        </div>
+    </div>
+    <br />
+
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Group Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    Creator
+                </th>
+                <th>
+                    User Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="15%">
+                    @Model.Title
+                </td>
+                <td width="45%">
+                    @Model.Description
+                </td>
+                <td width="10%">
+                    @Model.StartDate.ToString().Substring(0, 10)
+                </td>
+                <td width="10%">
+                    @Model.Creator
+                </td>
+                <td width="10%">
+                    @Model.UserCount
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

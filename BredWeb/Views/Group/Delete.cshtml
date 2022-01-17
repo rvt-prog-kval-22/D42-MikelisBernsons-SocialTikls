@@ -17,7 +17,7 @@
             </div>
             <div class="mb-3">
                 <label asp-for="StartDate"></label>
-                <input asp-for="StartDate" class="form-control" />
+                <input class="form-control" id="disabledInput" type="text"  disabled="" value="@Model.StartDate.ToString().Substring(0, 10)">
             </div>
             <div class="mb-3">
                 <label asp-for="Creator"></label>

@@ -44,6 +44,9 @@
                     Start Date
                 </th>
                 <th>
+                    Creator
+                </th>
+                <th>
                     User Count
                 </th>
                 <th>
@@ -55,19 +58,22 @@
             @foreach(var obj in Model)
             {
                 <tr>
-                    <td width="40%">
+                    <td width="10%">
                         @obj.Title
                     </td>
-                    <td width="30%">
+                    <td width="35%">
                         @obj.Description
                     </td>
-                    <td width="20%">
-                        @obj.StartDate
+                    <td width="10%">
+                        @obj.StartDate.ToString().Substring(0, 10)
+                    </td>
+                    <td width="10%">
+                        @obj.Creator
                     </td>
                     <td width="10%">
                         @obj.UserCount
                     </td>
-                    <td>
+                    <td width="20%">
                         <div class="w-75 btn-group" role="group">
                             <a asp-controller="Group" asp-action="Join" asp-route-id="@obj.Id"
                             class="btn btn-primary mx-2 btn-sm"> <i class="bi bi-pencil-square"></i> Join</a>

@@ -1,0 +1,36 @@
+﻿@model Group
+
+<form method="post" asp-action="Delete">
+    <div class="bg-dark p-3 mt-4">
+        <fieldset disabled="">
+            <div class="row pb-2">
+                <h2 class="text-primary">Delete Group</h2>
+                <hr />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="StartDate"></label>
+                <input asp-for="StartDate" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Creator"></label>
+                <input asp-for="Creator" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="UserCount"></label>
+                <input asp-for="UserCount" class="form-control" />
+            </div>
+        </fieldset>
+        <button type="submit" class="btn btn-warning " style="width:150px">Delete</button>
+        <a asp-controller="Group" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back
+        </a>
+    </div>
+</form>

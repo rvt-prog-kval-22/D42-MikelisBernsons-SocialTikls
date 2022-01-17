@@ -6,9 +6,12 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    var nick = (await UserManager.GetUserAsync(User)).NickName;
+
     <li class="nav-item">
-        <a id="manage" class="nav-link" asp-controller="Account" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        <a id="manage" class="nav-link" asp-controller="Account" asp-action="Index" title="Manage">Hello @nick</a>
     </li>
+
     <li class="nav-item">
         <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button id="logout" type="submit" class="nav-link btn btn-link">Logout</button>

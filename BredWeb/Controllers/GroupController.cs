@@ -29,16 +29,15 @@ namespace BredWeb.Controllers
 
         //GET
         [Authorize]
-        public async Task<IActionResult> Create()
-        {
-            var user = await userManager.GetUserAsync(User);
-            Console.WriteLine(user.NickName);
+        public IActionResult Create()
+        {            
             return View();
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(Group obj)
         {
             var user = await userManager.GetUserAsync(User);
@@ -53,6 +52,39 @@ namespace BredWeb.Controllers
                 return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
             }
             return View(obj);
+        }
+
+        //GET
+        [Authorize]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+                return NotFound();
+            var groupFromDb = _db.Groups.Find(id);
+            //var categoryFromDbFirst = _db.Categories.FirstOrDefault(u => u.Id == id);
+            //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
+
+            if (groupFromDb == null)
+                return NotFound();
+
+            return View(groupFromDb);
+        }
+
+        //POST
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult DeleteGroup(int? id)
+        {
+            var obj = _db.Groups.Find(id);
+            if (obj == null)
+                return NotFound();
+
+            _db.Groups.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Group deleted successfully";
+            return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+
         }
     }
 }

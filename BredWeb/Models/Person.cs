@@ -1,31 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace BredWeb.Models
 {
-    public class Person
+    public class Person : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
-        [MaxLength(100)]
-        [DisplayName("First Name")]
-        public string FirstName { get; set; }
-        [Required]
-        [MaxLength(100)]
-        [DisplayName("Last Name")]
-        public string LastName { get; set; }
-        [Required]
-        [MaxLength(100)]
-        [DisplayName("Nickname")]
+        [MaxLength(20)]
+        [DisplayName("NickName")]
         public string NickName { get; set; }
         [Required]
-        public int Age { get; set; }
-        [Required]
-        [MaxLength(100)]
-        [DisplayName("Email")]
-        public string EmailAddress { get; set; }
+        public DateTime BirthDay { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using BredWeb.Data;
+using BredWeb.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+builder.Services.AddIdentity<Person, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 3;
     options.Password.RequireNonAlphanumeric = false;

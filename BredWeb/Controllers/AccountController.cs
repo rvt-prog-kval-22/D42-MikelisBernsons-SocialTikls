@@ -7,11 +7,11 @@ namespace BredWeb.Controllers
     public class AccountController : Controller
     {
 
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<Person> userManager;
+        private readonly SignInManager<Person> signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-                                 SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<Person> userManager,
+                                 SignInManager<Person> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -41,10 +41,12 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new Person
                 {
                     UserName = obj.Email,
-                    Email = obj.Email
+                    Email = obj.Email,
+                    NickName = obj.NickName,
+                    BirthDay = obj.BirthDay
                 };
                 var result = await userManager.CreateAsync(user, obj.Password);
 

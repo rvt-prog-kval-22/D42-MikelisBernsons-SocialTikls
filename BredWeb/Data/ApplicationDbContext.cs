@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BredWeb.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Person>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

@@ -1,12 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BredWeb.Models
 {
     public class Register
     {
         [Required]
+        [MaxLength(20)]
+        [DisplayName("NickName")]
+        public string NickName { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public DateTime BirthDay { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

@@ -13,9 +13,19 @@
         </div>
         <div asp-validation-summary="All"></div>
         <div class="mb-3">
+            <label asp-for="NickName"></label>
+            <input asp-for="NickName" class="form-control" />
+            <span asp-validation-for="NickName" class="text-warning"></span>
+        </div>
+        <div class="mb-3">
             <label asp-for="Email"></label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-warning"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="BirthDay"></label>
+            <input asp-for="BirthDay" type="date" class="form-control" />
+            <span asp-validation-for="BirthDay" class="text-warning"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Password"></label>

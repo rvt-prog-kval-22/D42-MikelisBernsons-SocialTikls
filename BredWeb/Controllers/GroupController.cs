@@ -21,10 +21,18 @@ namespace BredWeb.Controllers
             _db = db;
         }
 
+        //GET
         public IActionResult Index()
         {
             IEnumerable<Group> objGroupList = _db.Groups;
             return View(objGroupList);
+        }
+
+        //GET
+        [Authorize]
+        private IActionResult Index(List<Group> groups)
+        {
+            return View(groups);
         }
 
         //GET
@@ -138,6 +146,21 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             return View("Browse", groupFromDb);
+        }
+
+        //GET
+        [Authorize]
+        public IActionResult Search(string substr)
+        {
+            if(substr != null && substr != "")
+            {
+                var groups = _db.Groups;
+                var result = groups.Where(g => g.Title.Contains(substr))
+                    .ToList();
+
+                return View("Index", result);
+            }
+            return View("Index", _db.Groups.ToList());
         }
     }
 }

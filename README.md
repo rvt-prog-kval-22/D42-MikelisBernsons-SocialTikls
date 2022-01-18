@@ -89,6 +89,8 @@ MSSQL
 [Mājaslapas vizuālā tematika](https://bootswatch.com/solar/)  
 [Bootstrap 5 dokumentācija](https://getbootstrap.com/)  
 [Favicon](https://icons8.com/icons/set/favicon-cat)  
+[Vairāki video no šī playlist](https://www.youtube.com/playlist?list=PL6n9fhu94yhVkdrusLaQsfERmL_Jh4XmU)  
+
 
 # Uzstādīšanas instrukcijas:
 Projekts tiks veidots uz .NET 5.0

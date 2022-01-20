@@ -52,16 +52,23 @@ namespace BredWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                obj.StartDate = DateTime.Now;
-                obj.Creator = user.NickName;
-                //obj.UserIdList.Add(new UserIdList { GroupId = obj.Id, PersonId = user.Id});
-                //obj.AdminIdList.Add(Int32.Parse(user.Id));
-                obj.UserList.Add(user);
-                obj.UserCount++;
-                _db.Groups.Add(obj);
-                _db.SaveChanges();
-                TempData["success"] = "Group created successfully";
-                return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+                if(_db.Groups.Any(g => g.Title == obj.Title))
+                {
+                    ModelState.AddModelError("CustomError",obj.Title + " already exists.");
+                }
+                else
+                {
+                    obj.StartDate = DateTime.Now;
+                    obj.Creator = user.NickName;
+                    //obj.UserIdList.Add(new UserIdList { GroupId = obj.Id, PersonId = user.Id});
+                    //obj.AdminIdList.Add(Int32.Parse(user.Id));
+                    obj.UserList.Add(user);
+                    obj.UserCount++;
+                    _db.Groups.Add(obj);
+                    _db.SaveChanges();
+                    TempData["success"] = "Group created successfully";
+                    return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+                }
             }
             return View(obj);
         }

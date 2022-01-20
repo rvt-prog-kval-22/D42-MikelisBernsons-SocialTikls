@@ -12,9 +12,10 @@ namespace BredWeb.Models
         [MaxLength(500)]
         public string Body { get; set; }
         public DateTime PostDate { get; set; }
-        public bool IsEdited { get; set; }
+        public bool IsEdited { get; set; } = false;
         public string AuthorName { get; set; }
-        public List<Rating> RatingList { get; set; }
-        public int Rating { get; set; }
+        public List<Rating>? RatingList { get; set; } = new();
+        public List<Post>? PostList { get; set; }
+        public int Rating { get; set; } = 0;
     }
 }

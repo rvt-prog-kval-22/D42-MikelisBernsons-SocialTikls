@@ -4,7 +4,7 @@
 @inject UserManager<Person> UserManager
 @model Group
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = @Model.Title;
 }
 
 
@@ -12,6 +12,13 @@
     <div class="row pt-4">
         <div class="col-6">
             <h2 Class="text-primary">@Model.Title by -@Model.Creator</h2>
+        </div>
+        <div class="col-6 text-end">
+            <form method="post">
+                <button asp-controller="Post" asp-action="Index" class="btn btn-secondary my-2 my-sm-0" type="submit">Create new post</button>
+            </form>
+            <a asp-controller="Post" asp-action="Index"
+            class="btn btn-primary mx-2 btn-sm">New Post</a>   
         </div>
     </div>
     <br />

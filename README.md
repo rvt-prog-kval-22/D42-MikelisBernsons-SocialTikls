@@ -15,7 +15,7 @@ mainīt paroli kad ir iegājis profilā,
 
 atjaunināt paroli ar linku kuru nosūta uz e-pastu,
 
-uzstādīt lietotāja bildi
+Varbūt - uzstādīt lietotāja bildi
 
 ### Taisīt publiskas grupas:
 
@@ -90,14 +90,10 @@ MSSQL
 [Bootstrap 5 dokumentācija](https://getbootstrap.com/)  
 [Favicon](https://icons8.com/icons/set/favicon-cat)  
 [Vairāki video no šī playlist](https://www.youtube.com/playlist?list=PL6n9fhu94yhVkdrusLaQsfERmL_Jh4XmU)  
-
+[ViewBag piemērs](https://www.tutorialsteacher.com/mvc/viewbag-in-asp.net-mvc)  
 
 # Uzstādīšanas instrukcijas:
-Projekts tiks veidots uz .NET 5.0
-
-nepieciešamās NuGet pakotnes:  
-Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore  
-Microsoft.EntityFrameworkCore.Design  
-Microsoft.EntityFrameworkCore.SqlServer  
-Microsoft.EntityFrameworkCore.Tools  
-Microsoft.VisualStudio.Web.CodeGeneration.Design  
+Projekts tiek veidots uz .NET 6.0  
+  
+Lejuplādēt (vēlams VC Community 2022) iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.  
+Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob) un to lejuplādēt.

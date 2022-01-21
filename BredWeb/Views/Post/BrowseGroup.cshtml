@@ -8,65 +8,59 @@
 }
 
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 Class="text-primary">@ViewBag.GroupTitle by -@ViewBag.Creator</h2>
-        </div>
-        <div class="col-6">
-            <h2 Class="text-primary">@ViewBag.Description, Users - @ViewBag.UserCount</h2>
-        </div>
-        <div class="col-6 text-end">
-            <form method="get">
-                <input type="hidden" name="id" value=@ViewBag.GroupId />
-                <input type="hidden" name="title" value=@ViewBag.GroupTitle />
-                <button asp-controller="Post" asp-action="Create" class="btn btn-primary my-2 my-sm-0" type="submit"> <i class="bi bi-plus-square"></i> &nbsp Create new post</button>
-            </form>
-        </div>
-    </div>
-    <br />
+<div class="container">
+    <div class="row">
 
-    <table class="table table-bordered table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Body
-                </th>
-                <th>
-                    Author
-                </th>
-                <th>
-                    PostDate                    
-                </th>
-                <th>
-                    Edited
-                </th>
-            </tr>
-        </thead>
-        <tbody>
+        <div class="col-3 bg-dark card m-2">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="m-3 card-header">
+                    <form method="get">
+                        <input type="hidden" name="id" value=@ViewBag.GroupId />
+                        <input type="hidden" name="title" value=@ViewBag.GroupTitle />
+                        <button asp-controller="Post" asp-action="Create" class="btn btn-primary w-100" type="submit">
+                            <i class="bi bi-plus-square"></i> &nbsp Create new post
+                        </button>
+                    </form>
+                </div>
+            }
+
+            <h3 Class="text-primary mx-auto">@ViewBag.GroupTitle</h3>
+            <br />
+            <h6 class="text-end">-@ViewBag.Creator</h6>
+            <h6 class="text-end">(@ViewBag.UserCount)</h6>
+            <hr />
+            <p Class="text-primary">@ViewBag.Description</p>
+        </div>
+
+        <div class="col-8 m-2">
+
             @foreach(Post post in Model)
             {
-                <tr>
-                <td width="15%">
-                    @post.Title
-                </td>
-                <td width="45%">
-                    @post.Body
-                </td>
-                <td width="10%">
-                    @post.AuthorName
-                </td>
-                <td width="10%">
-                    @post.PostDate.ToString().Substring(0, 10)
-                </td>
-                <td width="10%">
-                    @post.IsEdited
-                </td>
-                </tr>                
-            }            
-        </tbody>
-    </table>
+                <div class="card w-100 mx-auto">
+                    <div class="card-header">                
+                        <h3 class="ps-1 text-primary">@post.Title</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="card-text">@post.Body</p>
+                        <br>
+                        <h6 class="card-subtitle text-success text-muted text-end">-@post.AuthorName</h6>
+                    </div>
+                    @if (post.IsEdited)
+                    {
+                        <div class="card-footer text-end">
+                            <h6>@post.PostDate.ToString().Substring(0, 16) Edited</h6>
+                        </div>
+                    }else{
+                        <div class="card-footer text-end">
+                            <h6>@post.PostDate.ToString().Substring(0, 16)</h6>
+                        </div>
+                    }
+                </div>
+                <br />
+            }
+        </div>        
+    </div>
 </div>

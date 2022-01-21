@@ -99,6 +99,8 @@ namespace BredWeb.Controllers
             if (obj == null)
                 return NotFound();
 
+            _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
+
             _db.Groups.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "Group deleted successfully";

@@ -8,83 +8,48 @@
 }
 
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2 Class="text-primary">Group List</h2>
-        </div>
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <div class="col-6 text-end">
-                <a asp-controller="Group" asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-square"></i> &nbsp Create New Group
-                </a>
-            </div>
-        }
-        else
-        {
-            <div class="col-6 text-end">
+<div class="container">
+    <div class="row">
+        <div class="col-3 bg-dark card m-2">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="m-3">
+                        <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-square"></i> &nbsp Create New Group
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-6 text-end">
                 
-            </div>
-        }
+                    </div>
+                }
+        </div>
+        <div class="col-8 m-2">
+            @foreach(Group group in Model)
+                {
+                    <div class="card w-100 mx-auto">
+                        <div class="card-header">                
+                            <h3 class="ps-2 text-primary">@group.Title</h3>
+                        </div>
 
-    </div>
-    <br />
-
-    <table class="table table-bordered table-striped" style="width:100%">
-        <thead>
-            <tr>
-                <th>
-                    Group Title
-                </th>
-                <th>
-                    Description
-                </th>
-                <th>
-                    Start Date
-                </th>
-                <th>
-                    Creator
-                </th>
-                <th>
-                    User Count
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var obj in Model)
-            {
-                <tr>
-                    <td width="10%">
-                        @obj.Title
-                    </td>
-                    <td width="35%">
-                        @obj.Description
-                    </td>
-                    <td width="10%">
-                        @obj.StartDate.ToString().Substring(0, 10)
-                    </td>
-                    <td width="10%">
-                        @obj.Creator
-                    </td>
-                    <td width="10%">
-                        @obj.UserCount
-                    </td>
-                    <td width="20%">
-                        <div class="w-100 btn-group" role="group">
-                            <a asp-controller="Group" asp-action="Join" asp-route-id="@obj.Id"
+                        <div class="card-body">
+                            <p class="card-text">@group.Description</p>
+                            <br>
+                            <h6 class="card-subtitle text-success text-muted text-end">-@group.Creator &nbsp (@group.UserCount)</h6>
+                        </div>         
+                        <div class="w-100 btn-group card-footer" role="group">
+                            <a asp-controller="Group" asp-action="Join" asp-route-id="@group.Id"
                             class="btn btn-primary mx-2 btn-sm">Join</a>                            
-                            <a asp-controller="Group" asp-action="Open" asp-route-id="@obj.Id"
+                            <a asp-controller="Group" asp-action="Open" asp-route-id="@group.Id"
                             class="btn btn-primary mx-2 btn-sm">Open</a>
-                            <a asp-controller="Group" asp-action="Delete" asp-route-id="@obj.Id"
+                            <a asp-controller="Group" asp-action="Delete" asp-route-id="@group.Id"
                             class="btn btn-warning mx-2 btn-sm">  Delete</a>
                         </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </div>
+                <br />
+                }
+        </div>
+    </div>
 </div>

@@ -14,7 +14,7 @@
         </div>
         <div class="mb-3">
             <label asp-for="Body"></label>
-            <textarea rows="8" asp-for="Body" class="form-control w-50"></textarea>
+            <textarea asp-for="Body" rows="8" class="form-control w-50"></textarea>
             <span asp-validation-for="Body" class="text-warning"></span>
         </div>
         <input type="hidden" name="groupId" value=@ViewBag.id />

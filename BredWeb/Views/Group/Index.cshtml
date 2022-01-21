@@ -13,7 +13,7 @@
         <div class="col-3 bg-dark card m-2">
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <div class="m-3">
+                    <div class="m-3 card-header">
                         <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
                             <i class="bi bi-plus-square"></i> &nbsp Create New Group
                         </a>
@@ -25,6 +25,8 @@
                 
                     </div>
                 }
+                <h2 Class="text-primary mx-auto">Group Browser</h2>
+                <br />
         </div>
         <div class="col-8 m-2">
             @foreach(Group group in Model)

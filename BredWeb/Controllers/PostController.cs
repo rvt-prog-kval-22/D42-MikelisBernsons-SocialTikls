@@ -29,10 +29,10 @@ namespace BredWeb.Controllers
 
         //GET
         [HttpGet]
-        public IActionResult Create(string id, string title)
+        public IActionResult Create(string id, string groupTitle)
         {
             ViewBag.id = id;
-            ViewBag.Title = title;
+            ViewBag.GroupTitle = groupTitle;
             return View();
         }
 

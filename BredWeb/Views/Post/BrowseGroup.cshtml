@@ -18,7 +18,7 @@
                 <div class="m-3 card-header">
                     <form method="get">
                         <input type="hidden" name="id" value=@ViewBag.GroupId />
-                        <input type="hidden" name="title" value=@ViewBag.GroupTitle />
+                        <input type="hidden" name="groupTitle" value=@ViewBag.GroupTitle />
                         <button asp-controller="Post" asp-action="Create" class="btn btn-primary w-100" type="submit">
                             <i class="bi bi-plus-square"></i> &nbsp Create new post
                         </button>
@@ -26,12 +26,12 @@
                 </div>
             }
 
-            <h3 Class="text-primary mx-auto">@ViewBag.GroupTitle</h3>
+            <h2 Class="text-primary mx-auto">@ViewBag.GroupTitle</h2>
             <br />
             <h6 class="text-end">-@ViewBag.Creator</h6>
             <h6 class="text-end">(@ViewBag.UserCount)</h6>
             <hr />
-            <p Class="text-primary">@ViewBag.Description</p>
+            <p Class="text-primary m-2">@ViewBag.Description</p>
         </div>
 
         <div class="col-8 m-2">

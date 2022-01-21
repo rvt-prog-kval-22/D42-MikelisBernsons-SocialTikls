@@ -4,6 +4,7 @@ using BredWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BredWeb.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220120120915_BegoneExtraThings")]
+    partial class BegoneExtraThings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,9 +206,6 @@ namespace BredWeb.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsEdited")
                         .HasColumnType("bit");
 
@@ -222,8 +221,6 @@ namespace BredWeb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.ToTable("Posts");
                 });
@@ -257,6 +254,21 @@ namespace BredWeb.Migrations
                     b.HasIndex("UserListId");
 
                     b.ToTable("GroupPerson");
+                });
+
+            modelBuilder.Entity("GroupPost", b =>
+                {
+                    b.Property<int>("GroupListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupListId", "PostsId");
+
+                    b.HasIndex("PostsId");
+
+                    b.ToTable("GroupPost");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -392,13 +404,6 @@ namespace BredWeb.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BredWeb.Models.Post", b =>
-                {
-                    b.HasOne("BredWeb.Models.Group", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("GroupId");
-                });
-
             modelBuilder.Entity("GroupPerson", b =>
                 {
                     b.HasOne("BredWeb.Models.Group", null)
@@ -410,6 +415,21 @@ namespace BredWeb.Migrations
                     b.HasOne("BredWeb.Models.Person", null)
                         .WithMany()
                         .HasForeignKey("UserListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GroupPost", b =>
+                {
+                    b.HasOne("BredWeb.Models.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BredWeb.Models.Post", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -463,11 +483,6 @@ namespace BredWeb.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BredWeb.Models.Group", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

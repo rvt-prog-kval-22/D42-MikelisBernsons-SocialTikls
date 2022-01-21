@@ -2,20 +2,23 @@
 
 @inject SignInManager<Person> SignInManager
 @inject UserManager<Person> UserManager
-@model Group
+@model IEnumerable<Post>
 @{
-    ViewData["Title"] = @Model.Title;
+    ViewData["Title"] = @ViewBag.GroupTitle;
 }
 
 
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2 Class="text-primary">@Model.Title by -@Model.Creator</h2>
+            <h2 Class="text-primary">@ViewBag.GroupTitle by -@ViewBag.Creator</h2>
+        </div>
+        <div class="col-6">
+            <h2 Class="text-primary">@ViewBag.Description, Users - @ViewBag.UserCount</h2>
         </div>
         <div class="col-6 text-end">
             <form method="get">
-                <input type="hidden" name="id" value=@Model.Id />
+                <input type="hidden" name="id" value=@ViewBag.GroupId />
                 <button asp-controller="Post" asp-action="Create" class="btn btn-primary my-2 my-sm-0" type="submit"> <i class="bi bi-plus-square"></i> &nbsp Create new post</button>
             </form>
         </div>
@@ -26,40 +29,43 @@
         <thead>
             <tr>
                 <th>
-                    Group Title
+                    Title
                 </th>
                 <th>
-                    Description
+                    Body
                 </th>
                 <th>
-                    Start Date
+                    Author
                 </th>
                 <th>
-                    Creator
+                    PostDate                    
                 </th>
                 <th>
-                    User Count
+                    Edited
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            @foreach(Post post in Model)
+            {
+                <tr>
                 <td width="15%">
-                    @Model.Title
+                    @post.Title
                 </td>
                 <td width="45%">
-                    @Model.Description
+                    @post.Body
                 </td>
                 <td width="10%">
-                    @Model.StartDate.ToString().Substring(0, 10)
+                    @post.AuthorName
                 </td>
                 <td width="10%">
-                    @Model.Creator
+                    @post.PostDate.ToString().Substring(0, 10)
                 </td>
                 <td width="10%">
-                    @Model.UserCount
+                    @post.IsEdited
                 </td>
-            </tr>
+                </tr>                
+            }            
         </tbody>
     </table>
 </div>

@@ -46,7 +46,7 @@ namespace BredWeb.Controllers
                 {
                     UserName = obj.Email,
                     Email = obj.Email,
-                    NickName = obj.NickName,
+                    NickName = obj.NickName, //add existing name validation later
                     BirthDay = obj.BirthDay
                 };
                 var result = await userManager.CreateAsync(user, obj.Password);

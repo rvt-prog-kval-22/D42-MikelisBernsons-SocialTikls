@@ -27,46 +27,62 @@ namespace BredWeb.Controllers
             return View();
         }
 
-        //POST
+        //GET
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
+            ViewBag.id = id;
             return View();
         }
 
         //POST
         [HttpPost]
-        public IActionResult Create(Post post, int id)
+        public async Task<IActionResult> Create(Post post, int groupId)
         {
 
-            if (id == null || id == 0)
+            if (groupId == 0)
                 return NotFound();
-            var group = _db.Groups.Find(id);
+
+            Group? group = _db.Groups.Find(groupId);
+            Person user = await userManager.GetUserAsync(User);
 
             if (group == null)
                 return NotFound();
 
+            ViewBag.GroupTitle = group.Title;
+            post.AuthorName = user.NickName;
+            post.PostDate = DateTime.Now;
+            post.Id = 0; // get up to date ID!!!!!!!!!!
 
-            try
+            var errors = ModelState.Where(x => x.Value.Errors.Any())
+                .Select(x => new { x.Key, x.Value.Errors });
+            
+            if (ModelState.IsValid)
             {
                 group.Posts.Add(post);
-                // post counter ?
+                // post counter in group?
                 _db.Groups.Update(group);
+                //_db.Attach(group);
                 _db.SaveChanges();
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Index");
-            }
-
+                TempData["success"] = "Post created successfully";
+            }            
             
+            return RedirectToAction("Open", "Group"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+        }
 
-            _db.SaveChanges();
-            TempData["success"] = "Group deleted successfully";
-            return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+        //GET
+        public IActionResult BrowseGroup(Group group)
+        {
+            ViewBag.GroupId = group.Id;
+            ViewBag.GroupTitle = group.Title;
+            ViewBag.Description = group.Description;
+            ViewBag.UserCount = group.UserCount;
+            ViewBag.Title = group.Title;
+            ViewBag.Creator = group.Creator;
 
+            List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
 
-            return View();
+            return View(posts);
         }
     }
 }

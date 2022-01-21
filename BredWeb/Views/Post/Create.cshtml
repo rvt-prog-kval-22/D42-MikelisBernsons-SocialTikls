@@ -3,7 +3,7 @@
 <form method="post">
     <div class="bg-dark p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Post in </h2>
+            <h2 class="text-primary">Create Post in -</h2>
             <hr />
         </div>
         @*<div asp-validation-summary="All"></div>*@
@@ -14,14 +14,10 @@
         </div>
         <div class="mb-3">
             <label asp-for="Body"></label>
-            <textarea rows="3" asp-for="Body" class="form-control"/>
+            <input rows="8" asp-for="Body" class="form-control" />
             <span asp-validation-for="Body" class="text-warning"></span>
         </div>
-        <div class="mb-3">
-            <label asp-for="Body"></label>
-            <input asp-for="Body" class="form-control" />
-            <span asp-validation-for="Body" class="text-warning"></span>
-        </div>
+        <input type="hidden" name="groupId" value=@ViewBag.id />
         <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
         <a asp-controller="Group" asp-action="Index" class="btn btn-secondary" style="width:150px">
             Back

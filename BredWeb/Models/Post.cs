@@ -18,10 +18,12 @@ namespace BredWeb.Models
         public string Title { get; set; }
         public DateTime PostDate { get; set; }
         public bool IsEdited { get; set; } = false;
-        public string AuthorName { get; set; }
-        public List<Rating>? RatingList { get; set; } = new();
-        public List<Comment>? CommentList { get; set; } = new();
-        public List<Group>? GroupList { get; set; }
+        [MaxLength(20)]
+        public string? AuthorName { get; set; }
+        //public List<Rating>? RatingList { get; set; } = new();
+        //public List<Comment>? CommentList { get; set; } = new();
+        //public List<Group>? GroupList { get; set; }
         public int TotalRating { get; set; } = 0;
+        public int GroupId { get; set; }
     }
 }

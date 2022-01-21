@@ -152,7 +152,8 @@ namespace BredWeb.Controllers
             if (groupFromDb == null)
                 return NotFound();
 
-            return View("Browse", groupFromDb);
+            //return View("Browse", groupFromDb);
+            return RedirectToAction("BrowseGroup", "Post", groupFromDb);
         }
 
         //GET

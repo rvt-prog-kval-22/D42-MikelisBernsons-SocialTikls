@@ -14,8 +14,8 @@ namespace BredWeb.Models
         public DateTime PostDate { get; set; }
         public bool IsEdited { get; set; } = false;
         public string AuthorName { get; set; }
-        public List<Rating>? RatingList { get; set; } = new();
-        public List<Post>? PostList { get; set; }
+        //public List<Rating>? RatingList { get; set; } = new();
+        //public List<Post>? PostList { get; set; }
         public int Rating { get; set; } = 0;
     }
 }

@@ -29,9 +29,10 @@ namespace BredWeb.Controllers
 
         //GET
         [HttpGet]
-        public IActionResult Create(string id)
+        public IActionResult Create(string id, string title)
         {
             ViewBag.id = id;
+            ViewBag.Title = title;
             return View();
         }
 
@@ -53,7 +54,7 @@ namespace BredWeb.Controllers
             ViewBag.GroupTitle = group.Title;
             post.AuthorName = user.NickName;
             post.PostDate = DateTime.Now;
-            post.Id = 0; // get up to date ID!!!!!!!!!!
+            post.Id = 0; // this fixes an error
 
             var errors = ModelState.Where(x => x.Value.Errors.Any())
                 .Select(x => new { x.Key, x.Value.Errors });
@@ -68,7 +69,7 @@ namespace BredWeb.Controllers
                 TempData["success"] = "Post created successfully";
             }            
             
-            return RedirectToAction("Open", "Group"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+            return RedirectToAction("Open", "Group");
         }
 
         //GET

@@ -19,6 +19,7 @@
         <div class="col-6 text-end">
             <form method="get">
                 <input type="hidden" name="id" value=@ViewBag.GroupId />
+                <input type="hidden" name="title" value=@ViewBag.GroupTitle />
                 <button asp-controller="Post" asp-action="Create" class="btn btn-primary my-2 my-sm-0" type="submit"> <i class="bi bi-plus-square"></i> &nbsp Create new post</button>
             </form>
         </div>

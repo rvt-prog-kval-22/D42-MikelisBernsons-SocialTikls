@@ -1,20 +1,20 @@
 ﻿@model Post
 
 <form method="post">
-    <div class="bg-dark p-3 mt-4">
+    <div class="bg-dark p-3 mt-4 w-75">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Post in -</h2>
+            <h2 class="text-primary">Create Post in - @ViewBag.Title</h2> @*add in view data or something*@
             <hr />
         </div>
         @*<div asp-validation-summary="All"></div>*@
         <div class="mb-3">
             <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control" />
+            <input asp-for="Title" class="form-control w-25" />
             <span asp-validation-for="Title" class="text-warning"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Body"></label>
-            <input rows="8" asp-for="Body" class="form-control" />
+            <textarea rows="8" asp-for="Body" class="form-control w-50"></textarea>
             <span asp-validation-for="Body" class="text-warning"></span>
         </div>
         <input type="hidden" name="groupId" value=@ViewBag.id />

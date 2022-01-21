@@ -37,6 +37,7 @@ namespace BredWeb.Controllers
 
         //POST
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(Post post, int groupId)
         {
 
@@ -71,14 +72,17 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public IActionResult BrowseGroup(Group group)
+        public IActionResult BrowseGroup(int id)
         {
+            var group = _db.Groups.Find(id);
+
             ViewBag.GroupId = group.Id;
             ViewBag.GroupTitle = group.Title;
-            ViewBag.Description = group.Description;
+            //ViewBag.Description = group.Description;
             ViewBag.UserCount = group.UserCount;
             ViewBag.Title = group.Title;
             ViewBag.Creator = group.Creator;
+            ViewBag.Description = group.Description;
 
             List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
 

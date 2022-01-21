@@ -142,7 +142,6 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        [Authorize]
         public IActionResult Open(int? id)
         {
             if (id == null || id == 0)
@@ -153,7 +152,7 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             //return View("Browse", groupFromDb);
-            return RedirectToAction("BrowseGroup", "Post", groupFromDb);
+            return RedirectToAction("BrowseGroup", "Post", new { id = groupFromDb.Id });
         }
 
         //GET

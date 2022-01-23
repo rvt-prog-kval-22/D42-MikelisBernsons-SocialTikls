@@ -69,7 +69,7 @@ namespace BredWeb.Controllers
                 TempData["success"] = "Post created successfully";
             }            
             
-            return RedirectToAction("Open", "Group");
+            return RedirectToAction("Open", "Group", new { id = groupId});
         }
 
         //GET

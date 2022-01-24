@@ -171,5 +171,38 @@ namespace BredWeb.Controllers
             }
             return View("Index", _db.Groups.ToList());
         }
+
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id is null or 0)
+                return NotFound();
+            var group = _db.Groups.Find(id);
+            //var categoryFromDbFirst = _db.Categories.FirstOrDefault(u => u.Id == id);
+            //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
+
+            if(group == null)
+                return NotFound();
+
+            return View(group);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Group obj)
+        {
+            Group group = _db.Groups.Find(obj.Id);
+            group.Description = obj.Description;
+
+            if (ModelState.IsValid)
+            {
+                _db.Groups.Update(group);
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+                return RedirectToAction("BrowseGroup", "Post", new { id = obj.Id });
+            }
+            return View(obj);
+        }
     }
 }

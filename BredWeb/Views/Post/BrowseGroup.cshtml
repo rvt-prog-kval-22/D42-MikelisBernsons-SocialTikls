@@ -30,8 +30,22 @@
             <br />
             <h6 class="text-end">-@ViewBag.Creator</h6>
             <h6 class="text-end">(@ViewBag.UserCount)</h6>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="m-3 w-35 ms-auto">
+                    <form method="get">
+                        <input type="hidden" name="id" value=@ViewBag.GroupId />
+                        <button asp-controller="Group" asp-action="Edit" class="btn btn-sm btn-secondary w-100" type="submit">
+                            &nbsp Edit group
+                        </button>
+                    </form>
+                </div>
+            }
             <hr />
-            <p Class="text-primary m-2">@ViewBag.Description</p>
+            <div style="white-space: pre-line">
+                @ViewBag.Description
+            </div>
+            
         </div>
 
         <div class="col-8 m-2">

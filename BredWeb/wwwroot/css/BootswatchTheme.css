@@ -7926,8 +7926,16 @@ fieldset:disabled .btn {
     width: 25% !important;
 }
 
+.w-35 {
+    width: 35% !important;
+}
+
 .w-50 {
     width: 50% !important;
+}
+
+.w-60 {
+    width: 60% !important;
 }
 
 .w-75 {
@@ -7962,8 +7970,16 @@ fieldset:disabled .btn {
     height: 25% !important;
 }
 
+.h-35 {
+    height: 35% !important;
+}
+
 .h-50 {
     height: 50% !important;
+}
+
+.h-60 {
+    height: 60% !important;
 }
 
 .h-75 {

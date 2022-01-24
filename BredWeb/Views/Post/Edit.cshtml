@@ -1,0 +1,28 @@
+﻿@model Post
+
+<form method="post">
+    <div class="bg-dark p-3 mt-4 w-75">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Post</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Title"></label>
+            <input readonly="" asp-for="Title" class="form-control w-50" />
+            <span asp-validation-for="Title" class="text-warning"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Body"></label>
+            <textarea asp-for="Body" rows="6" class="form-control w-75"></textarea>
+            <span asp-validation-for="Body" class="text-warning"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Submit</button>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

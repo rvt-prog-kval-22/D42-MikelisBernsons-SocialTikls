@@ -1,0 +1,32 @@
+﻿@model Post
+
+<form method="post" asp-action="Delete">
+    <div class="bg-dark p-3 mt-4">
+        <fieldset disabled="">
+            <div class="row pb-2">
+                <h2 class="text-primary">Delete Post</h2>
+                <hr />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Body"></label>
+                <textarea readonly="" rows="5" asp-for="Body" class="form-control"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PostDate"></label>
+                <input class="form-control" id="disabledInput" type="text"  disabled="" value="@Model.PostDate.ToString().Substring(0, 10)">
+            </div>
+            <div class="mb-3">
+                <label asp-for="AuthorName"></label>
+                <input asp-for="AuthorName" class="form-control" />
+            </div>
+        </fieldset>
+        <button type="submit" class="btn btn-warning " style="width:150px">Delete</button>
+        <a asp-controller="Group" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Back
+        </a>
+    </div>
+</form>

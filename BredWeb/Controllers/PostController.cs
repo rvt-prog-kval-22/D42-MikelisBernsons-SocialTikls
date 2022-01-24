@@ -77,6 +77,9 @@ namespace BredWeb.Controllers
         {
             var group = _db.Groups.Find(id);
 
+            if (group == null)
+                return NotFound();
+
             ViewBag.GroupId = group.Id;
             ViewBag.GroupTitle = group.Title;
             //ViewBag.Description = group.Description;
@@ -89,5 +92,70 @@ namespace BredWeb.Controllers
 
             return View(posts);
         }
+
+        //GET
+        public IActionResult Edit(int? id)
+        {
+            if (id is null or 0)
+                return NotFound();
+
+            var post = _db.Posts.Find(id);
+
+            if (post == null)
+                return NotFound();
+
+            return View(post);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Post obj)
+        {
+            Post post = _db.Posts.Find(obj.Id);
+            post.Body = obj.Body;
+
+            if (ModelState.IsValid)
+            {
+                _db.Posts.Update(post);
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+                return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+            }
+            return View(obj);
+        }
+
+        //GET
+        [Authorize]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+                return NotFound();
+
+            Post? post = _db.Posts.Find(id);
+
+            if (post == null)
+                return NotFound();
+
+            return View(post);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Delete(Post obj)
+        {
+            Post? post = _db.Posts.Find(obj.Id);
+
+            if (post == null)
+                return NotFound();            
+
+            _db.Posts.Remove(post);
+            _db.SaveChanges();
+            TempData["success"] = "Success";
+            return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+        }
+
     }
 }

@@ -139,8 +139,7 @@ namespace BredWeb.Controllers
             //_db.SaveChanges();
             TempData["success"] = "Group Joined successfully";
 
-            return View("Browse", group);
-            //return RedirectToAction("Open", id); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+            return RedirectToAction("BrowseGroup", "Post", new { id = group.Id });
         }
 
         //GET

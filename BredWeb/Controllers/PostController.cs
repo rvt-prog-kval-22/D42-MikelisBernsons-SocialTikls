@@ -94,6 +94,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
+        [Authorize]
         public IActionResult Edit(int? id)
         {
             if (id is null or 0)
@@ -109,10 +110,11 @@ namespace BredWeb.Controllers
 
         //POST
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Post obj)
         {
-            Post post = _db.Posts.Find(obj.Id);
+            Post? post = _db.Posts.Find(obj.Id);
             post.Body = obj.Body;
 
             if (ModelState.IsValid)

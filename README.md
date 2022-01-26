@@ -9,10 +9,10 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 
 ### Reģistrēties un taisīt lietotāja profilu:
 
-uzstādīt publisko lietotājvārdu - OK
-mainīt paroli kad ir iegājis profilā - *
-atjaunināt paroli ar linku kuru nosūta uz e-pastu - *
-Varbūt - uzstādīt lietotāja bildi - *
+1. uzstādīt publisko lietotājvārdu - OK
+2. mainīt paroli kad ir iegājis profilā - *
+3. atjaunināt paroli ar linku kuru nosūta uz e-pastu - *
+4. Varbūt - uzstādīt lietotāja bildi - *
 
 ### Publiskas grupas:
 

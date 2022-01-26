@@ -1,82 +1,68 @@
 # sociālo diskusiju portāla datu uzskaites automatizēta sistēma - [Links uz Github](https://github.com/MKBernsons/Breddit) - Pieejai jautāt caur mykoob.
 
-Janu kāds skolotājs nāk apskatīt un redz, ka vēl neesmu commitojis reālus projekta failus tas ir tādēļ, ka pašlaik patstāvīgi atsevišķos mazākos projektos cenšos iemācīties kā realizēt dažas šim projektam vajadzīgās funkcionalitātes.
+Ja kāds skolotājs nāk apskatīt un redz, ka vēl neesmu commitojis reālus projekta failus tas ir tādēļ, ka projekts atrodas privātā repo. Links augstāk ^
 
 ## Apraksts:
-Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dalīties ar domām un attēliem utml. ar citiem cilvēkiem.
+Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dalīties ar domām un līdzīgām interesēm utml. ar citiem cilvēkiem.
 
 ## Plānotās funkcionalitātes:
 
 ### Reģistrēties un taisīt lietotāja profilu:
 
-uzstādīt publisko lietotājvārdu,
+uzstādīt publisko lietotājvārdu - OK
+mainīt paroli kad ir iegājis profilā - *
+atjaunināt paroli ar linku kuru nosūta uz e-pastu - *
+Varbūt - uzstādīt lietotāja bildi - *
 
-mainīt paroli kad ir iegājis profilā,
+### Publiskas grupas:
 
-atjaunināt paroli ar linku kuru nosūta uz e-pastu,
-
-Varbūt - uzstādīt lietotāja bildi
-
-### Taisīt publiskas grupas:
-
-grupas nosaukums, apraksts
-
-grupai var pievienoties jebkurš cilvēks (tās ir publiskas),
-
-katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk)
-
-parasti lietotāji kuri var taisīt postus iekš grupas kā arī vērtēt citus postus un komentēt zem tiem.
+1. grupas nosaukums un apraksts - OK
+2. grupai var pievienoties/apskatīt jebkurš cilvēks (tās ir publiskas) - OK
+3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - *
+4. parasti lietotāji kuri var taisīt postus iekš grupas - OK
+5. Iespēja vērtēt citus postus - *
+7. komentēt zem zem postiem - *
+8. Meklēt grupas pēc nosaukuma - OK
+9. Rediģēt grupas (aprakstu) - OK
+10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - *
 
 ### Taisīt post:
 
-satur - tekstu, linkus uz citām lapām, video un attēliem utml.
+1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
+2. postiem citi reģistrēti lietotāji var komentēt - *
+3. Vērtēt ar patīk/nepatīk - *
+4. Pieejams saraksts ar populārākajām grupām un postiem. varbūt varētu pievienot arī citus kārtošanas kritērijus. - *
 
-postiem citi reģistrēti lietotāji var komentēt un tos vērtēt.
+## Globāls mājaslapas Administrators:
 
-Lietotāji var čatot ar citiem lietotājiem privāti.
+1. var izdzēst postus un grupas ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
+2. var banot lietotājus (varbūt)
+3. var rediģēt grupas ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
+4. var mainīt, pievienot, noņemt grupas moderatorus
 
-Pieejams saraksts ar populārākajām grupām un postiem. varbūt varētu pievienot arī citus kārtošanas kritērijus.
+## grupas moderators 
 
-
-## Vispārējais Administrators:
-
-var izdzēst postus un grupas
-
-var banot lietotājus
-
-var rediģēt grupas
-
-var mainīt, pievienot, noņemt grupas moderātorus
-
-## grupas moderators
-
-var banot lietotājus tajā grupā
-
-var izdzēst postus tajā grupā
-
-var izdzēst komentārus tajā grupā
-
-var piešķirt administratora tiesības citiem lietotājiem grupā kā arī tās atņemt
+1. var banot lietotājus tajā grupā (varbūt) 
+2. var izdzēst postus tajā grupā ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
+3. var izdzēst komentārus tajā grupā
+4. var piešķirt administratora tiesības citiem lietotājiem grupā kā arī tās atņemt
 
 ## Lietotājs:
 
-var taisīt grupas un postus
-
-var rediģēt savus postus
-
-var taisīt jaunu grupu kurā automātiski kļūst par moderatoru
+1. var taisīt grupas un postus - OK
+2. var rediģēt savus postus ( pašlaik var rediģēt jebkuru postu ) - *
+3. var taisīt jaunu grupu - OK
+4. Var čatot ar citiem lietotājiem privāti (nezinu vai tiks pievienots bet atstāju kā ideju) - *
 
 # Viesis:
 
-Parasts lietotājs kurš var apskatīt postus un komentārus
-
+1. Parasts lietotājs kurš var apskatīt grupas, postus utt. - OK
 
 ## Pašlaik plānotās izmantotās tehnoloģijas:
 HTML  
 CSS  
 JS  
 C#  
-.NET  
 ASP.NET  
 MSSQL  
 
@@ -93,7 +79,7 @@ MSSQL
 [ViewBag piemērs](https://www.tutorialsteacher.com/mvc/viewbag-in-asp.net-mvc)  
 
 # Uzstādīšanas instrukcijas:
-Projekts tiek veidots uz .NET 6.0  
   
 Lejuplādēt (vēlams VC Community 2022) iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.  
-Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob) un to lejuplādēt.
+Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt un atvērt.  
+tālāk izpētīšu :o

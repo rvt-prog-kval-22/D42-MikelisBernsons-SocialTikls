@@ -80,6 +80,7 @@ MSSQL
 
 # Uzstādīšanas instrukcijas:
   
-Lejuplādēt (vēlams VC Community 2022) iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.  
-Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt un atvērt.  
-tālāk izpētīšu :o
+1. Lejuplādēt Visual Studio Community 2022 (iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.)  
+2. Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt.
+3. Projektu jāatver kā mākat, bet to arī var izdarīt atverot visual studio un klonējot repository ar linku.
+4. Iekš visual studio jāatver solution explorer un jāatrod Bred.sln fails un to jāuzspiež 2x reizes

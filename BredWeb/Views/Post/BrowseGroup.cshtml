@@ -2,7 +2,7 @@
 
 @inject SignInManager<Person> SignInManager
 @inject UserManager<Person> UserManager
-@model IEnumerable<Post>
+@model IEnumerable<Post>?
 @{
     ViewData["Title"] = @ViewBag.GroupTitle;
 }
@@ -53,13 +53,15 @@
             @foreach(Post post in Model)
             {
                 <div class="card w-100 mx-auto">
-                    <div class="card-header">                
-                        <h3 class="ps-1 text-primary">@post.Title</h3>
-                    </div>
+                    <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@ViewBag.GroupId">
+                        <div class="card-header">                
+                            <h3 class="ps-1 text-primary">@post.Title</h3>
+                        </div>
 
-                    <div class="card-body" style="white-space: pre-line">
-                        <p class="card-text">@post.Body</p>
-                    </div>
+                        <div class="card-body" style="white-space: pre-line">
+                            <p class="card-text">@post.Body</p>
+                        </div>
+                    </a>
 
                     <div class="card-subtitle text-end me-3">
                     @if (post.IsEdited)

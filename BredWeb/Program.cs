@@ -15,6 +15,7 @@ builder.Services.AddIdentity<Person, IdentityRole>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequireUppercase = false;
 })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

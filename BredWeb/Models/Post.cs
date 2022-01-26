@@ -21,8 +21,7 @@ namespace BredWeb.Models
         [MaxLength(20)]
         public string? AuthorName { get; set; }
         //public List<Rating>? RatingList { get; set; } = new();
-        //public List<Comment>? CommentList { get; set; } = new();
-        //public List<Group>? GroupList { get; set; }
+        public List<Comment>? CommentList { get; set; } = new();
         public int TotalRating { get; set; } = 0;
         public int GroupId { get; set; }
     }

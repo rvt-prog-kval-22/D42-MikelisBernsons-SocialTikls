@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "All Roles";
+}
+
+<div class="container">
+    <div class="row">
+
+         <div class="col-3 bg-dark card m-2">
+            <button asp-controller="Admin" asp-action="CreateRole" class="btn btn-primary w-100">
+                <i class="bi bi-plus-square"></i> &nbsp Create new role
+            </button>
+         </div>
+
+         <div class="col-8 m-2">
+             <table>
+                 <thead>
+                     <tr>
+                         <th>
+                             Role Id
+                         </th>
+                         <th>
+                             Role Name
+                         </th>
+                         <th>
+
+                         </th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     @if (Model.Any())
+                     {
+                         foreach(IdentityRole role in Model)
+                         {
+                             <tr>
+                                 <td width="50%">
+                                     @role.Id
+                                 </td>
+                                 <td width="20%">
+                                     @role.Name
+                                 </td>
+                                 <td width="30%">
+
+                                 </td>
+                             </tr>
+                         }
+                     }
+                     else
+                     {
+                 
+                     }
+                 </tbody>
+             </table>            
+        </div
+    </div>
+</div>

@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BredWeb.Controllers
 {
-    public class PostController : Controller
+    public class CommentController : Controller
     {
         private readonly UserManager<Person> _userManager;
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public PostController(UserManager<Person> userManager,
+        public CommentController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  RoleManager<IdentityRole> roleManager,
                                  ApplicationDbContext db)
@@ -27,52 +27,38 @@ namespace BredWeb.Controllers
         //GET
         public IActionResult Index()
         {
-            return View();
-        }
-
-        //GET
-        [HttpGet]
-        public IActionResult Create(string id, string groupTitle)
-        {
-            ViewBag.id = id;
-            ViewBag.GroupTitle = groupTitle;
-            return View();
+            return NotFound();
         }
 
         //POST
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(Post post, int groupId)
+        public async Task<IActionResult> Create(string body, int groupId, int postId)
         {
 
-            if (groupId == 0)
+            if (groupId == 0 || postId == 0)
                 return NotFound();
 
-            Group? group = _db.Groups.Find(groupId);
             Person user = await _userManager.GetUserAsync(User);
+            Post? post = _db.Posts.Find(postId);
 
-            if (group == null)
+            if (post == null)
                 return NotFound();
 
-            ViewBag.GroupTitle = group.Title;
-            post.AuthorName = user.NickName;
-            post.PostDate = DateTime.Now;
-            post.Id = 0; // this fixes an error
-
-            var errors = ModelState.Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors });
-            
-            if (ModelState.IsValid)
+            if (body.Length >= 4)
             {
-                group.Posts.Add(post);
-                // post counter in group?
-                _db.Groups.Update(group);
-                //_db.Attach(group);
-                _db.SaveChanges();
-                TempData["success"] = "Post created successfully";
-            }            
+                post.CommentList.Add(
+                new Comment{
+                    Body = body,
+                    AuthorName = user.NickName,
+                    PostDate = DateTime.Now
+                });
             
-            return RedirectToAction("Open", "Group", new { id = groupId});
+                _db.Posts.Update(post);
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+            }            
+            return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId});
         }
 
         //GET
@@ -184,10 +170,9 @@ namespace BredWeb.Controllers
             ViewBag.PostTitle = post.Title;
             ViewBag.PostEdited = post.IsEdited;
             ViewBag.PostId = post.Id;
+            //List<Comment> comments = _db.Comments.Where(c => c. == group.Id).ToList();
 
-            List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
-
-            return View(comments);
+            return View();
         }
 
     }

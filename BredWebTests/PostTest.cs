@@ -13,9 +13,10 @@ namespace BredWebTests
         private static readonly UserManager<Person> userManager;
         private static readonly SignInManager<Person> signInManager;
         private static readonly ApplicationDbContext _db;
+        private static readonly RoleManager<IdentityRole> roleManager;
 
         private PostController controller = new PostController(
-            userManager, signInManager, _db);
+            userManager, signInManager, roleManager, _db);
 
         [TestMethod]
         public void TestEmptyIndex()

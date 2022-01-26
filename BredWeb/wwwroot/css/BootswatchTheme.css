@@ -67,6 +67,22 @@
     --bs-body-bg: #002b36;
 }
 
+
+
+
+
+
+a.post-div{
+    text-decoration: none;
+}
+
+p.card-text {
+    color: #839496;
+}
+
+
+
+
 *,
 *::before,
 *::after {

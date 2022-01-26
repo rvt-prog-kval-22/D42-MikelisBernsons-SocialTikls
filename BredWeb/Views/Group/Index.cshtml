@@ -11,22 +11,26 @@
 <div class="container">
     <div class="row">
         <div class="col-3 bg-dark card m-2">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <div class="m-3 card-header">
-                        <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
-                            <i class="bi bi-plus-square"></i> &nbsp Create New Group
-                        </a>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-6 text-end">
+            <h2 Class="text-primary mx-auto">Group Browser</h2>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="m-3 card-header">
+                    <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-square"></i> &nbsp Create New Group
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="col-6 text-end">
                 
-                    </div>
-                }
-                <h2 Class="text-primary mx-auto">Group Browser</h2>
-                <br />
+                </div>
+            }            
+            <br />
+            <form class="d-flex mb-3" method="post">
+                @Html.TextBox("substr", "", new {@Class="form-control"})
+                <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
         <div class="col-8 m-2">
             @foreach(Group group in Model)

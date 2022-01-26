@@ -17,5 +17,6 @@ namespace BredWeb.Models
         //public List<Rating>? RatingList { get; set; } = new();
         //public List<Post>? PostList { get; set; }
         public int Rating { get; set; } = 0;
+        public int PostId { get; set; }
     }
 }

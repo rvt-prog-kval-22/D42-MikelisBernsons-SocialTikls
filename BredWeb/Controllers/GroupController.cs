@@ -8,16 +8,19 @@ namespace BredWeb.Controllers
 {
     public class GroupController : Controller
     {
-        private readonly UserManager<Person> userManager;
-        private readonly SignInManager<Person> signInManager;
+        private readonly UserManager<Person> _userManager;
+        private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public GroupController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
+                                 RoleManager<IdentityRole> roleManager,
                                  ApplicationDbContext db)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._roleManager = roleManager;
             _db = db;
         }
 
@@ -48,7 +51,7 @@ namespace BredWeb.Controllers
         [Authorize]
         public async Task<IActionResult> Create(Group obj)
         {
-            var user = await userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
@@ -116,7 +119,7 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             var group = _db.Groups.Find(id);
-            var user = await userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User);
 
             if (group == null)
                 return NotFound();
@@ -157,7 +160,6 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        [Authorize]
         public IActionResult Search(string substr)
         {
             if(substr != null && substr != "")

@@ -1,0 +1,121 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
+@model IEnumerable<Comment>
+@{
+    ViewData["Title"] = @ViewBag.GroupTitle;
+}
+
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-3 bg-dark card m-2">
+
+            <h2 Class="text-primary mx-auto">@ViewBag.GroupTitle</h2>
+            <br />
+            <h6 class="text-end">-@ViewBag.Creator</h6>
+            <h6 class="text-end">(@ViewBag.UserCount)</h6>
+            <hr />
+            <div style="white-space: pre-line" class="mb-4">
+                @ViewBag.Description
+            </div>
+            
+        </div>
+
+        <div class="col-8 m-2">
+
+            <div class="card w-100 mx-auto">
+                <div class="card-header">                
+                    <h3 class="ps-1 text-primary">@ViewBag.PostTitle</h3>
+                </div>
+
+                <div class="card-body" style="white-space: pre-line">
+                    <p class="card-text">@ViewBag.PostBody</p>
+                </div>
+
+                <div class="card-subtitle text-end me-3">
+                @if (ViewBag.PostEdited)
+                    {
+                        <h6>-@ViewBag.PostAuthor @ViewBag.PostDate.ToString().Substring(0, 16) Edited</h6>
+                    }else{
+                        <h6>-@ViewBag.PostAuthor @ViewBag.PostDate.ToString().Substring(0, 16)</h6>                            
+                    }
+                </div>
+
+                <div class="w-100 card-footer container">
+                    <div class="row">
+                        <div class="col-2">
+
+                        </div>
+
+                        <div class="w-35 btn-group ms-auto col-1">
+                        <a asp-controller="Post" asp-action="Edit" asp-route-id="@ViewBag.PostId"
+                        class="btn btn-primary mx-2 btn-sm">Edit</a>
+                        <a asp-controller="Post" asp-action="Delete" asp-route-id="@ViewBag.PostId"
+                        class="btn btn-warning mx-2 btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+
+            <form method="post">
+                <div class="card w-100">
+
+                    <div class="card-header">
+                        <h4 class="ps-1 text-primary">Add a comment</h4>
+                    </div>
+
+                    <div class="card-body">
+                       @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
+                    </div>                            
+                    <input type="hidden" name="groupId" value=@ViewBag.GroupId />
+                    <input type="hidden" name="postId" value=@ViewBag.PostId />
+                    <button asp-controller="Comment" asp-action="Create" class="btn btn-sm btn-primary ms-auto mb-3 me-3" style="width:150px" type="submit">Comment</button>
+                </div>
+             </form>
+             
+            <br />
+
+            @if (Model != null && Model.Any())
+            {
+                @foreach(Comment comment in Model)
+                {
+                    <div class="card w-100 mx-auto">
+                        <div class="card-body" style="white-space: pre-line">
+                            <p class="card-text">@comment.Body</p>
+                        </div>
+
+                        <div class="card-subtitle text-end me-3">
+                        @if (comment.IsEdited)
+                            {
+                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16) Edited</h6>
+                            }else{
+                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16)</h6>                            
+                            }
+                        </div>
+
+                        <div class="w-100 card-footer container">
+                            <div class="row">
+                                <div class="col-2">
+
+                                </div>
+
+                                <div class="w-35 btn-group ms-auto col-1">
+                                <a asp-controller="Post" asp-action="Edit" asp-route-id="@comment.Id"
+                                class="btn btn-primary mx-2 btn-sm">Edit</a>
+                                <a asp-controller="Post" asp-action="Delete" asp-route-id="@comment.Id"
+                                class="btn btn-warning mx-2 btn-sm">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                }
+            }
+        </div>        
+    </div>
+</div>

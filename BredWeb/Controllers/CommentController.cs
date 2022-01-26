@@ -62,27 +62,6 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public IActionResult BrowseGroup(int id)
-        {
-            var group = _db.Groups.Find(id);
-
-            if (group == null)
-                return NotFound();
-
-            ViewBag.GroupId = group.Id;
-            ViewBag.GroupTitle = group.Title;
-            //ViewBag.Description = group.Description;
-            ViewBag.UserCount = group.UserCount;
-            ViewBag.Title = group.Title;
-            ViewBag.Creator = group.Creator;
-            ViewBag.Description = group.Description;
-
-            List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
-
-            return View(posts);
-        }
-
-        //GET
         [Authorize]
         public IActionResult Edit(int? id)
         {
@@ -116,63 +95,21 @@ namespace BredWeb.Controllers
             return View(obj);
         }
 
-        //GET
-        [Authorize]
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-                return NotFound();
-
-            Post? post = _db.Posts.Find(id);
-
-            if (post == null)
-                return NotFound();
-
-            return View(post);
-        }
-
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Delete(Post obj)
+        public IActionResult Delete(int groupId, int id, int postId)
         {
-            Post? post = _db.Posts.Find(obj.Id);
+            Comment? comment = _db.Comments.Find(id);
 
-            if (post == null)
+            if (comment == null)
                 return NotFound();            
 
-            _db.Posts.Remove(post);
+            _db.Comments.Remove(comment);
             _db.SaveChanges();
             TempData["success"] = "Success";
-            return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
-        }
-
-        //GET
-        public IActionResult OpenPost(int postId, int groupId)
-        {
-            Group? group = _db.Groups.Find(groupId);
-            Post? post = _db.Posts.Find(postId);
-
-            if (group == null || post == null)
-                return NotFound();
-
-            ViewBag.GroupId = group.Id;
-            ViewBag.GroupTitle = group.Title;
-            ViewBag.UserCount = group.UserCount;
-            ViewBag.Title = group.Title;
-            ViewBag.Creator = group.Creator;
-            ViewBag.Description = group.Description;
-
-            ViewBag.PostAuthor = post.AuthorName;
-            ViewBag.PostBody = post.Body;
-            ViewBag.PostDate = post.PostDate;
-            ViewBag.PostTitle = post.Title;
-            ViewBag.PostEdited = post.IsEdited;
-            ViewBag.PostId = post.Id;
-            //List<Comment> comments = _db.Comments.Where(c => c. == group.Id).ToList();
-
-            return View();
+            return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
         }
 
     }

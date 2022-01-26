@@ -98,19 +98,13 @@
                             }
                         </div>
 
-                        <div class="w-100 card-footer container">
-                            <div class="row">
-                                <div class="col-2">
-
-                                </div>
-
-                                <div class="w-35 btn-group ms-auto col-1">
-                                <a asp-controller="Post" asp-action="Edit" asp-route-id="@comment.Id"
-                                class="btn btn-primary mx-2 btn-sm">Edit</a>
-                                <a asp-controller="Post" asp-action="Delete" asp-route-id="@comment.Id"
-                                class="btn btn-warning mx-2 btn-sm">Delete</a>
-                                </div>
-                            </div>
+                        <div class="w-100 card-footer">
+                            <form method="post">                                    
+                                <input type="hidden" name="groupId" value=@ViewBag.GroupId />
+                                <input type="hidden" name="postId" value=@ViewBag.PostId />
+                                <input type="hidden" name="id" value=@comment.Id />
+                                <button asp-controller="Comment" asp-action="Delete" class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">Delete</button>
+                            </form>
                         </div>
                     </div>
                     <br />

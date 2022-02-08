@@ -21,7 +21,7 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - *
 4. parasti lietotāji kuri var taisīt postus iekš grupas - OK
 5. Iespēja vērtēt citus postus - *
-7. komentēt zem zem postiem - *
+7. komentēt zem postiem - OK
 8. Meklēt grupas pēc nosaukuma - OK
 9. Rediģēt grupas (aprakstu) - OK
 10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - *

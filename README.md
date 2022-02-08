@@ -80,6 +80,10 @@ MSSQL
 
 # Uzstādīšanas instrukcijas:
   
-Lejuplādēt (vēlams VC Community 2022) iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.  
-Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt un atvērt.  
-tālāk izpētīšu :o
+1. [Lejuplādēt Visual Studio Community 2022 (iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.](https://visualstudio.microsoft.com/downloads/)
+2. Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt.
+3. Projektu jāatver kā mākat, bet to arī var izdarīt atverot visual studio un klonējot repository ar linku.
+4. Iekš visual studio jāatver solution explorer un jāatrod Bred.sln fails un to jāuzspiež 2x reizes - https://prnt.sc/26jtdca
+5. Prasīs uzticēties sertifikātiem un jāspiež 2x reizes - piekrist/jā
+6. atvērt nuget package manager console - https://prnt.sc/26jtcgc
+7. Atvērtajā konsolē jāuzraksta - "update-database" un jāspiež enter un nedaudz jāpagaida - https://prnt.sc/26jtdv0

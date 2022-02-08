@@ -25,17 +25,11 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             IEnumerable<Group> objGroupList = _db.Groups;
             return View(objGroupList);
-        }
-
-        //GET
-        [Authorize]
-        private IActionResult Index(List<Group> groups)
-        {
-            return View(groups);
         }
 
         //GET

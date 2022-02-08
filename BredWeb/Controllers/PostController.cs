@@ -76,7 +76,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public IActionResult BrowseGroup(int id)
+        public async Task<IActionResult> BrowseGroup(int id)
         {
             var group = _db.Groups.Find(id);
 
@@ -90,6 +90,7 @@ namespace BredWeb.Controllers
             ViewBag.Title = group.Title;
             ViewBag.Creator = group.Creator;
             ViewBag.Description = group.Description;
+            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
 
             List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
 

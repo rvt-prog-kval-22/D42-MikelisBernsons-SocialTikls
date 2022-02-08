@@ -165,13 +165,15 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public IActionResult OpenPost(int postId, int groupId)
+        public async Task<IActionResult> OpenPost(int postId, int groupId)
         {
             Group? group = _db.Groups.Find(groupId);
             Post? post = _db.Posts.Find(postId);
 
             if (group == null || post == null)
                 return NotFound();
+
+            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
 
             ViewBag.GroupId = group.Id;
             ViewBag.GroupTitle = group.Title;

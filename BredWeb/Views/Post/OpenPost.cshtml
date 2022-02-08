@@ -98,14 +98,20 @@
                             }
                         </div>
 
-                        <div class="w-100 card-footer">
-                            <form method="post">                                    
-                                <input type="hidden" name="groupId" value=@ViewBag.GroupId />
-                                <input type="hidden" name="postId" value=@ViewBag.PostId />
-                                <input type="hidden" name="id" value=@comment.Id />
-                                <button asp-controller="Comment" asp-action="Delete" class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">Delete</button>
-                            </form>
-                        </div>
+                        @if(ViewBag.nick == comment.AuthorName)
+                            {
+                                <div class="w-100 card-footer">
+                                <form method="post">                                    
+                                    <input type="hidden" name="groupId" value=@ViewBag.GroupId />
+                                    <input type="hidden" name="postId" value=@ViewBag.PostId />
+                                    <input type="hidden" name="id" value=@comment.Id />
+                                    <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id"
+                                        class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
+                                        Delete
+                                    </a>                                
+                                </form>
+                            </div>
+                            }                        
                     </div>
                     <br />
                 }

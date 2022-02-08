@@ -119,6 +119,7 @@ namespace BredWeb.Controllers
         {
             Post? post = _db.Posts.Find(obj.Id);
             post.Body = obj.Body;
+            post.IsEdited = true;
 
             if (ModelState.IsValid)
             {

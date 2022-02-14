@@ -98,7 +98,7 @@
                             }
                         </div>
 
-                        @if(ViewBag.nick == comment.AuthorName)
+                        @if(ViewBag.nick == comment.AuthorName || User.IsInRole("Admin"))
                             {
                                 <div class="w-100 card-footer">
                                 <form method="post">                                    

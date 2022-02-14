@@ -50,7 +50,7 @@
                             class="btn btn-primary mx-2 btn-sm">Join</a>                            
                             <a asp-controller="Group" asp-action="Open" asp-route-id="@group.Id"
                             class="btn btn-primary mx-2 btn-sm">Open</a>
-                            @if(ViewBag.nick == group.Creator)
+                            @if(ViewBag.nick == group.Creator || User.IsInRole("Admin"))
                             {
                                 <a asp-controller="Group" asp-action="Delete" asp-route-id="@group.Id"
                                 class="btn btn-warning mx-2 btn-sm">  Delete</a>

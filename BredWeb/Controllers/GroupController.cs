@@ -27,7 +27,11 @@ namespace BredWeb.Controllers
         //GET
         public async Task<IActionResult> Index()
         {
-            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            ViewBag.nick = "";
+            if (_signInManager.IsSignedIn(User))
+            {
+                ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            }
             IEnumerable<Group> objGroupList = _db.Groups;
             return View(objGroupList);
         }

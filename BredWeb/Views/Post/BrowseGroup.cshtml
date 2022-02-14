@@ -78,7 +78,7 @@
 
                             </div>
 
-                            @if(ViewBag.nick == post.AuthorName)
+                            @if(ViewBag.nick == post.AuthorName || User.IsInRole("Admin"))
                             {
                                 <div class="w-35 btn-group ms-auto col-1">
                                 <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id"

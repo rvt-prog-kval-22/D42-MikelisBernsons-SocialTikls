@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Person> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,10 +26,15 @@
                 <li class="nav-item">
                   <a class="nav-link" asp-area="" asp-controller="Group" asp-action="Index">Groups</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="ListRoles">Admin</a>
-                </li>  
-                @*<li class="nav-item dropdown">
+
+                @if(User.IsInRole("Admin") && SignInManager.IsSignedIn(User))
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="ListRoles">Admin</a>
+                    </li>
+                    }
+
+              @*<li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Action</a>

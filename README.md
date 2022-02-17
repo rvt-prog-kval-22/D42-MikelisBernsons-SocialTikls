@@ -21,7 +21,7 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - *
 4. parasti lietotāji kuri var taisīt postus iekš grupas - OK
 5. Iespēja vērtēt citus postus - *
-7. komentēt zem zem postiem - *
+7. komentēt zem postiem - OK
 8. Meklēt grupas pēc nosaukuma - OK
 9. Rediģēt grupas (aprakstu) - OK
 10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - *
@@ -29,28 +29,29 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 ### Taisīt post:
 
 1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
-2. postiem citi reģistrēti lietotāji var komentēt - *
+2. postiem citi reģistrēti lietotāji var komentēt - OK
 3. Vērtēt ar patīk/nepatīk - *
 4. Pieejams saraksts ar populārākajām grupām un postiem. varbūt varētu pievienot arī citus kārtošanas kritērijus. - *
 
 ## Globāls mājaslapas Administrators:
 
-1. var izdzēst postus un grupas ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
-2. var banot lietotājus (varbūt)
+1. var izdzēst postus un grupas - OK
+2. var banot lietotājus (varbūt)?
 3. var rediģēt grupas ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
 4. var mainīt, pievienot, noņemt grupas moderatorus
+5. var pievienot un noņemt citus administratorus - OK
 
 ## grupas moderators 
 
 1. var banot lietotājus tajā grupā (varbūt) 
-2. var izdzēst postus tajā grupā ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
+2. var izdzēst postus tajā grupā
 3. var izdzēst komentārus tajā grupā
 4. var piešķirt administratora tiesības citiem lietotājiem grupā kā arī tās atņemt
 
 ## Lietotājs:
 
 1. var taisīt grupas un postus - OK
-2. var rediģēt savus postus ( pašlaik var rediģēt jebkuru postu ) - *
+2. var rediģēt savus postus - OK
 3. var taisīt jaunu grupu - OK
 4. Var čatot ar citiem lietotājiem privāti (nezinu vai tiks pievienots bet atstāju kā ideju) - *
 

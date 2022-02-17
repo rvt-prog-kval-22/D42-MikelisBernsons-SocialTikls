@@ -1,4 +1,5 @@
-﻿using BredWeb.Models;
+﻿using BredWeb.Data;
+using BredWeb.Models;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using FluentEmail.Smtp;
@@ -18,14 +19,17 @@ namespace BredWeb.Controllers
         private readonly UserManager<Person> userManager;
         private readonly SignInManager<Person> signInManager;
         private readonly IConfiguration configuration;
+        private readonly ApplicationDbContext db;
 
         public AccountController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
-                                 IConfiguration configuration)
+                                 IConfiguration configuration,
+                                 ApplicationDbContext db)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this.db = db;
         }
 
         [Authorize]
@@ -54,31 +58,36 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (userManager.FindByEmailAsync(obj.Email) == null)
+
+                var users = db.Users;
+                if(users.FirstOrDefault(u => u.Email.Equals(obj.Email)) == null)
                 {
                     var user = new Person
                     {
                         UserName = obj.Email,
                         Email = obj.Email,
                         NickName = obj.NickName, //add existing name validation later
-                        BirthDay = obj.BirthDay
+                        BirthDay = obj.BirthDay,
+                        DateCreated = DateTime.Now
                     };
 
-                    var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
+                    //var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
                     var result = await userManager.CreateAsync(user, obj.Password);
 
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
-                        (await userManager.GetUserAsync(User)).EmailConfirmed = true;
-                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
                     }
 
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    return RedirectToAction("Index", "Home");
+
                 }
                 else
                 {

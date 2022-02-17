@@ -20,7 +20,7 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 2. grupai var pievienoties/apskatīt jebkurš cilvēks (tās ir publiskas) - OK
 3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - *
 4. parasti lietotāji kuri var taisīt postus iekš grupas - OK
-5. Iespēja vērtēt citus postus - *
+5. Iespēja vērtēt citus postus - OK
 7. komentēt zem postiem - OK
 8. Meklēt grupas pēc nosaukuma - OK
 9. Rediģēt grupas (aprakstu) - OK
@@ -30,18 +30,18 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 
 1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
 2. postiem citi reģistrēti lietotāji var komentēt - OK
-3. Vērtēt ar patīk/nepatīk - *
+3. Vērtēt ar patīk/nepatīk - OK
 4. Pieejams saraksts ar populārākajām grupām un postiem. varbūt varētu pievienot arī citus kārtošanas kritērijus. - *
 
-## Globāls mājaslapas Administrators:
+## Globāls mājaslapas Administrators: - +/- OK
 
 1. var izdzēst postus un grupas - OK
 2. var banot lietotājus (varbūt)?
-3. var rediģēt grupas ( pašlaik to var izdarīt jebkurš reģistrēts lietotājs )
+3. var rediģēt grupas - OK
 4. var mainīt, pievienot, noņemt grupas moderatorus
 5. var pievienot un noņemt citus administratorus - OK
 
-## grupas moderators 
+## grupas moderators - *
 
 1. var banot lietotājus tajā grupā (varbūt) 
 2. var izdzēst postus tajā grupā

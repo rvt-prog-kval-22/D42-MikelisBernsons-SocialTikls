@@ -1,6 +1,14 @@
 ﻿using BredWeb.Models;
+using FluentEmail.Core;
+using FluentEmail.Razor;
+using FluentEmail.Smtp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
 
 namespace BredWeb.Controllers
 {
@@ -9,14 +17,18 @@ namespace BredWeb.Controllers
 
         private readonly UserManager<Person> userManager;
         private readonly SignInManager<Person> signInManager;
+        private readonly IConfiguration configuration;
 
         public AccountController(UserManager<Person> userManager,
-                                 SignInManager<Person> signInManager)
+                                 SignInManager<Person> signInManager,
+                                 IConfiguration configuration)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.configuration = configuration;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -42,24 +54,34 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Person
+                if (userManager.FindByEmailAsync(obj.Email) == null)
                 {
-                    UserName = obj.Email,
-                    Email = obj.Email,
-                    NickName = obj.NickName, //add existing name validation later
-                    BirthDay = obj.BirthDay
-                };
-                var result = await userManager.CreateAsync(user, obj.Password);
+                    var user = new Person
+                    {
+                        UserName = obj.Email,
+                        Email = obj.Email,
+                        NickName = obj.NickName, //add existing name validation later
+                        BirthDay = obj.BirthDay
+                    };
 
-                if (result.Succeeded)
-                {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var result = await userManager.CreateAsync(user, obj.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await signInManager.SignInAsync(user, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
-
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError("", error.Description);
+                    ModelState.AddModelError("", "Email is already in use");
                 }
             }
             return View(obj);
@@ -87,6 +109,70 @@ namespace BredWeb.Controllers
             }
 
             return View(obj);
+        }
+
+        public async Task<IActionResult> ConfirmAccount(string receiver)
+        {
+            await SendEmail(receiver, "Test body.");
+            return RedirectToAction("Index", "Account");
+        }
+
+        private async Task<IActionResult> SendEmail(string receiver, string body)
+        {
+            string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            var fromEmail = configuration.GetValue<string>($"EmailStrings:{env}:From");
+            string client = configuration.GetValue<string>($"EmailStrings:{env}:Client");
+            int port = configuration.GetValue<int>($"EmailStrings:{env}:Port");
+            string senderEmail = configuration.GetValue<string>($"EmailStrings:{env}:SenderEmail");
+            string senderPassword = configuration.GetValue<string>($"EmailStrings:{env}:SenderPassword");
+
+            var sender = new SmtpSender();
+
+            if (env == "Production")
+            {
+                sender = new SmtpSender(() => new SmtpClient(client)
+                {
+                    UseDefaultCredentials = false,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Port = port,
+                    Credentials = new NetworkCredential(senderEmail, senderPassword)
+                });
+            }
+            else
+            {
+                sender = new SmtpSender(() => new SmtpClient(client)
+                {
+                    UseDefaultCredentials = false,
+                    EnableSsl = false,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Port = port
+                });
+            }
+
+            Email.DefaultSender = sender;
+            Email.DefaultRenderer = new RazorRenderer();
+
+            StringBuilder template = new();
+            template.AppendLine("Hi @Model.Name,");
+            template.AppendLine($"<p>{body}</p>");
+            template.AppendLine("- Breddit");
+
+            var email = Email
+                .From(fromEmail)
+                .To(receiver)
+                .Subject("Email from breddit :o")
+                .UsingTemplate(template.ToString(), new { Name = (await userManager.GetUserAsync(User)).NickName });
+
+            var result = await email.SendAsync();
+
+            foreach (var error in result.ErrorMessages)
+            {
+                Console.WriteLine(error);
+            }
+
+            return new EmptyResult();
         }
     }
 }

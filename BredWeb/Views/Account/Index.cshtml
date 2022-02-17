@@ -1,34 +1,40 @@
-﻿@model Person
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<Person> UserManager
+@model Person
 
 @{
     ViewData["Title"] = "Account";
+    string email = (await UserManager.GetUserAsync(User)).Email;
 }
 
 <div class="container p-3 mt-4  bg-dark">
     <div class="row pb-2">
         <h2 class="text-primary">Account Info</h2>
-            <hr />
+        <hr />
     </div>
 
     <div class="form-group w-100" style="padding:0px">
 
         <div>
-            <img src="images/tabby-cat.jpg" alt="" class="w-15 h-15"/>
+            <img src="images/tabby-cat.jpg" alt="" class="w-15 h-15" />
         </div>
 
-      <fieldset disabled="">
-        <div class="mb-3">
-            <label asp-for="NickName" class="text-success"></label>
-            <input asp-for="NickName" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label asp-for="Email" class="text-success"></label>
-            <input asp-for="Email" class="form-control" />
-        </div>
-        <div class="mb-3">
-            <label for="disabledInput" class="text-success">Birthday</label>
-            <input class="form-control" id="disabledInput" type="text"  disabled="" value="@Model.BirthDay.ToString().Substring(0, 10)">
-        </div>
-      </fieldset>
+        <fieldset disabled="">
+            <div class="mb-3">
+                <label asp-for="NickName" class="text-success"></label>
+                <input asp-for="NickName" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="text-success"></label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="disabledInput" class="text-success">Birthday</label>
+                <input class="form-control" id="disabledInput" type="text" disabled="" value="@Model.BirthDay.ToString().Substring(0, 10)">
+            </div>
+        </fieldset>
+
+        <a asp-action="ConfirmAccount" asp-route-receiver="@email"
+           class="btn btn-primary">email</a>
     </div>
 </div>

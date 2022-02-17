@@ -2,11 +2,19 @@ using BredWeb.Data;
 using BredWeb.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services
+    .AddFluentEmail("test@test.test")
+    .AddSmtpSender("localhost", 25);
+
+//builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailStrings"));
 
 builder.Services.AddIdentity<Person, IdentityRole>(options =>
 {
@@ -14,6 +22,7 @@ builder.Services.AddIdentity<Person, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireDigit = false;
     options.Password.RequireUppercase = false;
+    options.User.RequireUniqueEmail = true;
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

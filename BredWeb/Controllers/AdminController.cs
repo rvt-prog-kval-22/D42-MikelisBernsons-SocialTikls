@@ -106,7 +106,12 @@ namespace BredWeb.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role [{role.Id}] was not found";
+                ViewBag.ErrorMessage = $"Role [{model.Id}] was not found";
+                return View("Error");
+            }
+            else if (role.Name == "Admin")
+            {
+                ViewBag.ErrorMessage = $"Why would you try to change the admin role name?\nAre you trying to break the site? Are you crazy!? :[";
                 return View("Error");
             }
             else

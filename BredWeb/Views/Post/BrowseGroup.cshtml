@@ -49,48 +49,9 @@
         </div>
 
         <div class="col-8 m-2">
-
             @foreach(Post post in Model)
             {
-                <div class="card w-100 mx-auto">
-                    <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@ViewBag.GroupId">
-                        <div class="card-header">                
-                            <h3 class="ps-1 text-primary">@post.Title</h3>
-                        </div>
-
-                        <div class="card-body" style="white-space: pre-line">
-                            <p class="card-text">@post.Body</p>
-                        </div>
-                    </a>
-
-                    <div class="card-subtitle text-end me-3">
-                    @if (post.IsEdited)
-                        {
-                            <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16) Edited</h6>
-                        }else{
-                            <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16)</h6>                            
-                        }
-                    </div>
-
-                    <div class="w-100 card-footer container">
-                        <div class="row">
-                            <div class="col-2">
-
-                            </div>
-
-                            @if(ViewBag.nick == post.AuthorName || User.IsInRole("Admin"))
-                            {
-                                <div class="w-35 btn-group ms-auto col-1">
-                                <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id"
-                                class="btn btn-primary mx-2 btn-sm">Edit</a>
-                                <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id"
-                                class="btn btn-warning mx-2 btn-sm">Delete</a>
-                                </div>
-                            }                            
-                        </div>
-                    </div>
-                </div>
-                <br />
+                await Html.RenderPartialAsync("_PostPartial", post);
             }
         </div>        
     </div>

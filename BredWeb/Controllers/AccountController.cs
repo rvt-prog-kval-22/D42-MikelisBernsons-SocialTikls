@@ -71,6 +71,7 @@ namespace BredWeb.Controllers
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
+                        (await userManager.GetUserAsync(User)).EmailConfirmed = true;
                         return RedirectToAction("Index", "Home");
                     }
 

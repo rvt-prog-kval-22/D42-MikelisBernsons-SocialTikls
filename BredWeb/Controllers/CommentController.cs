@@ -61,40 +61,6 @@ namespace BredWeb.Controllers
             return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId});
         }
 
-        //GET
-        [Authorize]
-        public IActionResult Edit(int? id)
-        {
-            if (id is null or 0)
-                return NotFound();
-
-            var post = _db.Posts.Find(id);
-
-            if (post == null)
-                return NotFound();
-
-            return View(post);
-        }
-
-        //POST
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Post obj)
-        {
-            Post? post = _db.Posts.Find(obj.Id);
-            post.Body = obj.Body;
-
-            if (ModelState.IsValid)
-            {
-                _db.Posts.Update(post);
-                _db.SaveChanges();
-                TempData["success"] = "Success";
-                return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
-            }
-            return View(obj);
-        }
-
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]

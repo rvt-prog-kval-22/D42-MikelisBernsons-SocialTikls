@@ -90,7 +90,10 @@ namespace BredWeb.Controllers
             ViewBag.Title = group.Title;
             ViewBag.Creator = group.Creator;
             ViewBag.Description = group.Description;
-            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            if (_signInManager.IsSignedIn(User))
+                ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            else
+                ViewBag.nick = "";
 
             List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
 
@@ -173,7 +176,12 @@ namespace BredWeb.Controllers
             if (group == null || post == null)
                 return NotFound();
 
-            ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            if (_signInManager.IsSignedIn(User))
+                ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            else
+                ViewBag.nick = "";
+
+            ViewBag.Post = post;
 
             ViewBag.GroupId = group.Id;
             ViewBag.GroupTitle = group.Title;
@@ -188,10 +196,100 @@ namespace BredWeb.Controllers
             ViewBag.PostTitle = post.Title;
             ViewBag.PostEdited = post.IsEdited;
             ViewBag.PostId = post.Id;
+            ViewBag.PostRating = post.TotalRating;
 
             List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
 
             return View(comments);
+        }
+
+        public async Task<IActionResult> Upvote(int postId)
+        {
+            var post = _db.Posts.Find(postId);
+            var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+
+            var rating = _db.Ratings.FirstOrDefault( r =>
+                r.RatedItemId.Equals(postId) &&
+                r.UserId.Equals(userId)
+                );
+
+            if(rating != null)
+            {
+                if (rating.Value == Rating.Status.Upvoted)
+                {
+                    rating.Value = Rating.Status.Nothing;
+                    post.TotalRating--;
+                }
+                else if(rating.Value == Rating.Status.Nothing)
+                {
+                    rating.Value = Rating.Status.Upvoted;
+                    post.TotalRating++;
+                }
+                else
+                {
+                    rating.Value = Rating.Status.Upvoted;
+                    post.TotalRating += 2;
+                }
+
+            }
+            else
+            {
+                post.RatingList.Add(new Rating { 
+                    UserId = (await _userManager.GetUserAsync(User)).Id.ToString(),
+                    RatedItemId = postId,
+                    Value = Rating.Status.Upvoted
+                });
+                post.TotalRating++;
+            }
+
+            _db.Posts.Update(post);
+            _db.SaveChanges();
+            return RedirectToAction("BrowseGroup", new { id = post.GroupId });
+        }
+
+        public async Task<IActionResult> Downvote(int postId)
+        {
+            var post = _db.Posts.Find(postId);
+            var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+
+            var rating = _db.Ratings.FirstOrDefault(r =>
+               r.RatedItemId.Equals(postId) &&
+               r.UserId.Equals(userId)
+                );
+
+            if (rating != null)
+            {
+                if (rating.Value == Rating.Status.Upvoted)
+                {
+                    rating.Value = Rating.Status.Downvoted;
+                    post.TotalRating -= 2;
+                }
+                else if(rating.Value == Rating.Status.Downvoted)
+                {
+                    rating.Value = Rating.Status.Nothing;
+                    post.TotalRating++;
+                }
+                else
+                {
+                    rating.Value = Rating.Status.Downvoted;
+                    post.TotalRating--;
+                }
+
+            }
+            else
+            {
+                post.RatingList.Add(new Rating
+                {
+                    UserId = (await _userManager.GetUserAsync(User)).Id.ToString(),
+                    RatedItemId = postId,
+                    Value = Rating.Status.Downvoted
+                });
+                post.TotalRating--;
+            }
+
+            _db.Posts.Update(post);
+            _db.SaveChanges();
+            return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 
     }

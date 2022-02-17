@@ -159,8 +159,9 @@ namespace BredWeb.Controllers
             Post? post = _db.Posts.Find(obj.Id);
 
             if (post == null)
-                return NotFound();            
+                return NotFound();
 
+            _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
             _db.Posts.Remove(post);
             _db.SaveChanges();
             TempData["success"] = "Success";
@@ -189,14 +190,6 @@ namespace BredWeb.Controllers
             ViewBag.Title = group.Title;
             ViewBag.Creator = group.Creator;
             ViewBag.Description = group.Description;
-
-            ViewBag.PostAuthor = post.AuthorName;
-            ViewBag.PostBody = post.Body;
-            ViewBag.PostDate = post.PostDate;
-            ViewBag.PostTitle = post.Title;
-            ViewBag.PostEdited = post.IsEdited;
-            ViewBag.PostId = post.Id;
-            ViewBag.PostRating = post.TotalRating;
 
             List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
 

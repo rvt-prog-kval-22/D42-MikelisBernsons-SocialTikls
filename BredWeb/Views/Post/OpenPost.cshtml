@@ -5,13 +5,11 @@
 @model IEnumerable<Comment>
 @{
     ViewData["Title"] = @ViewBag.GroupTitle;
+    Post post = (Post)ViewBag.Post;
 }
 
 <div class="container">
     <div class="row">
-
-        
-
         <div class="col-3 bg-dark card m-2">
 
             <h2 Class="text-primary mx-auto">@ViewBag.GroupTitle</h2>
@@ -28,7 +26,7 @@
         <div class="col-8 m-2">
 
             @{
-                await Html.RenderPartialAsync("_PostPartial", (Post)ViewBag.Post);
+                await Html.RenderPartialAsync("_PostPartial", post);
             }
 
             <form method="post">
@@ -42,7 +40,7 @@
                        @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
                     </div>                            
                     <input type="hidden" name="groupId" value=@ViewBag.GroupId />
-                    <input type="hidden" name="postId" value=@ViewBag.PostId />
+                    <input type="hidden" name="postId" value=@post.Id />
                     <button asp-controller="Comment" asp-action="Create" class="btn btn-sm btn-primary ms-auto mb-3 me-3" style="width:150px" type="submit">Comment</button>
                 </div>
              </form>
@@ -72,7 +70,7 @@
                                 <div class="w-100 card-footer">
                                 <form method="post">                                    
                                     <input type="hidden" name="groupId" value=@ViewBag.GroupId />
-                                    <input type="hidden" name="postId" value=@ViewBag.PostId />
+                                    <input type="hidden" name="postId" value=@post.Id />
                                     <input type="hidden" name="id" value=@comment.Id />
                                     <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id"
                                         class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">

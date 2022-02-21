@@ -85,6 +85,9 @@ MSSQL
 2. Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt.
 3. Projektu jāatver kā mākat, bet to arī var izdarīt atverot visual studio un klonējot repository ar linku.
 4. Iekš visual studio jāatver solution explorer un jāatrod Bred.sln fails un to jāuzspiež 2x reizes - https://prnt.sc/26jtdca
-5. Prasīs uzticēties sertifikātiem un jāspiež 2x reizes - piekrist/jā
+5. Solution explorer jāatrod appsettings.json fails kurā jāievada jūsu administratora vēlamās login detaļas - ![image](https://user-images.githubusercontent.com/87810247/154995852-5ba755e5-5583-4ee7-908c-708af124c46c.png)
 6. atvērt nuget package manager console - https://prnt.sc/26jtcgc
 7. Atvērtajā konsolē jāuzraksta - "update-database" un jāspiež enter un nedaudz jāpagaida - https://prnt.sc/26jtdv0
+8. Jāstartē aplikācija - ja izvēlesieties IIS EXPRESS tad jāseko līdzi 9. punktam. ![image](https://user-images.githubusercontent.com/87810247/154996149-8bda529c-b81c-4411-8de5-888ffd72e0f8.png)
+9. Prasīs uzticēties sertifikātiem un jāspiež 2x reizes - piekrist/jā
+10. Atveroties mājaslapai pie linka jāpieraksta klāt -> "/admin/setup" kas izveidos jūsu specificēto admina profilu.

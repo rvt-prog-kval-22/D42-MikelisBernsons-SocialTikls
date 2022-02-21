@@ -3,6 +3,7 @@ using BredWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BredWeb.Controllers
 {
@@ -83,13 +84,10 @@ namespace BredWeb.Controllers
             if (group == null)
                 return NotFound();
 
-            ViewBag.GroupId = group.Id;
-            ViewBag.GroupTitle = group.Title;
-            //ViewBag.Description = group.Description;
-            ViewBag.UserCount = group.UserCount;
-            ViewBag.Title = group.Title;
-            ViewBag.Creator = group.Creator;
-            ViewBag.Description = group.Description;
+            _db.Entry(group).Collection(g => g.AdminList).Load();
+
+            ViewBag.Group = group;
+
             if (_signInManager.IsSignedIn(User))
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             else
@@ -190,7 +188,7 @@ namespace BredWeb.Controllers
             ViewBag.Title = group.Title;
             ViewBag.Creator = group.Creator;
             ViewBag.Description = group.Description;
-
+            //TODO: Remake to an object... since you can do that... :[
             List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
 
             return View(comments);

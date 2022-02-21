@@ -4,7 +4,11 @@
 @inject UserManager<Person> UserManager
 @model IEnumerable<Post>?
 @{
-    ViewData["Title"] = @ViewBag.GroupTitle;
+    ViewData["Title"] = ViewBag.GroupTitle;
+    Group group = ViewBag.Group;
+    string userId = "";
+    if(SignInManager.IsSignedIn(User))
+        userId = (await UserManager.GetUserAsync(User)).Id;
 }
 
 
@@ -17,8 +21,8 @@
             {
                 <div class="m-3 card-header">
                     <form method="get">
-                        <input type="hidden" name="id" value=@ViewBag.GroupId />
-                        <input type="hidden" name="groupTitle" value=@ViewBag.GroupTitle />
+                        <input type="hidden" name="id" value=@group.Id />
+                        <input type="hidden" name="groupTitle" value=@group.Title/>
                         <button asp-controller="Post" asp-action="Create" class="btn btn-primary w-100" type="submit">
                             <i class="bi bi-plus-square"></i> &nbsp Create new post
                         </button>
@@ -26,16 +30,15 @@
                 </div>
             }
 
-            <h2 Class="text-primary mx-auto">@ViewBag.GroupTitle</h2>
+            <h2 Class="text-primary mx-auto">@group.Title</h2>
             <br />
-            <h6 class="text-end">-@ViewBag.Creator</h6>
-            <h6 class="text-end">(@ViewBag.UserCount)</h6>
-            @if (SignInManager.IsSignedIn(User))
+            <h6 class="text-end">-@group.Creator</h6>
+            <h6 class="text-end">(@group.UserCount)</h6>
+            @if (SignInManager.IsSignedIn(User) && group.AdminList.Any(x => x.AdminId == userId))
             {
                 <div class="m-3 w-35 ms-auto">
                     <form method="get">
-                        <input type="hidden" name="id" value=@ViewBag.GroupId />
-                        <button asp-controller="Group" asp-action="Edit" class="btn btn-sm btn-secondary w-100" type="submit">
+                        <button asp-controller="Group" asp-action="Edit" asp-route-id="@group.Id" class="btn btn-sm btn-secondary w-100" type="submit">
                             &nbsp Edit group
                         </button>
                     </form>
@@ -43,7 +46,7 @@
             }
             <hr />
             <div style="white-space: pre-line" class="mb-4">
-                @ViewBag.Description
+                @group.Description
             </div>
             
         </div>

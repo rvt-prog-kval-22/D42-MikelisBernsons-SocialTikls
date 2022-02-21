@@ -1,5 +1,10 @@
-﻿using BredWeb.Models;
+﻿using BredWeb.Data;
+using BredWeb.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Collections;
 using System.Diagnostics;
 
 namespace BredWeb.Controllers
@@ -8,12 +13,26 @@ namespace BredWeb.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<Person> _userManager;
+        private readonly SignInManager<Person> _signInManager;
+        private readonly ApplicationDbContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public HomeController(ILogger<HomeController> logger,
+                              UserManager<Person> userManager,
+                              SignInManager<Person> signInManager,
+                              RoleManager<IdentityRole> roleManager,
+                              ApplicationDbContext db)
         {
             _logger = logger;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._roleManager = roleManager;
+            _db = db;
         }
 
-        public IActionResult Index()
+        //GET
+        public async Task<IActionResult> Index()
         {
             return View();
         }

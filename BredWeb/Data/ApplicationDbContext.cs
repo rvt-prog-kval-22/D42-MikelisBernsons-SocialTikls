@@ -19,16 +19,6 @@ namespace BredWeb.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //builder.Entity<UserIdList>()
-            //    .HasKey(uid => new { uid.GroupId, uid.PersonId });
-            //builder.Entity<UserIdList>()
-            //    .HasOne(uid => uid.Group)
-            //    .WithMany(g => g.UserIdList)
-            //    .HasForeignKey(uid => uid.GroupId);
-            //builder.Entity<UserIdList>()
-            //    .HasOne(uid => uid.Person)
-            //    .WithMany(p => p.GroupIdList)
-            //    .HasForeignKey(uid => uid.PersonId);
         }
     }
 }

@@ -14,7 +14,6 @@ namespace BredWeb.Models
         [Required]
         public DateTime BirthDay { get; set; }
         public DateTime DateCreated { get; set; }
-        public List<Group> GroupUserList { get; set; }
-        //public List<Rating> RatingList { get; set; }
+        public virtual List<Group> GroupUserList { get; set; }
     }
 }

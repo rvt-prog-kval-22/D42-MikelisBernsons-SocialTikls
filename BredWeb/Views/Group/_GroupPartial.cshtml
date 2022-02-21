@@ -1,4 +1,12 @@
-﻿@model BredWeb.Models.Group
+﻿@using Microsoft.AspNetCore.Identity
+@model BredWeb.Models.Group
+@inject UserManager<Person> UserManager
+@inject SignInManager<Person> SignInManager
+@{
+    string userId = "";
+    if(SignInManager.IsSignedIn(User))
+        userId = (await UserManager.GetUserAsync(User)).Id;
+}
 
 <div class="card w-100 mx-auto">
     <div class="card-header">                
@@ -11,11 +19,13 @@
         <h6 class="card-subtitle text-success text-muted text-end">-@Model.Creator &nbsp (@Model.UserCount)</h6>
     </div>         
     <div class="w-100 btn-group card-footer" role="group">
+
         <a asp-controller="Group" asp-action="Join" asp-route-id="@Model.Id"
         class="btn btn-primary mx-2 btn-sm">Join</a>                            
         <a asp-controller="Group" asp-action="Open" asp-route-id="@Model.Id"
         class="btn btn-primary mx-2 btn-sm">Open</a>
-        @if(ViewBag.nick == Model.Creator || User.IsInRole("Admin"))
+
+        @if(User.IsInRole("Admin") || Model.AdminList.Any(x => x.AdminId == userId))
         {
             <a asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Id"
             class="btn btn-warning mx-2 btn-sm">  Delete</a>

@@ -33,6 +33,10 @@ namespace BredWeb.Controllers
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             }
             IEnumerable<Group> objGroupList = _db.Groups;
+            foreach (var group in objGroupList)
+            {
+                _db.Entry(group).Collection(g => g.AdminList).Load();
+            }
             return View(objGroupList);
         }
 
@@ -61,14 +65,13 @@ namespace BredWeb.Controllers
                 {
                     obj.StartDate = DateTime.Now;
                     obj.Creator = user.NickName;
-                    //obj.UserIdList.Add(new UserIdList { GroupId = obj.Id, PersonId = user.Id});
-                    //obj.AdminIdList.Add(Int32.Parse(user.Id));
                     obj.UserList.Add(user);
+                    obj.AdminList.Add(new Admin { AdminId = user.Id, Email = user.Email, UserName = user.NickName });
                     obj.UserCount++;
                     _db.Groups.Add(obj);
                     _db.SaveChanges();
                     TempData["success"] = "Group created successfully";
-                    return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+                    return RedirectToAction("Index");
                 }
             }
             return View(obj);
@@ -105,7 +108,7 @@ namespace BredWeb.Controllers
             _db.Groups.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "Group deleted successfully";
-            return RedirectToAction("Index"); //goes to this controllers "index", to go to a different controller use ("action", "controllerName")
+            return RedirectToAction("Index");
 
         }
 
@@ -177,31 +180,81 @@ namespace BredWeb.Controllers
             if (id is null or 0)
                 return NotFound();
             var group = _db.Groups.Find(id);
-            //var categoryFromDbFirst = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
 
             if(group == null)
                 return NotFound();
-
+            _db.Entry(group).Collection(g => g.AdminList).Load();
             return View(group);
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Group obj)
+        public IActionResult EditDescription(string Title, string Description, int Id)
         {
-            Group group = _db.Groups.Find(obj.Id);
-            group.Description = obj.Description;
+            Group group = _db.Groups.Find(Id);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && group != null)
             {
+                group.Description = Description;
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Success";
-                return RedirectToAction("BrowseGroup", "Post", new { id = obj.Id });
+                return RedirectToAction("BrowseGroup", "Post", new { id = Id });
             }
-            return View(obj);
+
+            return RedirectToAction("Index", "Group");
         }
+
+        //POST
+        [HttpPost]
+        [ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveAdmins(Group obj)
+        {
+            Group dbGroup = _db.Groups.Find(obj.Id);
+            _db.Entry(dbGroup).Collection(g => g.AdminList).Load();
+
+            if (dbGroup != null)
+            {
+                foreach (var admin in obj.AdminList)
+                {
+                    if (admin.IsSelected)
+                    {
+                        dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                    }
+                }              
+
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+            }
+
+            return RedirectToAction("Edit", new { id = obj.Id });
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddAdmin(string email, int Id)
+        {
+            Group? group = _db.Groups.Find(Id);
+
+            if (ModelState.IsValid && group != null)
+            {
+
+                Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
+
+                if (newAdmin != null)
+                {
+                    group.AdminList.Add(new Admin { AdminId = newAdmin.Id, Email = newAdmin.Email, UserName = newAdmin.NickName });
+                    _db.Groups.Update(group);
+                    _db.SaveChanges();
+                    TempData["success"] = "Success";
+                }
+            }
+
+            return RedirectToAction("Edit", new { id = Id });
+        }
+
     }
 }

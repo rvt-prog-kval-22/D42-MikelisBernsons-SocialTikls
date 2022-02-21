@@ -13,15 +13,18 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
 
         public AdminController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  RoleManager<IdentityRole> roleManager,
+                                 IConfiguration configuration,
                                  ApplicationDbContext db)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._roleManager = roleManager;
+            this._configuration = configuration;
             _db = db;
         }
 
@@ -29,6 +32,59 @@ namespace BredWeb.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        //GET
+        public async Task<IActionResult> Setup()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Admin");
+            if(users != null)
+            {
+                ViewBag.ErrorMessage = "An admin already exists.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            string settingsEmail = _configuration.GetValue<string>($"AdminSetup:Email");
+
+            Person? admin = await _userManager.FindByEmailAsync(settingsEmail);
+            if (admin != null)
+            {
+                ViewBag.ErrorMessage = "A user with the specified email already exists.\n" + 
+                                       "Please update the AdminSetup section.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(settingsEmail == "")
+            {
+                ViewBag.ErrorMessage = "AdminSetup empty.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            string settingsNickName = _configuration.GetValue<string>($"AdminSetup:NickName");
+            string settingsPassword = _configuration.GetValue<string>($"AdminSetup:Password");
+
+            var user = new Person
+            {
+                UserName = settingsEmail,
+                Email = settingsEmail,
+                NickName = settingsNickName,
+                BirthDay = DateTime.Now,
+                DateCreated = DateTime.Now
+            };
+
+            var result = await _userManager.CreateAsync(user, settingsPassword);
+            if (result.Succeeded)
+            {
+                ViewBag.ErrorMessage = "Admin account created successfuly\n"+
+                                       "You can now log in.";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Admin account creation failed.\n"+
+                                       "Please check the AdminSetup section.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpGet]

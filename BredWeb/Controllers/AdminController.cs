@@ -38,11 +38,11 @@ namespace BredWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Setup()
         {
-            var users = await _userManager.GetUsersInRoleAsync("Admin");
-            if(users != null)
+            IList<Person>? users = await _userManager.GetUsersInRoleAsync("Admin");
+            if(users.Count > 0)
             {
                 ViewBag.ErrorMessage = "An admin already exists.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             string settingsEmail = _configuration.GetValue<string>($"AdminSetup:Email");
@@ -52,13 +52,13 @@ namespace BredWeb.Controllers
             {
                 ViewBag.ErrorMessage = "A user with the specified email already exists.\n" + 
                                        "Please update the AdminSetup section.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             if(settingsEmail == "")
             {
                 ViewBag.ErrorMessage = "AdminSetup empty.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error", "Home");
             }
 
             string settingsNickName = _configuration.GetValue<string>($"AdminSetup:NickName");
@@ -76,15 +76,16 @@ namespace BredWeb.Controllers
             var result = await _userManager.CreateAsync(user, settingsPassword);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Admin");
                 ViewBag.ErrorMessage = "Admin account created successfuly\n"+
                                        "You can now log in.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error", "Home");
             }
             else
             {
                 ViewBag.ErrorMessage = "Admin account creation failed.\n"+
                                        "Please check the AdminSetup section.";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Error", "Home");
             }
         }
 

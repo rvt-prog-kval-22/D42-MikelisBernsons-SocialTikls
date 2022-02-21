@@ -103,6 +103,11 @@ namespace BredWeb.Controllers
             if (obj == null)
                 return NotFound();
 
+            foreach (var post in _db.Posts.Where(p => p.GroupId == id))
+            {
+                _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
+            }
+
             _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
 
             _db.Groups.Remove(obj);

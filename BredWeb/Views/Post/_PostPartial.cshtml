@@ -2,8 +2,9 @@
 @inject SignInManager<Person> SignInManager
 @model BredWeb.Models.Post
 
+
 <div class="card w-100 mx-auto">
-    <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@Model.Id" asp-route-groupId="@ViewBag.GroupId">
+    <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@Model.Id" asp-route-groupId="@Model.GroupId">
         <div class="card-header">
             <h3 class="ps-1 text-primary">@Model.TotalRating &nbsp @Model.Title</h3>
         </div>

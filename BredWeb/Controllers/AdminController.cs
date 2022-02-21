@@ -76,6 +76,13 @@ namespace BredWeb.Controllers
             var result = await _userManager.CreateAsync(user, settingsPassword);
             if (result.Succeeded)
             {
+                IdentityRole identityRole = new IdentityRole
+                {
+                    Name = "Admin"
+                };
+
+                IdentityResult result2 = await _roleManager.CreateAsync(identityRole);
+
                 await _userManager.AddToRoleAsync(user, "Admin");
                 ViewBag.ErrorMessage = "Admin account created successfuly\n"+
                                        "You can now log in.";

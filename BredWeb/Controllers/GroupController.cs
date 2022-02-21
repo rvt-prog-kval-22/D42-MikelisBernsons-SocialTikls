@@ -109,7 +109,8 @@ namespace BredWeb.Controllers
             }
 
             _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
-
+            _db.Entry(obj).Collection(g => g.AdminList).Load();
+            obj.AdminList.Clear();
             _db.Groups.Remove(obj);
             _db.SaveChanges();
             TempData["success"] = "Group deleted successfully";

@@ -35,6 +35,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
+        [AllowAnonymous]
         public async Task<IActionResult> Setup()
         {
             var users = await _userManager.GetUsersInRoleAsync("Admin");

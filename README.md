@@ -18,7 +18,7 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 
 1. grupas nosaukums un apraksts - OK
 2. grupai var pievienoties/apskatīt jebkurš cilvēks (tās ir publiskas) - OK
-3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - *
+3. katrā grupā ir moderātori/admini ar paaugstinātām privilēģijām (skatīt zemāk) - OK
 4. parasti lietotāji kuri var taisīt postus iekš grupas - OK
 5. Iespēja vērtēt citus postus - OK
 7. komentēt zem postiem - OK
@@ -38,14 +38,14 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 1. var izdzēst postus un grupas - OK
 2. var banot lietotājus (varbūt)?
 3. var rediģēt grupas - OK
-4. var mainīt, pievienot, noņemt grupas moderatorus
+4. var mainīt, pievienot, noņemt grupas moderatorus - OK
 5. var pievienot un noņemt citus administratorus - OK
 
 ## grupas moderators
 
 1. var banot lietotājus tajā grupā (varbūt) 
 2. var izdzēst postus tajā grupā - OK
-3. var izdzēst komentārus tajā grupā
+3. var izdzēst komentārus tajā grupā - OK
 4. var piešķirt administratora tiesības citiem lietotājiem grupā kā arī tās atņemt - OK
 
 ## Lietotājs:

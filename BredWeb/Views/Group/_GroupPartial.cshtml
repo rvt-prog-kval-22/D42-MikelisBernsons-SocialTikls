@@ -6,30 +6,46 @@
     string userId = "";
     if(SignInManager.IsSignedIn(User))
         userId = (await UserManager.GetUserAsync(User)).Id;
+    bool userJoined = Model.UserList.Any(u => u.Id == userId);
+    bool userGlobalAdmin = User.IsInRole("Admin");
+    bool userGroupAdmin = Model.AdminList.Any(x => x.AdminId == userId);
 }
 
 <div class="card w-100 mx-auto">
-    <div class="card-header">                
-        <h3 class="ps-2 text-primary">@Model.Title</h3>
-    </div>
+    <a class="post-div" asp-controller="Group" asp-action="Open" asp-route-id="@Model.Id">
+        <div class="card-header">                
+            <h3 class="ps-2 text-primary">@Model.Title</h3>
+        </div>
 
-    <div class="card-body">
-        <p class="card-text">@Model.Description</p>
-        <br>
+        <div class="card-body">
+            <p class="card-text">@Model.Description</p>
+            <br>
+        </div>
+    </a>
+
+    <div class="card-subtitle text-end mb-2 me-3">
         <h6 class="card-subtitle text-success text-muted text-end">-@Model.Creator &nbsp (@Model.UserCount)</h6>
-    </div>         
-    <div class="w-100 btn-group card-footer" role="group">
-
-        <a asp-controller="Group" asp-action="Join" asp-route-id="@Model.Id"
-        class="btn btn-primary mx-2 btn-sm">Join</a>                            
-        <a asp-controller="Group" asp-action="Open" asp-route-id="@Model.Id"
-        class="btn btn-primary mx-2 btn-sm">Open</a>
-
-        @if(User.IsInRole("Admin") || Model.AdminList.Any(x => x.AdminId == userId))
-        {
-            <a asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Id"
-            class="btn btn-warning mx-2 btn-sm">  Delete</a>
-        }
     </div>
+    
+    @if(SignInManager.IsSignedIn(User))
+    {
+        if(!userJoined || userGlobalAdmin || userGroupAdmin)
+        {
+            <div class="w-100 btn-group card-footer" role="group">
+
+                @if(!userJoined)
+                {
+                    <a asp-controller="Group" asp-action="Join" asp-route-id="@Model.Id"
+                    class="btn btn-primary mx-2 btn-sm">Join</a>
+                }
+
+                @if(userGlobalAdmin || userGroupAdmin)
+                {
+                    <a asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Id"
+                    class="btn btn-warning mx-2 btn-sm">  Delete</a>
+                }
+            </div>
+        }        
+    }    
 </div>
 <br />

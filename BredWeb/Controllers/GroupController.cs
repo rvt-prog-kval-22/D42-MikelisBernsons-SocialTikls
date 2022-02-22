@@ -36,6 +36,7 @@ namespace BredWeb.Controllers
             foreach (var group in objGroupList)
             {
                 _db.Entry(group).Collection(g => g.AdminList).Load();
+                _db.Entry(group).Collection(g => g.UserList).Load();
             }
             return View(objGroupList);
         }

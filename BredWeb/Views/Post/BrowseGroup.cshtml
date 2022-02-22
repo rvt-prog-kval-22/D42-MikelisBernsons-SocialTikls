@@ -18,6 +18,7 @@
 
         <div class="col-3 bg-dark card m-2">
 
+            <h2 Class="text-primary mx-auto">@group.Title</h2>
             @if (SignInManager.IsSignedIn(User))
             {
                 <div class="m-3 card-header">
@@ -31,7 +32,7 @@
                 </div>
             }
 
-            <h2 Class="text-primary mx-auto">@group.Title</h2>
+            
             <br />
             <h6 class="text-end">-@group.Creator</h6>
             <h6 class="text-end">(@group.UserCount)</h6>

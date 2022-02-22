@@ -39,6 +39,9 @@ namespace BredWeb.Controllers
             if (groupId == 0 || postId == 0)
                 return NotFound();
 
+            if(body == null)
+                return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
+
             Person user = await _userManager.GetUserAsync(User);
             Post? post = _db.Posts.Find(postId);
 
@@ -61,9 +64,6 @@ namespace BredWeb.Controllers
             return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId});
         }
 
-        //POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
         public IActionResult Delete(int groupId, int id, int postId)
         {

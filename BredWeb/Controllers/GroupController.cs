@@ -181,6 +181,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
+        [Authorize]
         public IActionResult Edit(int? id)
         {
             if (id is null or 0)
@@ -195,6 +196,7 @@ namespace BredWeb.Controllers
 
         //POST
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult EditDescription(string Title, string Description, int Id)
         {
@@ -214,6 +216,7 @@ namespace BredWeb.Controllers
 
         //POST
         [HttpPost]
+        [Authorize]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public IActionResult RemoveAdmins(Group obj)
@@ -240,6 +243,7 @@ namespace BredWeb.Controllers
 
         //POST
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult AddAdmin(string email, int Id)
         {

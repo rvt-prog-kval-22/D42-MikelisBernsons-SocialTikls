@@ -68,11 +68,8 @@
                         @if(ViewBag.nick == comment.AuthorName || User.IsInRole("Admin"))
                             {
                                 <div class="w-100 card-footer">
-                                <form method="post">                                    
-                                    <input type="hidden" name="groupId" value=@ViewBag.GroupId />
-                                    <input type="hidden" name="postId" value=@post.Id />
-                                    <input type="hidden" name="id" value=@comment.Id />
-                                    <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id"
+                                <form method="post">
+                                    <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" asp-route-groupId="@ViewBag.GroupId" asp-route-postId="@post.Id"
                                         class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
                                         Delete
                                     </a>                                

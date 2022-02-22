@@ -1,10 +1,38 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
+@model IEnumerable<Group>?
+
 @{
     ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome to breddit</h1>
-    <p>This is the very cool front page with absolutely no content whatsoever.</p>
-    <p>Use the navigation menu above.</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3 bg-dark card m-2 min-vh-60">
+            <div class="m-3 card-header text-center">
+                <h2 Class="text-primary mx-auto">My groups</h2>
+            </div>
+            @if (SignInManager.IsSignedIn(User) && Model.Any())
+            {
+                <div class="d-grid gap-2">
+                    @foreach(Group group in Model)
+                    {
+                        <a asp-controller="Group" asp-action="Open" asp-route-id="@group.Id" class="btn btn-sm btn-outline-primary" type="button">
+                            @group.Title
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                
+            }
+        </div>
+    </div>
 </div>

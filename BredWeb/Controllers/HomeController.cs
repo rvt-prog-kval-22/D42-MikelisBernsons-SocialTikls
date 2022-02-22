@@ -34,6 +34,12 @@ namespace BredWeb.Controllers
         //GET
         public async Task<IActionResult> Index()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                Person user = await _userManager.GetUserAsync(User);
+                var model = _db.Groups.Where(g => g.UserList.Contains(user));
+                return View(model);
+            }
             return View();
         }
 

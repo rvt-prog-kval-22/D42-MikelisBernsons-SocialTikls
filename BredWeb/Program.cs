@@ -14,8 +14,6 @@ builder.Services
     .AddFluentEmail("test@test.test")
     .AddSmtpSender("localhost", 25);
 
-//builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailStrings"));
-
 builder.Services.AddIdentity<Person, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 3;
@@ -28,9 +26,7 @@ builder.Services.AddIdentity<Person, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=CoolDb.db;"));
 
 var app = builder.Build();
 

@@ -3,10 +3,9 @@
 <form method="post">
     <div class="bg-dark p-3 mt-4 w-75">
         <div class="row pb-2">
-            <h2 class="text-primary">Create Post in - @ViewBag.GroupTitle</h2> @*add in view data or something*@
+            <h2 class="text-primary">Create Post in - @ViewBag.GroupTitle </h2>
             <hr />
         </div>
-        @*<div asp-validation-summary="All"></div>*@
         <div class="mb-3">
             <label asp-for="Title"></label>
             <input asp-for="Title" class="form-control w-25" />

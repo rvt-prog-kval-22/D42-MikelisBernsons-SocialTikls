@@ -194,7 +194,7 @@ namespace BredWeb.Controllers
             return View(comments);
         }
 
-        public async Task<IActionResult> Upvote(int postId)
+        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0)
         {
             var post = _db.Posts.Find(postId);
             var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
@@ -235,10 +235,12 @@ namespace BredWeb.Controllers
 
             _db.Posts.Update(post);
             _db.SaveChanges();
+            if(selfRedirect)
+                return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id});
             return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 
-        public async Task<IActionResult> Downvote(int postId)
+        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0)
         {
             var post = _db.Posts.Find(postId);
             var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
@@ -280,6 +282,8 @@ namespace BredWeb.Controllers
 
             _db.Posts.Update(post);
             _db.SaveChanges();
+            if (selfRedirect)
+                return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id });
             return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 

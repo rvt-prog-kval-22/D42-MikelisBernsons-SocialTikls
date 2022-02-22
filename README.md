@@ -24,7 +24,7 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 7. komentēt zem postiem - OK
 8. Meklēt grupas pēc nosaukuma - OK
 9. Rediģēt grupas (aprakstu) - OK
-10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - *
+10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - OK
 
 ### Taisīt post:
 

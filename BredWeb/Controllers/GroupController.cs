@@ -182,16 +182,26 @@ namespace BredWeb.Controllers
 
         //GET
         [Authorize]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if(!_signInManager.IsSignedIn(User))
+                return BadRequest();
+            var user = await _userManager.GetUserAsync(User);
+
             if (id is null or 0)
                 return NotFound();
+
             var group = _db.Groups.Find(id);
 
             if(group == null)
                 return NotFound();
             _db.Entry(group).Collection(g => g.AdminList).Load();
-            return View(group);
+            if (User.IsInRole("Admin") || group.AdminList.Any(x => x.AdminId == user.Id))
+            {
+                return View(group);
+            }
+
+            return Unauthorized();
         }
 
         //POST

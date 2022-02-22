@@ -34,7 +34,7 @@
             <br />
             <h6 class="text-end">-@group.Creator</h6>
             <h6 class="text-end">(@group.UserCount)</h6>
-            @if (SignInManager.IsSignedIn(User) && group.AdminList.Any(x => x.AdminId == userId))
+            @if (SignInManager.IsSignedIn(User) && group.AdminList.Any(x => x.AdminId == userId) || User.IsInRole("Admin"))
             {
                 <div class="m-3 w-35 ms-auto">
                     <form method="get">

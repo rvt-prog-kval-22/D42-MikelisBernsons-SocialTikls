@@ -197,7 +197,11 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0)
         {
             var post = _db.Posts.Find(postId);
-            var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+            string userId = "";
+            if(_signInManager.IsSignedIn(User))
+                userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+            else
+                return RedirectToAction("Index", "Group");
 
             var rating = _db.Ratings.FirstOrDefault( r =>
                 r.RatedItemId.Equals(postId) &&
@@ -243,7 +247,11 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0)
         {
             var post = _db.Posts.Find(postId);
-            var userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+            string userId = "";
+            if (_signInManager.IsSignedIn(User))
+                userId = (await _userManager.GetUserAsync(User)).Id.ToString();
+            else
+                return RedirectToAction("Index", "Group");
 
             var rating = _db.Ratings.FirstOrDefault(r =>
                r.RatedItemId.Equals(postId) &&

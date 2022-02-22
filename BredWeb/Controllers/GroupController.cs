@@ -253,6 +253,16 @@ namespace BredWeb.Controllers
             {
 
                 Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
+                _db.Entry(group).Collection(g => g.AdminList).Load();
+
+                foreach(Admin admin in group.AdminList)
+                {
+                    if(admin.Email == email)
+                    {
+                        TempData["Error"] = "Add admin failed";
+                        return RedirectToAction("Edit", new { id = Id });
+                    }
+                }
 
                 if (newAdmin != null)
                 {
@@ -260,9 +270,10 @@ namespace BredWeb.Controllers
                     _db.Groups.Update(group);
                     _db.SaveChanges();
                     TempData["success"] = "Success";
+                    return RedirectToAction("Edit", new { id = Id });
                 }
             }
-
+            TempData["Error"] = "Add admin failed";
             return RedirectToAction("Edit", new { id = Id });
         }
 

@@ -175,9 +175,14 @@ namespace BredWeb.Controllers
                 var groups = _db.Groups;
                 var result = groups.Where(g => g.Title.Contains(substr))
                     .ToList();
-
+                if(result.Count <= 0)
+                {
+                    TempData["Error"] = "No results found";
+                    return View("Index", _db.Groups.ToList());
+                }
                 return View("Index", result);
             }
+            TempData["Error"] = "Empty search query?";
             return View("Index", _db.Groups.ToList());
         }
 

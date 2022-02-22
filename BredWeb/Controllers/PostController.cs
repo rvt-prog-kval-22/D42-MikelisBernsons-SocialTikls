@@ -181,14 +181,8 @@ namespace BredWeb.Controllers
                 ViewBag.nick = "";
 
             ViewBag.Post = post;
-
-            ViewBag.GroupId = group.Id;
-            ViewBag.GroupTitle = group.Title;
-            ViewBag.UserCount = group.UserCount;
-            ViewBag.Title = group.Title;
-            ViewBag.Creator = group.Creator;
-            ViewBag.Description = group.Description;
-            //TODO: Remake to an object... since you can do that... :[
+            ViewBag.Group = group;
+            _db.Entry(group).Collection(g => g.AdminList).Load();
             List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
 
             return View(comments);

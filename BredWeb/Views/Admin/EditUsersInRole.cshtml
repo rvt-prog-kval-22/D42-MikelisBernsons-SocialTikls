@@ -7,7 +7,9 @@
 <form method="post">
     <div class="bg-dark p-3 mt-4 w-75">
         <div class="row pb-2">
-            <h2 class="text-primary">Manage roles</h2>
+            <h2 class="text-primary">Select all users you wish to remove</h2>
+            <p>For changes to take effect the removed user must re-log back into the site.</p>
+            <p>The same applies to adding new user to the role.</p>
             <hr />
         </div>
         <div class="mb-3">
@@ -23,6 +25,23 @@
                 </div>                
             }
         </div>
-        <input type="submit" value="Update" class="btn btn-primary" style="width:150px" />
+        <input type="submit" value="Remove Selected" class="btn btn-primary" style="width:150px" />
+    </div>
+</form>
+
+<form method="post">
+    <div class="bg-dark p-3 mt-4 w-75">
+        <div class="row pb-2">
+            <h2 class="text-primary">Add user</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <div class="mb-3">
+                <label>Email</label>
+                <input name="email" class="form-control" />
+            </div>
+        </div>
+        <input type="hidden" value="@roleId" name="roleId" />
+        <button asp-controller="Admin" asp-action="AddToRole" class="btn btn-primary" style="width:150px" type="submit">Add</button>
     </div>
 </form>

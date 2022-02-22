@@ -215,15 +215,8 @@ namespace BredWeb.Controllers
 
             foreach (var user in _userManager.Users)
             {
-                UserInRole userInRole = new()
-                {
-                    UserId = user.Id,
-                    UserName = user.UserName
-                };
-
-                userInRole.IsSelected = await _userManager.IsInRoleAsync(user, role.Name);
-
-                model.Add(userInRole);
+                if (await _userManager.IsInRoleAsync(user, role.Name))
+                    model.Add(new UserInRole { UserId = user.Id, UserName = user.UserName });
             }
 
             return View(model);
@@ -240,39 +233,47 @@ namespace BredWeb.Controllers
                 return View("Error");
             }
 
+            var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name);
+            if(usersInRole.Count <= 1)
+            {
+                TempData["Error"] = "Can't remove all admins";
+                return RedirectToAction("EditUsersInRole", new { roleId = roleId });
+            }
+
             for (int i = 0; i < model.Count; i++)
             {
                 var user = await _userManager.FindByIdAsync(model[i].UserId);
-
-                IdentityResult? result = null;
-
-                if (model[i].IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
+                usersInRole = await _userManager.GetUsersInRoleAsync(role.Name);
+                if (usersInRole.Count > 1)
                 {
-                    result = await _userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if (!model[i].IsSelected && (await _userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                    if(model[i].IsSelected)
+                        await _userManager.RemoveFromRoleAsync(user, role.Name);
                 }
                 else
                 {
-                    continue;
-                }
-
-                if (result.Succeeded)
-                {
-                    if(i < model.Count - 1)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        return RedirectToAction("EditRole", new { Id = roleId });
-                    }
+                    TempData["Error"] = "Can't remove all admins, the last admin in the last was not removed";
+                    break;
                 }
             }
 
-            return RedirectToAction("EditRole", new { Id = roleId });
+            return RedirectToAction("EditUsersInRole", new { roleId = roleId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToRole(string email, string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+            var user = _db.People.FirstOrDefault(x => x.Email == email);
+
+            if (role == null || user == null)
+            {
+                ViewBag.ErrorMessage = $"Role or User was not found";
+                return View("Error");
+            }
+
+            await _userManager.AddToRoleAsync(user, role.Name);
+
+            return RedirectToAction("EditUsersInRole", new { roleId = roleId });
         }
     }
 }

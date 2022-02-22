@@ -226,18 +226,31 @@ namespace BredWeb.Controllers
 
             if (dbGroup != null)
             {
+                if(dbGroup.AdminList.Count <= 1)
+                {
+                    TempData["Error"] = "Can't remove all admins";
+                    return RedirectToAction("Edit", new { id = obj.Id });
+                }
                 foreach (var admin in obj.AdminList)
                 {
-                    if (admin.IsSelected)
+                    if(dbGroup.AdminList.Count > 1)
                     {
-                        dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                        if (admin.IsSelected)
+                        {
+                            dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                        }
+                    }
+                    else
+                    {
+                        TempData["Error"] = "All admins were removed except the last one in the list";
+                        break;
                     }
                 }              
 
                 _db.SaveChanges();
-                TempData["success"] = "Success";
+                return RedirectToAction("Edit", new { id = obj.Id });
             }
-
+            TempData["Error"] = "Group was null";
             return RedirectToAction("Edit", new { id = obj.Id });
         }
 

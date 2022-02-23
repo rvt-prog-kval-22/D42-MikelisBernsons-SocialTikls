@@ -25,18 +25,22 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool popular = false)
         {
             ViewBag.nick = "";
             if (_signInManager.IsSignedIn(User))
             {
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             }
-            IEnumerable<Group> objGroupList = _db.Groups;
+            List<Group> objGroupList = _db.Groups.ToList();
             foreach (var group in objGroupList)
             {
                 _db.Entry(group).Collection(g => g.AdminList).Load();
                 _db.Entry(group).Collection(g => g.UserList).Load();
+            }
+            if (popular)
+            {
+                objGroupList = objGroupList.OrderBy(g => g.UserCount).ToList();
             }
             return View(objGroupList);
         }

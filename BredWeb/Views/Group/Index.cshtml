@@ -2,9 +2,10 @@
 
 @inject SignInManager<Person> SignInManager
 @inject UserManager<Person> UserManager
-@model IEnumerable<Group>
+@model List<Group>
 @{
     ViewData["Title"] = "Groups";
+    int groupCount = Model.Count - 1;
 }
 
 
@@ -23,20 +24,39 @@
             else
             {
                 <div class="col-6 text-end">
-                
                 </div>
-            }            
+            }
             <br />
             <form class="d-flex mb-3" method="post">
                 @Html.TextBox("substr", "", new {@Class="form-control"})
                 <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
+
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                
+                <input type="radio" class="btn-check">
+                <a asp-controller="Group" asp-action="Index" class="btn btn-outline-primary">
+                    Newest
+                </a>
+                
+                <input type="radio" class="btn-check">
+                <a asp-controller="Group" asp-action="Index" class="btn btn-outline-primary" asp-route-popular="true">
+                    Popular
+                </a>
+            </div>
+
         </div>
         <div class="col-8 m-2">
-            @foreach(Group group in Model)
+
+            @for(int i = 0; groupCount >= 0; groupCount--)
+            {
+                await Html.RenderPartialAsync("_GroupPartial", Model[groupCount]);
+            }
+
+            @*@foreach (Group group in Model)
             {
                 await Html.RenderPartialAsync("_GroupPartial", group);
-            }
+            }*@
         </div>
     </div>
 </div>

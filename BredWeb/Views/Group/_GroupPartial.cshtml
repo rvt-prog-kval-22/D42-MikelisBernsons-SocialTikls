@@ -24,7 +24,7 @@
     </a>
 
     <div class="card-subtitle text-end mb-2 me-3">
-        <h6 class="card-subtitle text-success text-muted text-end">-@Model.Creator &nbsp (@Model.UserCount)</h6>
+        <h6 class="card-subtitle text-success text-muted text-end">-@Model.Creator &nbsp @Model.StartDate &nbsp (@Model.UserCount)</h6>
     </div>
     
     @if(SignInManager.IsSignedIn(User))

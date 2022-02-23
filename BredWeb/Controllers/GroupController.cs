@@ -42,6 +42,7 @@ namespace BredWeb.Controllers
             {
                 objGroupList = objGroupList.OrderBy(g => g.UserCount).ToList();
             }
+            ViewBag.Popular = popular;
             return View(objGroupList);
         }
 

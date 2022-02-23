@@ -6,6 +6,7 @@
 @{
     ViewData["Title"] = "Groups";
     int groupCount = Model.Count - 1;
+    bool popular = ViewBag.Popular;
 }
 
 
@@ -19,44 +20,74 @@
                     <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
                         <i class="bi bi-plus-square"></i> &nbsp Create New Group
                     </a>
+
+                    <form class="d-flex mb-2 pt-3" method="post">
+                        @Html.TextBox("substr", "", new {@Class="form-control"})
+                        <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
                 </div>
             }
             else
             {
-                <div class="col-6 text-end">
+                <div class="m-3 card-header">
+
+                    <form class="d-flex mb-2 pt-3" method="post">
+                        @Html.TextBox("substr", "", new {@Class="form-control"})
+                        <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+
                 </div>
             }
             <br />
-            <form class="d-flex mb-3" method="post">
-                @Html.TextBox("substr", "", new {@Class="form-control"})
-                <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-            </form>
 
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                
-                <input type="radio" class="btn-check">
-                <a asp-controller="Group" asp-action="Index" class="btn btn-outline-primary">
-                    Newest
-                </a>
-                
-                <input type="radio" class="btn-check">
-                <a asp-controller="Group" asp-action="Index" class="btn btn-outline-primary" asp-route-popular="true">
-                    Popular
-                </a>
-            </div>
+            <form method="get">
+                <h3 class="ms-4">Select order by</h3>
+                <fieldset class="ms-4 pb-2">
+                    <div class="form-check" title="Sort by date created">
+                        <label class="form-check-label">
+                            @if (!popular)
+                            {
+                                <input type="radio" class="form-check-input" name="popular" value="false" checked="">
+                            }
+                            else
+                            {
+                                <input type="radio" class="form-check-input" name="popular" value="false">
+                            }
+                            New
+                        </label>
+                    </div>
+
+                    <div class="form-check" title="Sort by most users in group">
+                        <label class="form-check-label">
+                            @if (popular)
+                            {
+                                <input type="radio" class="form-check-input" name="popular" value="true" checked="">
+                            }
+                            else
+                            {
+                                <input type="radio" class="form-check-input" name="popular" value="true">
+                            }
+                            Popular
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+
+                    <input type="radio" class="btn-check">
+                    <button asp-controller="Group" asp-action="Index" class="btn btn-outline-primary ms-4 mb-3" type="submit">
+                        Refresh
+                    </button>
+                </div>
+            </form>
 
         </div>
         <div class="col-8 m-2">
-
-            @for(int i = 0; groupCount >= 0; groupCount--)
+            @for (int i = 0; groupCount >= 0; groupCount--)
             {
                 await Html.RenderPartialAsync("_GroupPartial", Model[groupCount]);
             }
-
-            @*@foreach (Group group in Model)
-            {
-                await Html.RenderPartialAsync("_GroupPartial", group);
-            }*@
         </div>
     </div>
 </div>

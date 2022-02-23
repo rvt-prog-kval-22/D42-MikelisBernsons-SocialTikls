@@ -77,7 +77,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public async Task<IActionResult> BrowseGroup(int id)
+        public async Task<IActionResult> BrowseGroup(int id, bool popular = false, string filter = "All")
         {
             var group = _db.Groups.Find(id);
 
@@ -94,6 +94,28 @@ namespace BredWeb.Controllers
                 ViewBag.nick = "";
 
             List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
+
+            switch (filter)
+            {
+                case "Day":
+                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-1)).ToList();
+                    break;
+                case "Week":
+                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-7)).ToList();
+                    break;
+                case "Month":
+                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-30)).ToList();
+                    break;
+                case "Year":
+                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-365)).ToList();
+                    break;
+            }
+
+            if (popular)
+                posts = posts.OrderBy(p => p.TotalRating).ToList();
+
+            ViewBag.Filter = filter;
+            ViewBag.Popular = popular;
 
             return View(posts);
         }

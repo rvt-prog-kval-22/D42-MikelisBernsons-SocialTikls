@@ -25,13 +25,15 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 8. Meklēt grupas pēc nosaukuma - OK
 9. Rediģēt grupas (aprakstu) - OK
 10. Parādīt grupas kurām tu esi pievienojies, uzspiežot uz tās tu to atvērtu - OK
+11. Spēja sakārtot grupas pēc kritērijiem (jaunākās un populārākās) - OK
 
 ### Taisīt post:
 
 1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
 2. postiem citi reģistrēti lietotāji var komentēt - OK
 3. Vērtēt ar patīk/nepatīk - OK
-4. Pieejams saraksts ar populārākajām grupām un postiem. varbūt varētu pievienot arī citus kārtošanas kritērijus. - *
+4. Spēja sakārtot post pēc kritērijiem (jaunākie un populārākie) - *
+5. Spēja atlasīt post pēc kritērijiem (šodien, pēdējā mēnesī, gadā izveidotie) - *
 
 ## Globāls mājaslapas Administrators: - +/- OK
 

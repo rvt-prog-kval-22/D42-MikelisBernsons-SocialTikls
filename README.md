@@ -32,8 +32,8 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
 2. postiem citi reģistrēti lietotāji var komentēt - OK
 3. Vērtēt ar patīk/nepatīk - OK
-4. Spēja sakārtot post pēc kritērijiem (jaunākie un populārākie) - *
-5. Spēja atlasīt post pēc kritērijiem (šodien, pēdējā mēnesī, gadā izveidotie) - *
+4. Spēja sakārtot post pēc kritērijiem (jaunākie un populārākie) - OK
+5. Spēja atlasīt post pēc kritērijiem (šodien, pēdējā mēnesī, gadā izveidotie) - OK
 
 ## Globāls mājaslapas Administrators: - +/- OK
 

@@ -37,7 +37,21 @@ namespace BredWeb.Controllers
             if (_signInManager.IsSignedIn(User))
             {
                 Person user = await _userManager.GetUserAsync(User);
-                var model = _db.Groups.Where(g => g.UserList.Contains(user));
+                HomeFeed model = new();
+                List<Post> posts = new();
+                model.Groups = _db.Groups.Where(g => g.UserList.Contains(user)).ToList();
+                if (model.Groups.Count > 0)
+                {
+                    foreach(var group in model.Groups)
+                    {
+                        _db.Entry(group).Collection(g => g.Posts).Load();
+                        if(group.Posts.Count > 0)
+                            posts.AddRange(group.Posts);
+                    }
+                }
+
+                model.Posts = posts.OrderByDescending(p => p.TotalRating).ToList();
+
                 return View(model);
             }
             return View();

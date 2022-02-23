@@ -2,7 +2,7 @@
 
 @inject SignInManager<Person> SignInManager
 @inject UserManager<Person> UserManager
-@model IEnumerable<Group>?
+@model HomeFeed
 
 @{
     ViewData["Title"] = "Home";
@@ -10,29 +10,87 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Breddit.</h1>
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <p>Sign in to see a personalized feed with groups that you have joined and the posts from only those groups.</p>
+    }
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-3 bg-dark card m-2 min-vh-60">
-            <div class="m-3 card-header text-center">
-                <h2 Class="text-primary mx-auto">My groups</h2>
-            </div>
-            @if (SignInManager.IsSignedIn(User) && Model.Any())
-            {
-                <div class="d-grid gap-2">
-                    @foreach(Group group in Model)
-                    {
-                        <a asp-controller="Group" asp-action="Open" asp-route-id="@group.Id" class="btn btn-sm btn-outline-primary" type="button">
-                            @group.Title
-                        </a>
-                    }
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-3 bg-dark card m-2 min-vh-60">
+                <div class="m-3 card-header text-center">
+                    <h2 Class="text-primary mx-auto">My groups</h2>
                 </div>
-            }
-            else
-            {
-                
-            }
+                @if (Model.Groups.Any())
+                {
+                    <div class="d-grid gap-2">
+                        @foreach (Group group in Model.Groups)
+                        {
+                            <a asp-controller="Group" asp-action="Open" asp-route-id="@group.Id" class="btn btn-sm btn-outline-primary" type="button">
+                                @group.Title
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+
+                }
+            </div>
+
+            <div class="col-8 m-2">
+                @foreach (Post post in Model.Posts)
+                {
+                    <div class="card w-100 mx-auto">
+                        <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@post.GroupId">
+                            <div class="card-header">
+                                <h3 class="ps-1 text-primary">
+                                    <span class="badge bg-primary rounded-pill">@post.TotalRating</span>
+                                    &nbsp @post.Title
+                                </h3>
+                            </div>
+
+                            <div class="card-body" style="white-space: pre-line">
+                                <p class="card-text">@post.Body</p>
+                            </div>
+                        </a>
+
+                        <div class="card-subtitle text-end me-3">
+                            @if (post.IsEdited)
+                            {
+                                <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16) Edited</h6>
+                            }
+                            else
+                            {
+                                <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16)</h6>
+                            }
+                        </div>
+                            <div class="w-100 card-footer container">
+                                <div class="row">
+                                    <div class="col-3 btn-group" role="group">
+                                        <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id" asp-route-home="true"
+                                         class="btn btn-primary btn-sm m-1" style="width: 125px">
+                                            <i class="bi bi-arrow-up-square"></i>
+                                            Like
+                                        </a>
+
+                                        <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id" asp-route-home="true"
+                                         class="btn btn-primary btn-sm m-1" style="width: 125px">
+                                            <i class="bi bi-arrow-down-square"></i>
+                                            Dislike
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <br />
+                }
+            </div>
+
         </div>
     </div>
-</div>
+}

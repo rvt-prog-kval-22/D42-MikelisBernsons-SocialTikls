@@ -251,7 +251,7 @@ namespace BredWeb.Controllers
                 }
                 else
                 {
-                    TempData["Error"] = "Can't remove all admins, the last admin in the last was not removed";
+                    TempData["Error"] = "Can't remove all admins, the last admin in the list was not removed";
                     break;
                 }
             }

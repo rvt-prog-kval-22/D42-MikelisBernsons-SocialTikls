@@ -78,7 +78,7 @@ namespace BredWeb.Controllers
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if(isAdmin || group.AdminList.Any(x => x.AdminId == user.Id))
+            if(isAdmin || group.AdminList.Any(x => x.AdminId == user.Id) || user.NickName == comment.AuthorName)
             {
                 _db.Comments.Remove(comment);
                 _db.SaveChanges();

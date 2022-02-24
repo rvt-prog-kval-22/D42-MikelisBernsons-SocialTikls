@@ -8,7 +8,7 @@
     Post post = (Post)ViewBag.Post;
     Group group = (Group)ViewBag.Group;
     string userId = "";
-    if(SignInManager.IsSignedIn(User))
+    if (SignInManager.IsSignedIn(User))
         userId = (await UserManager.GetUserAsync(User)).Id;
     bool isAdmin = group.AdminList.Any(x => x.AdminId == userId);
 }
@@ -25,7 +25,7 @@
             <div style="white-space: pre-line" class="mb-4">
                 @group.Description
             </div>
-            
+
         </div>
 
         <div class="col-8 m-2">
@@ -43,47 +43,51 @@
                 </div>
 
                 <div class="card-subtitle text-end me-3">
-                @if (post.IsEdited)
+                    @if (post.IsEdited)
                     {
                         <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16) Edited</h6>
-                    }else{
-                        <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16)</h6>                            
+                    }
+                    else
+                    {
+                        <h6>-@post.AuthorName @post.PostDate.ToString().Substring(0, 16)</h6>
                     }
                 </div>
 
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <div class="w-100 card-footer container">
-                    <div class="row">
-                        <div class="col-3 btn-group" role="group">
-                            <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@post.GroupId"
-                            class="btn btn-primary btn-sm m-1" style="width: 125px">
-                            <i class="bi bi-arrow-up-square"></i>
-                            Like
-                            </a>
+                        <div class="row">
+                            <div class="col-3 btn-group" role="group">
+                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@post.GroupId"
+                                    class="btn btn-primary btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-up-square"></i>
+                                    Like
+                                </a>
 
-                            <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@post.GroupId"
-                            class="btn btn-info btn-sm m-1" style="width: 125px">
-                            <i class="bi bi-arrow-down-square"></i>
-                            Dislike
-                            </a>
+                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@post.GroupId"
+                                    class="btn btn-info btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-down-square"></i>
+                                    Dislike
+                                </a>
 
-                        </div>
+                            </div>
 
-                        <div class="w-35 btn-group ms-auto col-1">
-                            <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id"
-                            class="btn btn-primary btn-sm m-1">Edit</a>
-
-                            @if(ViewBag.nick == post.AuthorName || User.IsInRole("Admin"))
-                            {                                
-                                <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id"
-                                class="btn btn-warning btn-sm m-1">Delete</a>                                
-                            }
+                            <div class="w-35 btn-group ms-auto col-1">
+                                @if (ViewBag.nick == post.AuthorName)
+                                {
+                                    <a asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id"
+                                    class="btn btn-primary btn-sm m-1">Edit</a>
+                                }
+                                @if (ViewBag.nick == post.AuthorName || User.IsInRole("Admin"))
+                                {
+                                    <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id"
+                                    class="btn btn-warning btn-sm m-1">Delete</a>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
-                
+
             </div>
             <br />
 
@@ -95,19 +99,19 @@
                     </div>
 
                     <div class="card-body">
-                       @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
-                    </div>                            
+                        @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
+                    </div>
                     <input type="hidden" name="groupId" value=@group.Id />
                     <input type="hidden" name="postId" value=@post.Id />
                     <button asp-controller="Comment" asp-action="Create" class="btn btn-sm btn-primary ms-auto mb-3 me-3" style="width:150px" type="submit">Comment</button>
                 </div>
-             </form>
-             
+            </form>
+
             <br />
 
             @if (Model != null && Model.Any())
             {
-                @foreach(Comment comment in Model)
+                @foreach (Comment comment in Model)
                 {
                     <div class="card w-100">
                         <div class="card-body" style="white-space: pre-line">
@@ -115,29 +119,31 @@
                         </div>
 
                         <div class="card-subtitle text-end me-3">
-                        @if (comment.IsEdited)
+                            @if (comment.IsEdited)
                             {
                                 <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16) Edited</h6>
-                            }else{
-                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16)</h6>                            
+                            }
+                            else
+                            {
+                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16)</h6>
                             }
                         </div>
 
-                        @if(ViewBag.nick == comment.AuthorName || User.IsInRole("Admin") || isAdmin)
-                            {
-                                <div class="w-100 card-footer">
+                        @if (ViewBag.nick == comment.AuthorName || User.IsInRole("Admin") || isAdmin)
+                        {
+                            <div class="w-100 card-footer">
                                 <form method="post">
                                     <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" asp-route-groupId="@group.Id" asp-route-postId="@post.Id"
-                                        class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
+                           class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
                                         Delete
-                                    </a>                                
+                                    </a>
                                 </form>
                             </div>
-                            }                        
+                        }
                     </div>
                     <br />
                 }
             }
-        </div>        
+        </div>
     </div>
 </div>

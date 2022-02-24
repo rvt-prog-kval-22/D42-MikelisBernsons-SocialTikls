@@ -38,6 +38,11 @@
                     <a asp-controller="Group" asp-action="Join" asp-route-id="@Model.Id"
                     class="btn btn-primary mx-2 btn-sm">Join</a>
                 }
+                else
+                {
+                    <a asp-controller="Group" asp-action="Leave" asp-route-id="@Model.Id"
+                    class="btn btn-warning mx-2 btn-sm">Leave</a>
+                }
 
                 @if(userGlobalAdmin || userGroupAdmin)
                 {

@@ -148,13 +148,37 @@ namespace BredWeb.Controllers
             {
                 return RedirectToAction("Index");
             }
-
-            //group.UserList.Add(user);
-            //group.UserCount++;
-            //_db.Groups.Add(group);
-            //_db.SaveChanges();
             TempData["success"] = "Group Joined successfully";
 
+            return RedirectToAction("BrowseGroup", "Post", new { id = group.Id });
+        }
+
+        public async Task<IActionResult> Leave(int? id)
+        {
+            if (id == null || id == 0)
+                return NotFound();
+
+            var group = _db.Groups.Find(id);
+            var user = await _userManager.GetUserAsync(User);
+            if (group == null)
+                return NotFound();
+            _db.Entry(group).Collection(g => g.UserList).Load();
+            _db.Entry(group).Collection(g => g.AdminList).Load();
+
+            try
+            {
+                group.UserList.Remove(user);
+                group.UserCount--;
+                if (group.AdminList.Any(x => x.AdminId == user.Id))
+                    group.AdminList.Remove(group.AdminList.First(x => x.AdminId == user.Id));
+                _db.Groups.Update(group);
+                _db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index");
+            }
+            TempData["success"] = "Group Left";
             return RedirectToAction("BrowseGroup", "Post", new { id = group.Id });
         }
 

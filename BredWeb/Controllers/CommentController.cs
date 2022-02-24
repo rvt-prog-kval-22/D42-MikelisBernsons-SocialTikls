@@ -65,17 +65,27 @@ namespace BredWeb.Controllers
         }
 
         [Authorize]
-        public IActionResult Delete(int groupId, int id, int postId)
+        public async Task<IActionResult> Delete(int groupId, int id, int postId)
         {
             Comment? comment = _db.Comments.Find(id);
+            var group = _db.Groups.Find(groupId);
 
-            if (comment == null)
-                return NotFound();            
+            if (comment == null || group == null)
+                return NotFound();
 
-            _db.Comments.Remove(comment);
-            _db.SaveChanges();
-            TempData["success"] = "Success";
-            return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
+            _db.Entry(group).Collection(g => g.AdminList).Load();
+
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            if(isAdmin || group.AdminList.Any(x => x.AdminId == user.Id))
+            {
+                _db.Comments.Remove(comment);
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+                return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
+            }
+            return Unauthorized();
         }
 
     }

@@ -74,6 +74,10 @@ namespace BredWeb.Controllers
                         };
 
                         //var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                        if(user.BirthDay > DateTime.Now)
+                        {
+                            user.BirthDay = DateTime.Now;
+                        }
                         var result = await userManager.CreateAsync(user, obj.Password);
 
                         if (result.Succeeded)

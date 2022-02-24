@@ -135,7 +135,7 @@ namespace BredWeb.Controllers
 
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (post.AuthorName == user.NickName || isAdmin)
+            if (post.AuthorName == user.NickName)
                 return View(post);
             else
                 return Unauthorized();
@@ -153,7 +153,7 @@ namespace BredWeb.Controllers
 
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (post.AuthorName == user.NickName || isAdmin)
+            if (post.AuthorName == user.NickName)
             {
                 post.Body = obj.Body;
                 post.IsEdited = true;

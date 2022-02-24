@@ -68,7 +68,7 @@ namespace BredWeb.Controllers
                         {
                             UserName = obj.Email,
                             Email = obj.Email,
-                            NickName = obj.NickName, //TODO: add existing name validation later
+                            NickName = obj.NickName,
                             BirthDay = obj.BirthDay,
                             DateCreated = DateTime.Now
                         };

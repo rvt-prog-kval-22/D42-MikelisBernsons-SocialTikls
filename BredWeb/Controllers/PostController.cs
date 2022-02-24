@@ -33,6 +33,7 @@ namespace BredWeb.Controllers
 
         //GET
         [HttpGet]
+        [Authorize]
         public IActionResult Create(string id, string groupTitle)
         {
             ViewBag.id = id;
@@ -210,6 +211,7 @@ namespace BredWeb.Controllers
             return View(comments);
         }
 
+        [Authorize]
         public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
         {
             var post = _db.Posts.Find(postId);
@@ -262,6 +264,7 @@ namespace BredWeb.Controllers
             return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 
+        [Authorize]
         public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
         {
             var post = _db.Posts.Find(postId);

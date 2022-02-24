@@ -90,8 +90,6 @@ namespace BredWeb.Controllers
             if (id == null || id == 0)
                 return NotFound();
             var groupFromDb = _db.Groups.Find(id);
-            //var categoryFromDbFirst = _db.Categories.FirstOrDefault(u => u.Id == id);
-            //var categoryFromDbSingle = _db.Categories.SingleOrDefault(u => u.Id == id);
 
             if (groupFromDb == null)
                 return NotFound();
@@ -191,8 +189,6 @@ namespace BredWeb.Controllers
 
             if (groupFromDb == null)
                 return NotFound();
-
-            //return View("Browse", groupFromDb);
             return RedirectToAction("BrowseGroup", "Post", new { id = groupFromDb.Id });
         }
 

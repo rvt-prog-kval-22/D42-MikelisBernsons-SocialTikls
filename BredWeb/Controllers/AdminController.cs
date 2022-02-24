@@ -42,7 +42,7 @@ namespace BredWeb.Controllers
             if(users.Count > 0)
             {
                 ViewBag.ErrorMessage = "An admin already exists.";
-                return RedirectToAction("Error", "Home");
+                return View("Error");
             }
 
             string settingsEmail = _configuration.GetValue<string>($"AdminSetup:Email");
@@ -52,13 +52,13 @@ namespace BredWeb.Controllers
             {
                 ViewBag.ErrorMessage = "A user with the specified email already exists.\n" + 
                                        "Please update the AdminSetup section.";
-                return RedirectToAction("Error", "Home");
+                return View("Error");
             }
 
             if(settingsEmail == "")
             {
                 ViewBag.ErrorMessage = "AdminSetup empty.";
-                return RedirectToAction("Error", "Home");
+                return View("Error");
             }
 
             string settingsNickName = _configuration.GetValue<string>($"AdminSetup:NickName");
@@ -86,13 +86,13 @@ namespace BredWeb.Controllers
                 await _userManager.AddToRoleAsync(user, "Admin");
                 ViewBag.ErrorMessage = "Admin account created successfuly\n"+
                                        "You can now log in.";
-                return RedirectToAction("Error", "Home");
+                return View("Error");
             }
             else
             {
                 ViewBag.ErrorMessage = "Admin account creation failed.\n"+
                                        "Please check the AdminSetup section.";
-                return RedirectToAction("Error", "Home");
+                return View("Error");
             }
         }
 

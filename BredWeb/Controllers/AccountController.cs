@@ -62,32 +62,38 @@ namespace BredWeb.Controllers
                 var users = db.Users;
                 if(users.FirstOrDefault(u => u.Email.Equals(obj.Email)) == null)
                 {
-                    var user = new Person
+                    if (users.FirstOrDefault(u => u.NickName.Equals(obj.NickName)) == null)
                     {
-                        UserName = obj.Email,
-                        Email = obj.Email,
-                        NickName = obj.NickName, //TODO: add existing name validation later
-                        BirthDay = obj.BirthDay,
-                        DateCreated = DateTime.Now
-                    };
+                        var user = new Person
+                        {
+                            UserName = obj.Email,
+                            Email = obj.Email,
+                            NickName = obj.NickName, //TODO: add existing name validation later
+                            BirthDay = obj.BirthDay,
+                            DateCreated = DateTime.Now
+                        };
 
-                    //var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var result = await userManager.CreateAsync(user, obj.Password);
+                        //var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var result = await userManager.CreateAsync(user, obj.Password);
 
-                    if (result.Succeeded)
-                    {
-                        await signInManager.SignInAsync(user, isPersistent: false);
+                        if (result.Succeeded)
+                        {
+                            await signInManager.SignInAsync(user, isPersistent: false);
+                        }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError("", error.Description);
+                            }
+                        }
+
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
+                        ModelState.AddModelError("", "NickName is already in use");
                     }
-
-                    return RedirectToAction("Index", "Home");
-
                 }
                 else
                 {

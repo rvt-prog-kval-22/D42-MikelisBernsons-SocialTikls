@@ -49,7 +49,7 @@ namespace BredWeb.Controllers
         //GET
         [Authorize]
         public IActionResult Create()
-        {            
+        {
             return View();
         }
 
@@ -63,9 +63,9 @@ namespace BredWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                if(_db.Groups.Any(g => g.Title == obj.Title))
+                if (_db.Groups.Any(g => g.Title == obj.Title))
                 {
-                    ModelState.AddModelError("CustomError",obj.Title + " already exists.");
+                    ModelState.AddModelError("CustomError", obj.Title + " already exists.");
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace BredWeb.Controllers
 
         //GET
         [Authorize]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
@@ -94,32 +94,45 @@ namespace BredWeb.Controllers
             if (groupFromDb == null)
                 return NotFound();
 
-            return View(groupFromDb);
+            _db.Entry(groupFromDb).Collection(g => g.AdminList).Load();
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            if (groupFromDb.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+                return View(groupFromDb);
+            else
+                return Unauthorized();
         }
 
         //POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult DeleteGroup(int? id)
+        public async Task<IActionResult> DeleteGroup(int? id)
         {
             var obj = _db.Groups.Find(id);
             if (obj == null)
                 return NotFound();
 
-            foreach (var post in _db.Posts.Where(p => p.GroupId == id))
-            {
-                _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
-            }
-
-            _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
             _db.Entry(obj).Collection(g => g.AdminList).Load();
-            obj.AdminList.Clear();
-            _db.Groups.Remove(obj);
-            _db.SaveChanges();
-            TempData["success"] = "Group deleted successfully";
-            return RedirectToAction("Index");
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
+            if (obj.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+            {
+                foreach (var post in _db.Posts.Where(p => p.GroupId == id))
+                {
+                    _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
+                }
+
+                _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
+                obj.AdminList.Clear();
+                _db.Groups.Remove(obj);
+                _db.SaveChanges();
+                TempData["success"] = "Group deleted successfully";
+                return RedirectToAction("Index");
+            }
+            return Unauthorized();
         }
 
         //GET
@@ -165,12 +178,19 @@ namespace BredWeb.Controllers
 
             try
             {
-                group.UserList.Remove(user);
-                group.UserCount--;
-                if (group.AdminList.Any(x => x.AdminId == user.Id))
-                    group.AdminList.Remove(group.AdminList.First(x => x.AdminId == user.Id));
-                _db.Groups.Update(group);
-                _db.SaveChanges();
+                if (group.UserList.Contains(user))
+                {
+                    group.UserList.Remove(user);
+                    group.UserCount--;
+                    if (group.AdminList.Any(x => x.AdminId == user.Id))
+                        group.AdminList.Remove(group.AdminList.First(x => x.AdminId == user.Id));
+                    _db.Groups.Update(group);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception)
             {
@@ -195,12 +215,12 @@ namespace BredWeb.Controllers
         //GET
         public IActionResult Search(string substr)
         {
-            if(substr != null && substr != "")
+            if (substr != null && substr != "")
             {
                 var groups = _db.Groups;
                 var result = groups.Where(g => g.Title.Contains(substr))
                     .ToList();
-                if(result.Count <= 0)
+                if (result.Count <= 0)
                 {
                     TempData["Error"] = "No results found";
                     return View("Index", _db.Groups.ToList());
@@ -215,7 +235,7 @@ namespace BredWeb.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            if(!_signInManager.IsSignedIn(User))
+            if (!_signInManager.IsSignedIn(User))
                 return BadRequest();
             var user = await _userManager.GetUserAsync(User);
 
@@ -224,7 +244,7 @@ namespace BredWeb.Controllers
 
             var group = _db.Groups.Find(id);
 
-            if(group == null)
+            if (group == null)
                 return NotFound();
             _db.Entry(group).Collection(g => g.AdminList).Load();
             if (User.IsInRole("Admin") || group.AdminList.Any(x => x.AdminId == user.Id))
@@ -239,20 +259,30 @@ namespace BredWeb.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult EditDescription(string Title, string Description, int Id)
+        public async Task<IActionResult> EditDescription(string Description, int Id)
         {
             Group group = _db.Groups.Find(Id);
+            if (group == null)
+                return NotFound();
 
-            if (ModelState.IsValid && group != null)
+            _db.Entry(group).Collection(g => g.AdminList).Load();
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            if (group.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
             {
-                group.Description = Description;
-                _db.Groups.Update(group);
-                _db.SaveChanges();
-                TempData["success"] = "Success";
-                return RedirectToAction("BrowseGroup", "Post", new { id = Id });
-            }
+                if (ModelState.IsValid)
+                {
+                    group.Description = Description;
+                    _db.Groups.Update(group);
+                    _db.SaveChanges();
+                    TempData["success"] = "Success";
+                    return RedirectToAction("BrowseGroup", "Post", new { id = Id });
+                }
 
-            return RedirectToAction("Index", "Group");
+                return RedirectToAction("Index", "Group");
+            }
+            return Unauthorized();
         }
 
         //POST
@@ -260,36 +290,43 @@ namespace BredWeb.Controllers
         [Authorize]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public IActionResult RemoveAdmins(Group obj)
+        public async Task<IActionResult> RemoveAdmins(Group obj)
         {
             Group dbGroup = _db.Groups.Find(obj.Id);
             _db.Entry(dbGroup).Collection(g => g.AdminList).Load();
 
             if (dbGroup != null)
             {
-                if(dbGroup.AdminList.Count <= 1)
+                var user = (await _userManager.GetUserAsync(User));
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+                if (dbGroup.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
                 {
-                    TempData["Error"] = "Can't remove all admins";
-                    return RedirectToAction("Edit", new { id = obj.Id });
-                }
-                foreach (var admin in obj.AdminList)
-                {
-                    if(dbGroup.AdminList.Count > 1)
+                    if (dbGroup.AdminList.Count <= 1)
                     {
-                        if (admin.IsSelected)
+                        TempData["Error"] = "Can't remove all admins";
+                        return RedirectToAction("Edit", new { id = obj.Id });
+                    }
+                    foreach (var admin in obj.AdminList)
+                    {
+                        if (dbGroup.AdminList.Count > 1)
                         {
-                            dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                            if (admin.IsSelected)
+                            {
+                                dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                            }
+                        }
+                        else
+                        {
+                            TempData["Error"] = "All admins were removed except the last one in the list";
+                            break;
                         }
                     }
-                    else
-                    {
-                        TempData["Error"] = "All admins were removed except the last one in the list";
-                        break;
-                    }
-                }              
 
-                _db.SaveChanges();
-                return RedirectToAction("Edit", new { id = obj.Id });
+                    _db.SaveChanges();
+                    return RedirectToAction("Edit", new { id = obj.Id });
+                }
+                return Unauthorized();
             }
             TempData["Error"] = "Group was null";
             return RedirectToAction("Edit", new { id = obj.Id });
@@ -299,7 +336,7 @@ namespace BredWeb.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult AddAdmin(string email, int Id)
+        public async Task<IActionResult> AddAdmin(string email, int Id)
         {
             Group? group = _db.Groups.Find(Id);
 
@@ -308,24 +345,30 @@ namespace BredWeb.Controllers
 
                 Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
                 _db.Entry(group).Collection(g => g.AdminList).Load();
+                var user = (await _userManager.GetUserAsync(User));
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-                foreach(Admin admin in group.AdminList)
+                if (group.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
                 {
-                    if(admin.Email == email)
+                    foreach (Admin admin in group.AdminList)
                     {
-                        TempData["Error"] = "Add admin failed";
+                        if (admin.Email == email)
+                        {
+                            TempData["Error"] = "Add admin failed";
+                            return RedirectToAction("Edit", new { id = Id });
+                        }
+                    }
+
+                    if (newAdmin != null)
+                    {
+                        group.AdminList.Add(new Admin { AdminId = newAdmin.Id, Email = newAdmin.Email, UserName = newAdmin.NickName });
+                        _db.Groups.Update(group);
+                        _db.SaveChanges();
+                        TempData["success"] = "Success";
                         return RedirectToAction("Edit", new { id = Id });
                     }
                 }
-
-                if (newAdmin != null)
-                {
-                    group.AdminList.Add(new Admin { AdminId = newAdmin.Id, Email = newAdmin.Email, UserName = newAdmin.NickName });
-                    _db.Groups.Update(group);
-                    _db.SaveChanges();
-                    TempData["success"] = "Success";
-                    return RedirectToAction("Edit", new { id = Id });
-                }
+                return Unauthorized();
             }
             TempData["Error"] = "Add admin failed";
             return RedirectToAction("Edit", new { id = Id });

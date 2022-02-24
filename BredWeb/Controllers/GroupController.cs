@@ -177,7 +177,7 @@ namespace BredWeb.Controllers
                 return RedirectToAction("Index");
             }
             TempData["success"] = "Group Left";
-            return RedirectToAction("BrowseGroup", "Post", new { id = group.Id });
+            return RedirectToAction("Index");
         }
 
         //GET

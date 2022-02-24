@@ -123,7 +123,7 @@ namespace BredWeb.Controllers
 
         //GET
         [Authorize]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id is null or 0)
                 return NotFound();
@@ -133,32 +133,46 @@ namespace BredWeb.Controllers
             if (post == null)
                 return NotFound();
 
-            return View(post);
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (post.AuthorName == user.NickName || isAdmin)
+                return View(post);
+            else
+                return Unauthorized();
         }
 
         //POST
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Post obj)
+        public async Task<IActionResult> Edit(Post obj)
         {
             Post? post = _db.Posts.Find(obj.Id);
-            post.Body = obj.Body;
-            post.IsEdited = true;
+            if (post == null)
+                return NotFound();
 
-            if (ModelState.IsValid)
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (post.AuthorName == user.NickName || isAdmin)
             {
-                _db.Posts.Update(post);
-                _db.SaveChanges();
-                TempData["success"] = "Success";
-                return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+                post.Body = obj.Body;
+                post.IsEdited = true;
+
+                if (ModelState.IsValid)
+                {
+                    _db.Posts.Update(post);
+                    _db.SaveChanges();
+                    TempData["success"] = "Success";
+                    return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+                }
+                return View(obj);
             }
-            return View(obj);
+            return Unauthorized();            
         }
 
         //GET
         [Authorize]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
                 return NotFound();
@@ -168,25 +182,35 @@ namespace BredWeb.Controllers
             if (post == null)
                 return NotFound();
 
-            return View(post);
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (user.NickName == post.AuthorName || isAdmin)
+                return View(post);
+            return Unauthorized();
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public IActionResult Delete(Post obj)
+        public async Task<IActionResult> Delete(Post obj)
         {
             Post? post = _db.Posts.Find(obj.Id);
 
             if (post == null)
                 return NotFound();
 
-            _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
-            _db.Posts.Remove(post);
-            _db.SaveChanges();
-            TempData["success"] = "Success";
-            return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+            var user = (await _userManager.GetUserAsync(User));
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (user.NickName == post.AuthorName || isAdmin)
+            {
+                _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
+                _db.Posts.Remove(post);
+                _db.SaveChanges();
+                TempData["success"] = "Success";
+                return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
+            }
+            return Unauthorized();            
         }
 
         //GET

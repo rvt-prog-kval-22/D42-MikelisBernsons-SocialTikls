@@ -16,3 +16,23 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.footer-fix {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.min-vh-35 {
+    min-height: 35vh !important;
+}
+
+.min-vh-40 {
+    min-height: 40vh !important;
+}
+
+.min-vh-60 {
+    min-height: 60vh !important;
+}

@@ -37,6 +37,8 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await userManager.GetUserAsync(User);
+            var posts = db.Posts.Where(p => p.AuthorName == user.NickName);
+            ViewBag.Posts = posts;
             return View(user);
         }
 
@@ -73,7 +75,6 @@ namespace BredWeb.Controllers
                             DateCreated = DateTime.Now
                         };
 
-                        //var confirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
                         if(user.BirthDay > DateTime.Now)
                         {
                             user.BirthDay = DateTime.Now;
@@ -82,6 +83,7 @@ namespace BredWeb.Controllers
 
                         if (result.Succeeded)
                         {
+                            await userManager.ConfirmEmailAsync(user, await userManager.GenerateEmailConfirmationTokenAsync(user));
                             await signInManager.SignInAsync(user, isPersistent: false);
                         }
                         else
@@ -175,7 +177,7 @@ namespace BredWeb.Controllers
             Email.DefaultRenderer = new RazorRenderer();
 
             StringBuilder template = new();
-            template.AppendLine("Hi @Model.Name,");
+            template.AppendLine("Hi," + "@Model.Name");
             template.AppendLine($"<p>{body}</p>");
             template.AppendLine("- Breddit");
 
@@ -183,7 +185,7 @@ namespace BredWeb.Controllers
                 .From(fromEmail)
                 .To(receiver)
                 .Subject("Email from breddit :o")
-                .UsingTemplate(template.ToString(), new { Name = (await userManager.GetUserAsync(User)).NickName });
+                .UsingTemplate(template.ToString(), new { Name = "" });
 
             var result = await email.SendAsync();
 
@@ -193,6 +195,68 @@ namespace BredWeb.Controllers
             }
 
             return new EmptyResult();
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if(user != null && await userManager.IsEmailConfirmedAsync(user))
+                {
+                    var confirmationToken = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var passwordResetLink = Url.Action("ResetPassword", "Account",
+                        new {email = model.Email, token = confirmationToken }, Request.Scheme);
+
+                    SendEmail(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
+
+                    return View("ForgotPasswordConfirmation");
+                }
+                return View("ForgotPasswordConfirmation");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if(token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid token");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                if(user != null)
+                {
+                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return View("ResetPasswordConfirmation");
+                    }
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+                return View("ResetPasswordConfirmation");
+            }
+            return View(model);
         }
     }
 }

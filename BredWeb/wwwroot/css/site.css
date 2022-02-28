@@ -36,3 +36,35 @@ body {
 .min-vh-60 {
     min-height: 60vh !important;
 }
+
+a.post-div{ /*removes link underlines*/
+    text-decoration: none;
+}
+
+p.card-text { /*post text*/
+    color: #839496;
+}
+
+.w-15 {
+    width: 15% !important;
+}
+
+.w-35 {
+    width: 35% !important;
+}
+
+.w-60 {
+    width: 60% !important;
+}
+
+.h-15 {
+    height: 15% !important;
+}
+
+.h-35 {
+    height: 35% !important;
+}
+
+.h-60 {
+    height: 60% !important;
+}

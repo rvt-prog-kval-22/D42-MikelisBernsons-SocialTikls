@@ -17,17 +17,20 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
 
         public HomeController(ILogger<HomeController> logger,
                               UserManager<Person> userManager,
                               SignInManager<Person> signInManager,
                               RoleManager<IdentityRole> roleManager,
-                              ApplicationDbContext db)
+                              ApplicationDbContext db,
+                              IConfiguration configuration)
         {
             _logger = logger;
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._roleManager = roleManager;
+            this._configuration = configuration;
             _db = db;
         }
 

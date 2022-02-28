@@ -29,7 +29,7 @@
 
                 <form method="post" asp-controller="Account" asp-action="ForgotPassword">
                     <input asp-for="Email" value="@Model.Email" type="hidden" />
-                    <button type="submit" class="btn btn-info" style="width:100%">Send email to change password</button>
+                    <button type="submit" class="btn btn-secondary" style="width:100%">Send email to change password</button>
                 </form>
             </div>
         </div>
@@ -70,7 +70,7 @@
                                 </a>
 
                                 <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id"
-                               class="btn btn-info btn-sm m-1" style="width: 125px">
+                               class="btn btn-secondary btn-sm m-1" style="width: 125px">
                                     <i class="bi bi-arrow-down-square"></i>
                                     Dislike
                                 </a>

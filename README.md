@@ -70,7 +70,7 @@ ASP.NET
 MSSQL  
 
 ## Izmantotie avoti un kad tie izmantoti:
-[C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) šeit tiek ietverti ļot daudz linki (1 links uz visu) par oficiālo c# dokumentāciju ko nav vērts visu linkot.  
+[C# Dokumentācija](https://docs.microsoft.com/en-us/dotnet/csharp/) šeit tiek ietverti ļot daudz linki (1 links uz visu) par oficiālo c# dokumentāciju.  
 [Entity Framework datu saglabāšana 1](https://www.youtube.com/watch?v=ZX7_12fwQLU) 09.12.2021  
 [Entity Framework datu saglabāšana 2](https://www.youtube.com/watch?v=qkJ9keBmQWo) 09.12.2021  
 [Identity Serviss lietotāja profila datiem](https://www.youtube.com/watch?v=egITMrwMOPU) 14.12.2021  
@@ -80,10 +80,10 @@ MSSQL
 [Favicon](https://icons8.com/icons/set/favicon-cat)  
 [Vairāki video no šī playlist](https://www.youtube.com/playlist?list=PL6n9fhu94yhVkdrusLaQsfERmL_Jh4XmU)  
 [ViewBag piemērs](https://www.tutorialsteacher.com/mvc/viewbag-in-asp.net-mvc)  
-[Pamācība uz kuras pamata izveidoja e-pastu sūtīšanu](https://www.youtube.com/watch?v=qSeO9886nRM)  
+[Pamācība uz kuras pamata izveidoju e-pastu sūtīšanu](https://www.youtube.com/watch?v=qSeO9886nRM)  
 [Gmail e-pastu sūtīšanas info](https://www.siteground.com/kb/gmail-smtp-server/)  
 
-# Uzstādīšanas instrukcijas:
+# Uzstādīšanas instrukcijas(Izmaiņu dēļ tās vairs nav atbilstošas projektam, atjaunināšu vēlāk):
   
 1. [Lejuplādēt Visual Studio Community 2022 (iespējams var atvērt arī ar 2019 gada versiju vai vecāku, bet neesmu to testējis.](https://visualstudio.microsoft.com/downloads/)
 2. Iegūt pieeju projektam kur tas tiek saglabāts (pajautāt caur mykoob), to lejuplādēt.

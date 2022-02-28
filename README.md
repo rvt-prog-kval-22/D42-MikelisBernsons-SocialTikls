@@ -10,8 +10,8 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 ### Reģistrēties un taisīt lietotāja profilu:
 
 1. uzstādīt publisko lietotājvārdu - OK
-2. mainīt paroli kad ir iegājis profilā - *
-3. atjaunināt paroli ar linku kuru nosūta uz e-pastu - *
+2. mainīt paroli kad ir iegājis profilā - OK
+3. atjaunināt paroli ar linku kuru nosūta uz e-pastu - OK
 4. Varbūt - uzstādīt lietotāja bildi - *
 
 ### Publiskas grupas:
@@ -80,6 +80,8 @@ MSSQL
 [Favicon](https://icons8.com/icons/set/favicon-cat)  
 [Vairāki video no šī playlist](https://www.youtube.com/playlist?list=PL6n9fhu94yhVkdrusLaQsfERmL_Jh4XmU)  
 [ViewBag piemērs](https://www.tutorialsteacher.com/mvc/viewbag-in-asp.net-mvc)  
+[Pamācība uz kuras pamata izveidoja e-pastu sūtīšanu](https://www.youtube.com/watch?v=qSeO9886nRM)  
+[Gmail e-pastu sūtīšanas info](https://www.siteground.com/kb/gmail-smtp-server/)  
 
 # Uzstādīšanas instrukcijas:
   

@@ -222,17 +222,20 @@ namespace BredWeb.Controllers
             if (group == null || post == null)
                 return NotFound();
 
+            OpenPost model = new();
+
             if (_signInManager.IsSignedIn(User))
-                ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
-            else
-                ViewBag.nick = "";
+            {
+                model.UserNick = (await _userManager.GetUserAsync(User)).NickName;
+                model.UserId = (await _userManager.GetUserAsync(User)).Id;
+            }
 
-            ViewBag.Post = post;
-            ViewBag.Group = group;
             _db.Entry(group).Collection(g => g.AdminList).Load();
-            List<Comment> comments = _db.Comments.Where(c => c.PostId == postId).ToList();
+            model.Group = group;
+            model.Post = post;
+            model.Comments = _db.Comments.Where(c => c.PostId == postId).ToList();
 
-            return View(comments);
+            return View(model);
         }
 
         [Authorize]

@@ -96,7 +96,7 @@
                         @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
                     </div>
                     <input type="hidden" name="groupId" value=@Model.Group.Id />
-                    <input type="hidden" name="postId" value=@Model.Group.Id />
+                    <input type="hidden" name="postId" value=@Model.Post.Id />
                     <button asp-controller="Comment" asp-action="Create" class="btn btn-sm btn-primary ms-auto mb-3 me-3" style="width:150px" type="submit">Comment</button>
                 </div>
             </form>

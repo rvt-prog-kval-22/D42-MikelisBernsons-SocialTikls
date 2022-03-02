@@ -29,7 +29,10 @@ Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dal
 
 ### Taisīt post:
 
-1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK
+1. saturs - pagaidām virsraksts un teksta saturs, bet vēlāk pētīšu vairāk opcijas - OK  
+  1.1 - Teksta post - OK  
+  1.2 - Youtube linkA post - OK  
+  1.3 - Foto attēla post - OK  
 2. postiem citi reģistrēti lietotāji var komentēt - OK
 3. Vērtēt ar patīk/nepatīk - OK
 4. Spēja sakārtot post pēc kritērijiem (jaunākie un populārākie) - OK

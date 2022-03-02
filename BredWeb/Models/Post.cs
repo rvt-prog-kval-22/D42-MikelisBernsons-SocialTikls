@@ -24,5 +24,12 @@ namespace BredWeb.Models
         public List<Comment>? CommentList { get; set; } = new();
         public int TotalRating { get; set; } = 0;
         public int GroupId { get; set; }
+        public TypeEnum Type { get; set; } = TypeEnum.Text;
+        public enum TypeEnum
+        {
+            Image = 2,
+            Youtube = 1,
+            Text = 0
+        }
     }
 }

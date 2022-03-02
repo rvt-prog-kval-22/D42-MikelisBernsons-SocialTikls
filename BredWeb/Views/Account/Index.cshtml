@@ -38,16 +38,16 @@
             {
                 <div class="card w-100 mx-auto">
                     <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@post.GroupId">
-                        <div class="card-header">
-                            <h3 class="ps-1 text-primary">
-                                <span class="badge bg-primary rounded-pill">@post.TotalRating</span>
-                                &nbsp @post.Title
-                            </h3>
-                        </div>
-
-                        <div class="card-body" style="white-space: pre-line">
-                            <p class="card-text">@post.Body</p>
-                        </div>
+                        @{
+                            if (post.Type == Post.TypeEnum.Text)
+                            {
+                                await Html.RenderPartialAsync("_PostContentTextPartial", (Post)post);
+                            }
+                            else if (post.Type == Post.TypeEnum.Youtube)
+                            {
+                                await Html.RenderPartialAsync("_PostContentYTPartial", (Post)post);
+                            }
+                        }
                     </a>
 
                     <div class="card-subtitle text-end me-3">

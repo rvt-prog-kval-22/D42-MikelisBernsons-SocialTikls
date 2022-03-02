@@ -25,16 +25,16 @@
         <div class="col-8 m-2">
 
             <div class="card w-100 mx-auto">
-                <div class="card-header">
-                    <h3 class="ps-1 text-primary">
-                        <span class="badge bg-primary rounded-pill">@Model.Post.TotalRating</span>
-                        &nbsp @Model.Post.Title
-                    </h3>
-                </div>
-
-                <div class="card-body" style="white-space: pre-line">
-                    <p class="card-text">@Model.Post.Body</p>
-                </div>
+                @{
+                    if (Model.Post.Type == Post.TypeEnum.Text)
+                    {
+                        await Html.RenderPartialAsync("_PostContentTextPartial", Model.Post);
+                    }
+                    else if (Model.Post.Type == Post.TypeEnum.Youtube)
+                    {
+                        await Html.RenderPartialAsync("_PostContentYTPartial", Model.Post);
+                    }
+                }
 
                 <div class="card-subtitle text-end me-3">
                     @if (Model.Post.IsEdited)
@@ -53,13 +53,13 @@
                         <div class="row">
                             <div class="col-3 btn-group" role="group">
                                 <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
-                                    class="btn btn-primary btn-sm m-1" style="width: 125px">
+                               class="btn btn-primary btn-sm m-1" style="width: 125px">
                                     <i class="bi bi-arrow-up-square"></i>
                                     Like
                                 </a>
 
                                 <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
-                                    class="btn btn-secondary btn-sm m-1" style="width: 125px">
+                               class="btn btn-secondary btn-sm m-1" style="width: 125px">
                                     <i class="bi bi-arrow-down-square"></i>
                                     Dislike
                                 </a>
@@ -70,12 +70,12 @@
                                 @if (ViewBag.nick == Model.Post.AuthorName)
                                 {
                                     <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Post.Id"
-                                    class="btn btn-primary btn-sm m-1">Edit</a>
+                               class="btn btn-primary btn-sm m-1">Edit</a>
                                 }
                                 @if (ViewBag.nick == Model.Post.AuthorName || User.IsInRole("Admin"))
                                 {
                                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.Id"
-                                    class="btn btn-warning btn-sm m-1">Delete</a>
+                               class="btn btn-warning btn-sm m-1">Delete</a>
                                 }
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                             }
                         </div>
 
-                        @if (Model.UserNick== comment.AuthorName || User.IsInRole("Admin") || Model.GroupAdmin)
+                        @if (Model.UserNick == comment.AuthorName || User.IsInRole("Admin") || Model.GroupAdmin)
                         {
                             <div class="w-100 card-footer">
                                 <form method="post">

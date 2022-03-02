@@ -67,14 +67,48 @@ namespace BredWeb.Controllers
             if (ModelState.IsValid)
             {
                 group.Posts.Add(post);
-                // post counter in group?
                 _db.Groups.Update(group);
-                //_db.Attach(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";
             }            
             
             return RedirectToAction("Open", "Group", new { id = groupId});
+        }
+
+        //POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateYT(Post post, int groupId)
+        {
+
+            if (groupId == 0)
+                return NotFound();
+
+            Group? group = _db.Groups.Find(groupId);
+            Person user = await _userManager.GetUserAsync(User);
+
+            if (group == null)
+                return NotFound();
+
+            ViewBag.GroupTitle = group.Title;
+            post.Type = Post.TypeEnum.Youtube;
+            post.AuthorName = user.NickName;
+            post.PostDate = DateTime.Now;
+            post.Id = 0; // this fixes an error
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any())
+                .Select(x => new { x.Key, x.Value.Errors });
+
+            if (ModelState.IsValid)
+            {
+                post.Body = post.Body.Replace("watch?v=", "embed/");
+                group.Posts.Add(post);
+                _db.Groups.Update(group);
+                _db.SaveChanges();
+                TempData["success"] = "Post created successfully";
+            }
+
+            return RedirectToAction("Open", "Group", new { id = groupId });
         }
 
         //GET

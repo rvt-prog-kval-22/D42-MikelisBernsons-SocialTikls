@@ -1,28 +1,57 @@
 ﻿@model Post
 
-<form method="post">
-    <div class="bg-dark p-3 mt-4 w-75">
-        <div class="row pb-2">
-            <h2 class="text-primary">Create Post in - @ViewBag.GroupTitle </h2>
-            <hr />
+<div class="container">
+    <div class="row">
+
+        <div class="col-6">
+            <form method="post">
+                <div class="bg-dark p-3 mt-4 w-100">
+                    <div class="row pb-2">
+                        <h2 class="text-primary">Create a text Post</h2>
+                        <hr />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control w-50" />
+                        <span asp-validation-for="Title" class="text-warning"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Body"></label>
+                        <textarea asp-for="Body" rows="8" class="form-control w-100"></textarea>
+                        <span asp-validation-for="Body" class="text-warning"></span>
+                    </div>
+                    <input type="hidden" name="groupId" value=@ViewBag.id />
+                    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label asp-for="Title"></label>
-            <input asp-for="Title" class="form-control w-25" />
-            <span asp-validation-for="Title" class="text-warning"></span>
+        <div class="col-6">
+            <form method="post" asp-action="CreateYT">
+                <div class="bg-dark p-3 mt-4 w-100">
+                    <div class="row pb-2">
+                        <h2 class="text-primary">Create a Youtube link post</h2>
+                        <hr />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control w-50" />
+                        <span asp-validation-for="Title" class="text-warning"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Body">Link</label>
+                        <textarea asp-for="Body" rows="1" class="form-control w-100"></textarea>
+                        <span asp-validation-for="Body" class="text-warning"></span>
+                    </div>
+                    <input type="hidden" name="groupId" value=@ViewBag.id />
+                    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label asp-for="Body"></label>
-            <textarea asp-for="Body" rows="8" class="form-control w-50"></textarea>
-            <span asp-validation-for="Body" class="text-warning"></span>
-        </div>
-        <input type="hidden" name="groupId" value=@ViewBag.id />
-        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
     </div>
-</form>
+</div>
 
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     }
 }

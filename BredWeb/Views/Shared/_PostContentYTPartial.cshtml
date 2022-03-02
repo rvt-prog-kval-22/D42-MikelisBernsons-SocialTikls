@@ -1,0 +1,15 @@
+﻿@model Post
+
+<div class="card-header">
+    <h3 class="ps-1 text-primary">
+        <span class="badge bg-primary rounded-pill">@Model.TotalRating</span>
+        &nbsp @Model.Title
+    </h3>
+</div>
+
+<div class="card-body" style="white-space: pre-line">
+    <iframe width="560" height="315" src="@Model.Body"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+</div>

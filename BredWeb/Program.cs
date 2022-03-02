@@ -1,5 +1,7 @@
 using BredWeb.Data;
+using BredWeb.Interfaces;
 using BredWeb.Models;
+using BredWeb.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services
     .AddFluentEmail("test@test.test")
     .AddSmtpSender("localhost", 25);
-
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddIdentity<Person, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 3;

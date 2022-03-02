@@ -1,5 +1,7 @@
 ﻿using BredWeb.Data;
+using BredWeb.Interfaces;
 using BredWeb.Models;
+using BredWeb.Services;
 using FluentEmail.Core;
 using FluentEmail.Razor;
 using FluentEmail.Smtp;
@@ -20,15 +22,18 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> signInManager;
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext db;
+        private readonly IAccountService _account;
 
         public AccountController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  IConfiguration configuration,
-                                 ApplicationDbContext db)
+                                 ApplicationDbContext db,
+                                 IAccountService accountService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this._account = accountService;
             this.db = db;
         }
 
@@ -36,10 +41,7 @@ namespace BredWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await userManager.GetUserAsync(User);
-            var posts = db.Posts.Where(p => p.AuthorName == user.NickName);
-            ViewBag.Posts = posts;
-            return View(user);
+            return View(_account.GetAccountViewModel(await userManager.GetUserAsync(User)));
         }
 
         [HttpPost]
@@ -58,7 +60,7 @@ namespace BredWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(Register obj)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && obj != null)
             {
 
                 var users = db.Users;

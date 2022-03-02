@@ -1,11 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<Person> UserManager
-@model Person
+@model AccountViewModel
 
 @{
     ViewData["Title"] = "Account";
-    string email = (await UserManager.GetUserAsync(User)).Email;
-    var posts = ViewBag.Posts;
 }
 
 <div class="container">
@@ -14,27 +12,27 @@
             <div class="form-group w-100" style="padding:0px">
                 <fieldset disabled="">
                     <div class="mb-3">
-                        <label asp-for="NickName" class="text-success"></label>
-                        <input asp-for="NickName" class="form-control" />
+                        <label class="text-success">NickName</label>
+                        <input value="@Model.Person.NickName" class="form-control" />
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Email" class="text-success"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <label class="text-success">Email</label>
+                        <input value="@Model.Person.Email" class="form-control" />
                     </div>
                     <div class="mb-3">
                         <label for="disabledInput" class="text-success">Birthday</label>
-                        <input class="form-control" id="disabledInput" type="text" disabled="" value="@Model.BirthDay.ToString().Substring(0, 10)">
+                        <input class="form-control" id="disabledInput" type="text" disabled="" value="@Model.Person.BirthDay.ToString().Substring(0, 10)">
                     </div>
                 </fieldset>
 
                 <form method="post" asp-controller="Account" asp-action="ForgotPassword">
-                    <input asp-for="Email" value="@Model.Email" type="hidden" />
+                    <input name="Email" value="@Model.Person.Email" type="hidden" />
                     <button type="submit" class="btn btn-secondary" style="width:100%">Send email to change password</button>
                 </form>
             </div>
         </div>
         <div class="col-8 m-2">
-            @foreach (var post in posts)
+            @foreach (var post in Model.Posts)
             {
                 <div class="card w-100 mx-auto">
                     <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@post.GroupId">

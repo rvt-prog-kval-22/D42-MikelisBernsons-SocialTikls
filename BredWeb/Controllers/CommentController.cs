@@ -50,10 +50,10 @@ namespace BredWeb.Controllers
 
             if (body.Length >= 4)
             {
-                post.CommentList.Add(
+                post.CommentList!.Add(
                 new Comment{
                     Body = body,
-                    AuthorName = user.NickName,
+                    AuthorName = user.NickName!,
                     PostDate = DateTime.Now
                 });
             
@@ -73,12 +73,12 @@ namespace BredWeb.Controllers
             if (comment == null || group == null)
                 return NotFound();
 
-            _db.Entry(group).Collection(g => g.AdminList).Load();
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
 
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if(isAdmin || group.AdminList.Any(x => x.AdminId == user.Id) || user.NickName == comment.AuthorName)
+            if(isAdmin || group.AdminList!.Any(x => x.AdminId == user.Id) || user.NickName == comment.AuthorName)
             {
                 _db.Comments.Remove(comment);
                 _db.SaveChanges();

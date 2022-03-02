@@ -6,10 +6,10 @@ namespace BredWeb.Models
     {
         public int Id { get; set; }
         [Required]
-        public string AdminId { get; set; }
+        public string AdminId { get; set; } = string.Empty;
         public bool IsSelected { get; set; } = false;
         [EmailAddress]
-        public string Email { get; set; }
-        public string UserName { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
     }
 }

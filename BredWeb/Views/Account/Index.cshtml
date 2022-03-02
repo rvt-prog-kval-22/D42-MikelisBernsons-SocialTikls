@@ -13,7 +13,7 @@
                 <fieldset disabled="">
                     <div class="mb-3">
                         <label class="text-success">NickName</label>
-                        <input value="@Model.Person.NickName" class="form-control" />
+                        <input value="@Model!.Person!.NickName" class="form-control" />
                     </div>
                     <div class="mb-3">
                         <label class="text-success">Email</label>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-8 m-2">
-            @foreach (var post in Model.Posts)
+            @foreach (var post in Model.Posts!)
             {
                 <div class="card w-100 mx-auto">
                     <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@post.GroupId">

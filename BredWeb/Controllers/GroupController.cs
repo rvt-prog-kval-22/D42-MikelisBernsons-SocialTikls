@@ -35,8 +35,8 @@ namespace BredWeb.Controllers
             List<Group> objGroupList = _db.Groups.ToList();
             foreach (var group in objGroupList)
             {
-                _db.Entry(group).Collection(g => g.AdminList).Load();
-                _db.Entry(group).Collection(g => g.UserList).Load();
+                _db.Entry(group).Collection(g => g.AdminList!).Load();
+                _db.Entry(group).Collection(g => g.UserList!).Load();
             }
             if (popular)
             {
@@ -71,8 +71,8 @@ namespace BredWeb.Controllers
                 {
                     obj.StartDate = DateTime.Now;
                     obj.Creator = user.NickName;
-                    obj.UserList.Add(user);
-                    obj.AdminList.Add(new Admin { AdminId = user.Id, Email = user.Email, UserName = user.NickName });
+                    obj.UserList!.Add(user);
+                    obj.AdminList!.Add(new Admin { AdminId = user.Id, Email = user.Email, UserName = user.NickName! });
                     obj.UserCount++;
                     _db.Groups.Add(obj);
                     _db.SaveChanges();
@@ -94,11 +94,11 @@ namespace BredWeb.Controllers
             if (groupFromDb == null)
                 return NotFound();
 
-            _db.Entry(groupFromDb).Collection(g => g.AdminList).Load();
+            _db.Entry(groupFromDb).Collection(g => g.AdminList!).Load();
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if (groupFromDb.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+            if (groupFromDb.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
                 return View(groupFromDb);
             else
                 return Unauthorized();
@@ -114,11 +114,11 @@ namespace BredWeb.Controllers
             if (obj == null)
                 return NotFound();
 
-            _db.Entry(obj).Collection(g => g.AdminList).Load();
+            _db.Entry(obj).Collection(g => g.AdminList!).Load();
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if (obj.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+            if (obj.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
             {
                 foreach (var post in _db.Posts.Where(p => p.GroupId == id))
                 {
@@ -126,7 +126,7 @@ namespace BredWeb.Controllers
                 }
 
                 _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
-                obj.AdminList.Clear();
+                obj.AdminList!.Clear();
                 _db.Groups.Remove(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Group deleted successfully";
@@ -150,7 +150,7 @@ namespace BredWeb.Controllers
 
             try
             {
-                group.UserList.Add(user);
+                group.UserList!.Add(user);
                 group.UserCount++;
                 _db.Groups.Update(group);
                 _db.SaveChanges();
@@ -173,17 +173,17 @@ namespace BredWeb.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (group == null)
                 return NotFound();
-            _db.Entry(group).Collection(g => g.UserList).Load();
-            _db.Entry(group).Collection(g => g.AdminList).Load();
+            _db.Entry(group).Collection(g => g.UserList!).Load();
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
 
             try
             {
-                if (group.UserList.Contains(user))
+                if (group.UserList!.Contains(user))
                 {
                     group.UserList.Remove(user);
                     group.UserCount--;
-                    if (group.AdminList.Any(x => x.AdminId == user.Id))
-                        group.AdminList.Remove(group.AdminList.First(x => x.AdminId == user.Id));
+                    if (group.AdminList!.Any(x => x.AdminId == user.Id))
+                        group.AdminList!.Remove(group.AdminList.First(x => x.AdminId == user.Id));
                     _db.Groups.Update(group);
                     _db.SaveChanges();
                 }
@@ -218,7 +218,7 @@ namespace BredWeb.Controllers
             if (substr != null && substr != "")
             {
                 var groups = _db.Groups;
-                var result = groups.Where(g => g.Title.Contains(substr))
+                var result = groups.Where(g => g.Title!.Contains(substr))
                     .ToList();
                 if (result.Count <= 0)
                 {
@@ -246,8 +246,8 @@ namespace BredWeb.Controllers
 
             if (group == null)
                 return NotFound();
-            _db.Entry(group).Collection(g => g.AdminList).Load();
-            if (User.IsInRole("Admin") || group.AdminList.Any(x => x.AdminId == user.Id))
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
+            if (User.IsInRole("Admin") || group.AdminList!.Any(x => x.AdminId == user.Id))
             {
                 return View(group);
             }
@@ -261,15 +261,15 @@ namespace BredWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDescription(string Description, int Id)
         {
-            Group group = _db.Groups.Find(Id);
+            Group? group = _db.Groups.Find(Id);
             if (group == null)
                 return NotFound();
 
-            _db.Entry(group).Collection(g => g.AdminList).Load();
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
             var user = (await _userManager.GetUserAsync(User));
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-            if (group.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+            if (group.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
             {
                 if (ModelState.IsValid)
                 {
@@ -292,28 +292,28 @@ namespace BredWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveAdmins(Group obj)
         {
-            Group dbGroup = _db.Groups.Find(obj.Id);
-            _db.Entry(dbGroup).Collection(g => g.AdminList).Load();
+            Group? dbGroup = _db.Groups.Find(obj.Id);
 
             if (dbGroup != null)
             {
+                _db.Entry(dbGroup).Collection(g => g.AdminList!).Load();
                 var user = (await _userManager.GetUserAsync(User));
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-                if (dbGroup.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+                if (dbGroup.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
                 {
-                    if (dbGroup.AdminList.Count <= 1)
+                    if (dbGroup.AdminList!.Count <= 1)
                     {
                         TempData["Error"] = "Can't remove all admins";
                         return RedirectToAction("Edit", new { id = obj.Id });
                     }
-                    foreach (var admin in obj.AdminList)
+                    foreach (var admin in obj.AdminList!)
                     {
                         if (dbGroup.AdminList.Count > 1)
                         {
                             if (admin.IsSelected)
                             {
-                                dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId));
+                                dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId)!);
                             }
                         }
                         else
@@ -344,13 +344,13 @@ namespace BredWeb.Controllers
             {
 
                 Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
-                _db.Entry(group).Collection(g => g.AdminList).Load();
+                _db.Entry(group).Collection(g => g.AdminList!).Load();
                 var user = (await _userManager.GetUserAsync(User));
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
-                if (group.AdminList.Any(x => x.AdminId == user.Id) || isAdmin)
+                if (group.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
                 {
-                    foreach (Admin admin in group.AdminList)
+                    foreach (Admin admin in group.AdminList!)
                     {
                         if (admin.Email == email)
                         {
@@ -361,7 +361,7 @@ namespace BredWeb.Controllers
 
                     if (newAdmin != null)
                     {
-                        group.AdminList.Add(new Admin { AdminId = newAdmin.Id, Email = newAdmin.Email, UserName = newAdmin.NickName });
+                        group.AdminList.Add(new Admin { AdminId = newAdmin.Id, Email = newAdmin.Email, UserName = newAdmin.NickName! });
                         _db.Groups.Update(group);
                         _db.SaveChanges();
                         TempData["success"] = "Success";

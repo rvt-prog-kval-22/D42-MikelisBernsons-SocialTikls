@@ -8,28 +8,22 @@ namespace BredWeb.Models
         [Required]
         [MaxLength(20)]
         [DisplayName("NickName")]
-        public string NickName { get; set; }
+        public string NickName { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         public DateTime BirthDay { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Password and confirmation password don't match.")]
-        public string ConfirmPassword { get; set; }
-
-        //[Required]
-        //[MinLength(3)]
-        //[MaxLength(18)]        
-        //public string NickName { get; set; }        
-        //public DateTime BirthDay { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

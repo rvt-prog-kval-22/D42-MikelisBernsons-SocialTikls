@@ -15,11 +15,11 @@ namespace BredWeb.Models
         [Required]
         [MaxLength(1500)]
         [MinLength(10)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [Required]
         [StringLength(30)]
         [MinLength(3)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [DisplayName("Start Date")]
         public DateTime StartDate { get; set; }
         public string? Creator { get; set; }

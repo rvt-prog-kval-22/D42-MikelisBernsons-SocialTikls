@@ -5,6 +5,7 @@ namespace BredWeb.Models
     public class Role
     {
         [Required]
-        public string RoleName { get; set; }
+        [MinLength(3)]
+        public string RoleName { get; set; } = string.Empty;
     }
 }

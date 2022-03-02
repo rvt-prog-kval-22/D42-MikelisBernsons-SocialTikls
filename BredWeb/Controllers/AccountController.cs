@@ -66,7 +66,7 @@ namespace BredWeb.Controllers
                 var users = db.Users;
                 if(users.FirstOrDefault(u => u.Email.Equals(obj.Email)) == null)
                 {
-                    if (users.FirstOrDefault(u => u.NickName.Equals(obj.NickName)) == null)
+                    if (users.FirstOrDefault(u => u.NickName!.Equals(obj.NickName)) == null)
                     {
                         var user = new Person
                         {
@@ -218,7 +218,7 @@ namespace BredWeb.Controllers
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                         new {email = model.Email, token = confirmationToken }, Request.Scheme);
 
-                    SendEmail(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
+                    await SendEmail(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
 
                     return View("ForgotPasswordConfirmation");
                 }

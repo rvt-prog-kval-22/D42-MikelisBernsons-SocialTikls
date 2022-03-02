@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 using System.IO;
 
 namespace BredWeb.Controllers
@@ -15,13 +14,13 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public PostController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  RoleManager<IdentityRole> roleManager,
                                  ApplicationDbContext db,
-                                 IHostingEnvironment hostingEnvironment)
+                                 IWebHostEnvironment hostingEnvironment)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
@@ -65,13 +64,10 @@ namespace BredWeb.Controllers
             post.AuthorName = user.NickName;
             post.PostDate = DateTime.Now;
             post.Id = 0; // this fixes an error
-
-            var errors = ModelState.Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors });
             
             if (ModelState.IsValid)
             {
-                group.Posts.Add(post);
+                group.Posts!.Add(post);
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";
@@ -101,13 +97,10 @@ namespace BredWeb.Controllers
             post.PostDate = DateTime.Now;
             post.Id = 0; // this fixes an error
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors });
-
             if (ModelState.IsValid)
             {
-                post.Body = post.Body.Replace("watch?v=", "embed/");
-                group.Posts.Add(post);
+                post.Body = post.Body!.Replace("watch?v=", "embed/");
+                group.Posts!.Add(post);
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";
@@ -141,9 +134,6 @@ namespace BredWeb.Controllers
             model.Body = "";
             model.Title = post.Title;
 
-            var errors = ModelState.Where(x => x.Value.Errors.Any())
-                .Select(x => new { x.Key, x.Value.Errors });
-
             if (post.Image != null)
             {
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
@@ -152,7 +142,7 @@ namespace BredWeb.Controllers
                 post.Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 model.ImagePath = fileName;
 
-                group.Posts.Add(model);
+                group.Posts!.Add(model);
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";
@@ -169,7 +159,7 @@ namespace BredWeb.Controllers
             if (group == null)
                 return NotFound();
 
-            _db.Entry(group).Collection(g => g.AdminList).Load();
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
 
             ViewBag.Group = group;
 
@@ -310,11 +300,11 @@ namespace BredWeb.Controllers
 
             if (_signInManager.IsSignedIn(User))
             {
-                model.UserNick = (await _userManager.GetUserAsync(User)).NickName;
+                model.UserNick = (await _userManager.GetUserAsync(User)).NickName!;
                 model.UserId = (await _userManager.GetUserAsync(User)).Id;
             }
 
-            _db.Entry(group).Collection(g => g.AdminList).Load();
+            _db.Entry(group).Collection(g => g.AdminList!).Load();
             model.Group = group;
             model.Post = post;
             model.Comments = _db.Comments.Where(c => c.PostId == postId).ToList();
@@ -326,6 +316,8 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
         {
             var post = _db.Posts.Find(postId);
+            if (post == null)
+                return BadRequest();
             string userId = "";
             if(_signInManager.IsSignedIn(User))
                 userId = (await _userManager.GetUserAsync(User)).Id.ToString();
@@ -334,7 +326,7 @@ namespace BredWeb.Controllers
 
             var rating = _db.Ratings.FirstOrDefault( r =>
                 r.RatedItemId.Equals(postId) &&
-                r.UserId.Equals(userId)
+                r.UserId!.Equals(userId)
                 );
 
             if(rating != null)
@@ -358,7 +350,7 @@ namespace BredWeb.Controllers
             }
             else
             {
-                post.RatingList.Add(new Rating { 
+                post.RatingList!.Add(new Rating { 
                     UserId = (await _userManager.GetUserAsync(User)).Id.ToString(),
                     RatedItemId = postId,
                     Value = Rating.Status.Upvoted
@@ -379,6 +371,8 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
         {
             var post = _db.Posts.Find(postId);
+            if (post == null)
+                return BadRequest();
             string userId = "";
             if (_signInManager.IsSignedIn(User))
                 userId = (await _userManager.GetUserAsync(User)).Id.ToString();
@@ -387,7 +381,7 @@ namespace BredWeb.Controllers
 
             var rating = _db.Ratings.FirstOrDefault(r =>
                r.RatedItemId.Equals(postId) &&
-               r.UserId.Equals(userId)
+               r.UserId!.Equals(userId)
                 );
 
             if (rating != null)
@@ -411,7 +405,7 @@ namespace BredWeb.Controllers
             }
             else
             {
-                post.RatingList.Add(new Rating
+                post.RatingList!.Add(new Rating
                 {
                     UserId = (await _userManager.GetUserAsync(User)).Id.ToString(),
                     RatedItemId = postId,

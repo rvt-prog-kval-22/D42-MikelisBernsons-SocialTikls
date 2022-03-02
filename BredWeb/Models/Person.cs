@@ -10,10 +10,10 @@ namespace BredWeb.Models
         [Required]
         [MaxLength(20)]
         [DisplayName("NickName")]
-        public string NickName { get; set; }
+        public string? NickName { get; set; }
         [Required]
         public DateTime BirthDay { get; set; }
         public DateTime DateCreated { get; set; }
-        public virtual List<Group> GroupUserList { get; set; }
+        public virtual List<Group>? GroupUserList { get; set; }
     }
 }

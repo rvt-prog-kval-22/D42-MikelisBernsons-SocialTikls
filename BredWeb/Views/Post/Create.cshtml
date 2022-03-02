@@ -1,4 +1,4 @@
-﻿@model Post
+﻿@model CreatePost
 
 <div class="container">
     <div class="row">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="mb-3">
                         <label asp-for="Body"></label>
-                        <textarea asp-for="Body" rows="8" class="form-control w-100"></textarea>
+                        <textarea asp-for="Body" rows="14" class="form-control w-100"></textarea>
                         <span asp-validation-for="Body" class="text-warning"></span>
                     </div>
                     <input type="hidden" name="groupId" value=@ViewBag.id />
@@ -41,6 +41,27 @@
                         <label asp-for="Body">Link</label>
                         <textarea asp-for="Body" rows="1" class="form-control w-100"></textarea>
                         <span asp-validation-for="Body" class="text-warning"></span>
+                    </div>
+                    <input type="hidden" name="groupId" value=@ViewBag.id />
+                    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                </div>
+            </form>
+            <form enctype="multipart/form-data" method="post" asp-action="CreateImage">
+                <div class="bg-dark p-3 mt-4 w-100">
+                    <div class="row pb-2">
+                        <h2 class="text-primary">Create a post that contains an image</h2>
+                        <hr />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control w-50" />
+                        <span asp-validation-for="Title" class="text-warning"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Image"></label>
+                        <div>
+                            <input asp-for="Image" class="form-control" type="file"/>
+                        </div>
                     </div>
                     <input type="hidden" name="groupId" value=@ViewBag.id />
                     <button type="submit" class="btn btn-primary" style="width:150px">Create</button>

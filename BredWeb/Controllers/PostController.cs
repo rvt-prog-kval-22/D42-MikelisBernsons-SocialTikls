@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using System.IO;
 
 namespace BredWeb.Controllers
 {
@@ -13,15 +15,18 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public PostController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  RoleManager<IdentityRole> roleManager,
-                                 ApplicationDbContext db)
+                                 ApplicationDbContext db,
+                                 IHostingEnvironment hostingEnvironment)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._roleManager = roleManager;
+            this._hostingEnvironment = hostingEnvironment;
             _db = db;
         }
 
@@ -103,6 +108,51 @@ namespace BredWeb.Controllers
             {
                 post.Body = post.Body.Replace("watch?v=", "embed/");
                 group.Posts.Add(post);
+                _db.Groups.Update(group);
+                _db.SaveChanges();
+                TempData["success"] = "Post created successfully";
+            }
+
+            return RedirectToAction("Open", "Group", new { id = groupId });
+        }
+        //POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateImage(CreatePost post, int groupId)
+        {
+
+            if (groupId == 0)
+                return NotFound();
+
+            Group? group = _db.Groups.Find(groupId);
+            Person user = await _userManager.GetUserAsync(User);
+            Post model = new();
+            string fileName;
+
+            if (group == null)
+                return NotFound();
+
+
+            ViewBag.GroupTitle = group.Title;
+            model.Type = Post.TypeEnum.Image;
+            model.AuthorName = user.NickName;
+            model.PostDate = DateTime.Now;
+            model.Id = 0; // this fixes an error
+            model.Body = "";
+            model.Title = post.Title;
+
+            var errors = ModelState.Where(x => x.Value.Errors.Any())
+                .Select(x => new { x.Key, x.Value.Errors });
+
+            if (post.Image != null)
+            {
+                string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                fileName = Guid.NewGuid().ToString() + "_" + post.Image.FileName;
+                string filePath = Path.Combine(uploadsFolder, fileName);
+                post.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.ImagePath = fileName;
+
+                group.Posts.Add(model);
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";

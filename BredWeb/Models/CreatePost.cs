@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BredWeb.Models
 {
-    public class Post
+    public class CreatePost
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         [MaxLength(2000)]
         [MinLength(4)]
@@ -17,14 +15,8 @@ namespace BredWeb.Models
         [MinLength(3)]
         public string? Title { get; set; }
         public DateTime PostDate { get; set; }
-        public bool IsEdited { get; set; } = false;
-        [MaxLength(20)]
-        public string? AuthorName { get; set; }
-        public List<Rating>? RatingList { get; set; } = new();
-        public List<Comment>? CommentList { get; set; } = new();
-        public int TotalRating { get; set; } = 0;
         public int GroupId { get; set; }
-        public string? ImagePath { get; set; }
+        public IFormFile? Image { get; set; }
         public TypeEnum Type { get; set; } = TypeEnum.Text;
         public enum TypeEnum
         {

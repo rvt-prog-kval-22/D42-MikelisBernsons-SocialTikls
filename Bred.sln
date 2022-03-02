@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BredWeb", "BredWeb\BredWeb.csproj", "{CFF8F497-8F4E-414B-9E0D-F9308EED6C2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BredWebTests", "BredWebTests\BredWebTests.csproj", "{B72EC91D-5E90-49E2-A19D-54F66E7CD8C6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{CFF8F497-8F4E-414B-9E0D-F9308EED6C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFF8F497-8F4E-414B-9E0D-F9308EED6C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFF8F497-8F4E-414B-9E0D-F9308EED6C2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B72EC91D-5E90-49E2-A19D-54F66E7CD8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B72EC91D-5E90-49E2-A19D-54F66E7CD8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B72EC91D-5E90-49E2-A19D-54F66E7CD8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B72EC91D-5E90-49E2-A19D-54F66E7CD8C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

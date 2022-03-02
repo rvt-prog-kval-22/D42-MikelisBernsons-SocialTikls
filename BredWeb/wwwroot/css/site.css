@@ -17,6 +17,11 @@ body {
   margin-bottom: 60px;
 }
 
+.my-image {
+    max-height: 450px;
+    max-width: 800px;
+}
+
 .footer-fix {
     position: absolute;
     bottom: 0;

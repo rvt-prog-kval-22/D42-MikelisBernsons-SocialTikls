@@ -47,6 +47,10 @@
                             {
                                 await Html.RenderPartialAsync("_PostContentYTPartial", (Post)post);
                             }
+                            else
+                            {
+                                await Html.RenderPartialAsync("_PostContentImagePartial", (Post)post);
+                            }
                         }
                     </a>
 

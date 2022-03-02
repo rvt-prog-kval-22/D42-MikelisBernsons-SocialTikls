@@ -34,6 +34,10 @@
                     {
                         await Html.RenderPartialAsync("_PostContentYTPartial", Model.Post);
                     }
+                    else
+                    {
+                        await Html.RenderPartialAsync("_PostContentImagePartial", Model.Post);
+                    }
                 }
 
                 <div class="card-subtitle text-end me-3">

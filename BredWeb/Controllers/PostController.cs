@@ -208,7 +208,6 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             var user = (await _userManager.GetUserAsync(User));
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
             if (post.AuthorName == user.NickName)
                 return View(post);
             else
@@ -226,7 +225,6 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             var user = (await _userManager.GetUserAsync(User));
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
             if (post.AuthorName == user.NickName)
             {
                 post.Body = obj.Body;
@@ -313,7 +311,7 @@ namespace BredWeb.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
+        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false, bool account = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -364,11 +362,13 @@ namespace BredWeb.Controllers
                 return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id});
             if (home)
                 return RedirectToAction("Index", "Home");
+            if(account)
+                return RedirectToAction("Index", "Account");
             return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 
         [Authorize]
-        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false)
+        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false, bool account = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -420,6 +420,8 @@ namespace BredWeb.Controllers
                 return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id });
             if (home)
                 return RedirectToAction("Index", "Home");
+            if (account)
+                return RedirectToAction("Index", "Account");
             return RedirectToAction("BrowseGroup", new { id = post.GroupId });
         }
 

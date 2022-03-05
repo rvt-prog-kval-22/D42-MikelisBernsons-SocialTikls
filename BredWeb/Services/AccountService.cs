@@ -6,19 +6,10 @@ namespace BredWeb.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly UserManager<Person> _userManager;
-        private readonly SignInManager<Person> _signInManager;
-        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _db;
 
-        public AccountService(UserManager<Person> userManager,
-                                 SignInManager<Person> signInManager,
-                                 IConfiguration configuration,
-                                 ApplicationDbContext db)
+        public AccountService(ApplicationDbContext db)
         {
-            this._userManager = userManager;
-            this._signInManager = signInManager;
-            this._configuration = configuration;
             this._db = db;
         }
 

@@ -65,13 +65,13 @@
                     <div class="w-100 card-footer container">
                         <div class="row">
                             <div class="col-3 btn-group" role="group">
-                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id"
+                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id" asp-route-account="true"
                                class="btn btn-primary btn-sm m-1" style="width: 125px">
                                     <i class="bi bi-arrow-up-square"></i>
                                     Like
                                 </a>
 
-                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id"
+                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id" asp-route-account="true"
                                class="btn btn-secondary btn-sm m-1" style="width: 125px">
                                     <i class="bi bi-arrow-down-square"></i>
                                     Dislike

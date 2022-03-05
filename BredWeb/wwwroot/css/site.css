@@ -22,6 +22,10 @@ body {
     max-width: 800px;
 }
 
+iframe{
+    max-width:100%;
+}
+
 .footer-fix {
     position: absolute;
     bottom: 0;

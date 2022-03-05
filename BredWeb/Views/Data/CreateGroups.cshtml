@@ -1,0 +1,28 @@
+﻿@model Group
+
+<form method="post">
+    <div class="bg-dark p-3 mt-4 w-75">
+        <div class="row pb-2">
+            <h2 class="text-primary">Create Groups</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control w-50" />
+            <span asp-validation-for="Title" class="text-warning"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="8" class="form-control w-75"></textarea>
+            <span asp-validation-for="Description" class="text-warning"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -215,6 +215,7 @@ namespace BredWeb.Controllers
         //GET
         public IActionResult Search(string substr)
         {
+            ViewBag.Popular = true;
             if (substr != null && substr != "")
             {
                 var groups = _db.Groups;

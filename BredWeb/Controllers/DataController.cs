@@ -86,7 +86,7 @@ namespace BredWeb.Controllers
 
                 var group = new Group
                 {
-                    StartDate = new DateTime(r.Next(2014, 2022), r.Next(1, 12), r.Next(1, 30), 14, 16, 18, 420),
+                    StartDate = new DateTime(r.Next(2014, 2022), r.Next(2, 10), r.Next(2, 29), 14, 16, 18, 420),
                     Creator = person.NickName,
                     Title = title,
                     Description = faker.Random.Words(r.Next(10, 100))

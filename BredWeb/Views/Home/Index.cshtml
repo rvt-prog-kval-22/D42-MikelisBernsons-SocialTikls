@@ -40,7 +40,7 @@
             <div class="col-8 m-2">
                 @foreach (Post post in Model.Posts)
                 {
-                    <div class="card w-100 mx-auto">
+                    <div class="card w-100 mx-auto" id="@post.Id">
                         <a class="post-div" asp-controller="Post" asp-action="OpenPost" asp-route-postId="@post.Id" asp-route-groupId="@post.GroupId">
                             @{
                                 if (post.Type == Post.TypeEnum.Text)

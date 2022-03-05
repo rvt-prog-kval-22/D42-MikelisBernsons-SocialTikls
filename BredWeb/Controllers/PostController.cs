@@ -358,13 +358,27 @@ namespace BredWeb.Controllers
 
             _db.Posts.Update(post);
             _db.SaveChanges();
+
+            string url = "";
+
             if(selfRedirect)
                 return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id});
             if (home)
-                return RedirectToAction("Index", "Home");
-            if(account)
-                return RedirectToAction("Index", "Account");
-            return RedirectToAction("BrowseGroup", new { id = post.GroupId });
+            {
+                url = Url.Action("Index", "Home");
+                url += $"#{post.Id}";
+                return Redirect(url);
+            }
+            if (account)
+            {
+                url = Url.Action("Index", "Account");
+                url += $"#{post.Id}";
+                return Redirect(url);
+            }
+
+            url = Url.Action("BrowseGroup", new {id = post.GroupId});
+            url += $"#{post.Id}";
+            return Redirect(url);
         }
 
         [Authorize]
@@ -416,13 +430,27 @@ namespace BredWeb.Controllers
 
             _db.Posts.Update(post);
             _db.SaveChanges();
+
+            string url = "";
+
             if (selfRedirect)
                 return RedirectToAction("OpenPost", new { groupId = groupId, postId = post.Id });
             if (home)
-                return RedirectToAction("Index", "Home");
+            {
+                url = Url.Action("Index", "Home");
+                url += $"#{post.Id}";
+                return Redirect(url);
+            }
             if (account)
-                return RedirectToAction("Index", "Account");
-            return RedirectToAction("BrowseGroup", new { id = post.GroupId });
+            {
+                url = Url.Action("Index", "Account");
+                url += $"#{post.Id}";
+                return Redirect(url);
+            }
+
+            url = Url.Action("BrowseGroup", new { id = post.GroupId });
+            url += $"#{post.Id}";
+            return Redirect(url);
         }
 
     }

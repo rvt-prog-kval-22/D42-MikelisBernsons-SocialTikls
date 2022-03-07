@@ -207,6 +207,9 @@ namespace BredWeb.Controllers
             if (post == null)
                 return NotFound();
 
+            if(post.Type is Post.TypeEnum.Youtube or Post.TypeEnum.Image)
+                return Unauthorized();
+
             var user = (await _userManager.GetUserAsync(User));
             if (post.AuthorName == user.NickName)
                 return View(post);

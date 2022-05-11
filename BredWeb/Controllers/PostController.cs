@@ -314,7 +314,8 @@ namespace BredWeb.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false, bool account = false)
+        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0,
+                                                bool home = false, bool account = false, string filter = "All", bool popular = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -379,13 +380,14 @@ namespace BredWeb.Controllers
                 return Redirect(url);
             }
 
-            url = Url.Action("BrowseGroup", new {id = post.GroupId});
+            url = Url.Action("BrowseGroup", new {id = post.GroupId, popular = popular, filter = filter});
             url += $"#{post.Id}";
             return Redirect(url);
         }
 
         [Authorize]
-        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0, bool home = false, bool account = false)
+        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0,
+                                                  bool home = false, bool account = false, string filter = "All", bool popular = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -451,7 +453,7 @@ namespace BredWeb.Controllers
                 return Redirect(url);
             }
 
-            url = Url.Action("BrowseGroup", new { id = post.GroupId });
+            url = Url.Action("BrowseGroup", new { id = post.GroupId, popular = popular, filter = filter });
             url += $"#{post.Id}";
             return Redirect(url);
         }

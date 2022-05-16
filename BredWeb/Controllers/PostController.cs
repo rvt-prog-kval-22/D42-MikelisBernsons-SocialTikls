@@ -118,13 +118,12 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             Group? group = _db.Groups.Find(groupId);
-            Person user = await _userManager.GetUserAsync(User);
-            Post model = new();
-            string fileName;
-
             if (group == null)
                 return NotFound();
 
+            Person user = await _userManager.GetUserAsync(User);
+            Post model = new();
+            string fileName;
 
             ViewBag.GroupTitle = group.Title;
             model.Type = Post.TypeEnum.Image;
@@ -139,7 +138,13 @@ namespace BredWeb.Controllers
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
                 fileName = Guid.NewGuid().ToString() + "_" + post.Image.FileName;
                 string filePath = Path.Combine(uploadsFolder, fileName);
-                post.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await post.Image.CopyToAsync(stream);
+                    stream.Close();
+                }
+
                 model.ImagePath = fileName;
 
                 group.Posts!.Add(model);
@@ -279,6 +284,9 @@ namespace BredWeb.Controllers
             var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
             if (user.NickName == post.AuthorName || isAdmin)
             {
+                if (post.Type is Post.TypeEnum.Image)
+                    DeleteFile(post);
+
                 _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
                 _db.Posts.Remove(post);
                 _db.SaveChanges();
@@ -286,6 +294,21 @@ namespace BredWeb.Controllers
                 return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
             }
             return Unauthorized();            
+        }
+
+        private void DeleteFile(Post post)
+        {
+            string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+            string filePath = Path.Combine(uploadsFolder, post.ImagePath!);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch { }
+            }
         }
 
         //GET
@@ -314,8 +337,13 @@ namespace BredWeb.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Upvote(int postId, bool selfRedirect = false, int groupId = 0,
-                                                bool home = false, bool account = false, string filter = "All", bool popular = false)
+        public async Task<IActionResult> Upvote(int postId,
+                                                int groupId = 0,
+                                                bool selfRedirect = false,
+                                                bool home = false,
+                                                bool account = false,
+                                                string filter = "All",
+                                                bool popular = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -331,7 +359,7 @@ namespace BredWeb.Controllers
                 r.UserId!.Equals(userId)
                 );
 
-            if(rating != null)
+            if(rating is not null)
             {
                 if (rating.Value == Rating.Status.Upvoted)
                 {
@@ -386,8 +414,13 @@ namespace BredWeb.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Downvote(int postId, bool selfRedirect = false, int groupId = 0,
-                                                  bool home = false, bool account = false, string filter = "All", bool popular = false)
+        public async Task<IActionResult> Downvote(int postId,
+                                                  int groupId = 0,
+                                                  bool selfRedirect = false,
+                                                  bool home = false,
+                                                  bool account = false,
+                                                  string filter = "All",
+                                                  bool popular = false)
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
@@ -403,7 +436,7 @@ namespace BredWeb.Controllers
                r.UserId!.Equals(userId)
                 );
 
-            if (rating != null)
+            if (rating is not null)
             {
                 if (rating.Value == Rating.Status.Upvoted)
                 {

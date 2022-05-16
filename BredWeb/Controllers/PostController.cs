@@ -113,13 +113,27 @@ namespace BredWeb.Controllers
         [Authorize]
         public async Task<IActionResult> CreateImage(CreatePost post, int groupId)
         {
-
-            if (groupId == 0)
-                return NotFound();
-
             Group? group = _db.Groups.Find(groupId);
             if (group == null)
                 return NotFound();
+
+            string[] allowedFileTypes = {"image/jpeg" , "image/jpg", "image/png", "image/gif" };
+            bool allowedType = false;
+            if (post.Image!.Length > 15000000)
+            {
+                return RedirectToAction("Create", new { id = groupId, groupTitle = group.Title});
+            }
+
+            foreach(string type in allowedFileTypes)
+            {
+                if (type.Equals(post.Image.ContentType))
+                {
+                    allowedType = true;
+                    break;
+                }
+            }
+            if (!allowedType)
+                return RedirectToAction("Create", new { id = groupId, groupTitle = group.Title });
 
             Person user = await _userManager.GetUserAsync(User);
             Post model = new();

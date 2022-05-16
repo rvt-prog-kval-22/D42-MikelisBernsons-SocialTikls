@@ -307,7 +307,7 @@ namespace BredWeb.Controllers
                 TempData["success"] = "Success";
                 return RedirectToAction("BrowseGroup", "Post", new { id = post.GroupId });
             }
-            return Unauthorized();            
+            return Unauthorized();
         }
 
         private void DeleteFile(Post post)

@@ -12,15 +12,18 @@ namespace BredWeb.Controllers
         private readonly SignInManager<Person> _signInManager;
         private readonly ApplicationDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public GroupController(UserManager<Person> userManager,
                                  SignInManager<Person> signInManager,
                                  RoleManager<IdentityRole> roleManager,
-                                 ApplicationDbContext db)
+                                 ApplicationDbContext db,
+                                 IWebHostEnvironment hostingEnvironment)
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
             this._roleManager = roleManager;
+            this._hostingEnvironment = hostingEnvironment;
             _db = db;
         }
 
@@ -123,6 +126,9 @@ namespace BredWeb.Controllers
                 foreach (var post in _db.Posts.Where(p => p.GroupId == id))
                 {
                     _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
+                    if(post.Type == Post.TypeEnum.Image)
+                        DeleteFile(post);
+                    _db.Posts.Remove(post);
                 }
 
                 _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
@@ -133,6 +139,21 @@ namespace BredWeb.Controllers
                 return RedirectToAction("Index");
             }
             return Unauthorized();
+        }
+
+        private void DeleteFile(Post post)
+        {
+            string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+            string filePath = Path.Combine(uploadsFolder, post.ImagePath!);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch { }
+            }
         }
 
         //GET

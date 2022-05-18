@@ -35,6 +35,38 @@ namespace BredWeb.Controllers
             {
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             }
+            
+            ViewBag.Popular = popular;
+            ViewBag.SearchQuery = "";
+            return View(GetOrderedGroups());
+        }
+
+        //GET
+        public IActionResult Search(string searchQuery, bool popular)
+        {
+            ViewBag.Popular = popular;
+            ViewBag.SearchQuery = searchQuery;
+            if (searchQuery is not null and not "")
+            {
+                var groups = GetOrderedGroups(popular);
+                var result = groups.Where(g => g.Title!.Contains(searchQuery)).ToList();
+                if (result.Count <= 0)
+                {
+                    TempData["Error"] = "No results found";
+                    return View("Index", groups);
+                }
+                return View("Index", result);
+            }
+            else
+            {
+                TempData["Error"] = "Empty search query?";
+            }
+
+            return View("Index", GetOrderedGroups(popular));
+        }
+
+        private List<Group> GetOrderedGroups(bool popular = false)
+        {
             List<Group> objGroupList = _db.Groups.ToList();
             foreach (var group in objGroupList)
             {
@@ -45,8 +77,8 @@ namespace BredWeb.Controllers
             {
                 objGroupList = objGroupList.OrderBy(g => g.UserCount).ToList();
             }
-            ViewBag.Popular = popular;
-            return View(objGroupList);
+
+            return objGroupList;
         }
 
         //GET
@@ -231,26 +263,6 @@ namespace BredWeb.Controllers
             if (groupFromDb == null)
                 return NotFound();
             return RedirectToAction("BrowseGroup", "Post", new { id = groupFromDb.Id });
-        }
-
-        //GET
-        public IActionResult Search(string substr)
-        {
-            ViewBag.Popular = true;
-            if (substr != null && substr != "")
-            {
-                var groups = _db.Groups;
-                var result = groups.Where(g => g.Title!.Contains(substr))
-                    .ToList();
-                if (result.Count <= 0)
-                {
-                    TempData["Error"] = "No results found";
-                    return View("Index", _db.Groups.ToList());
-                }
-                return View("Index", result);
-            }
-            TempData["Error"] = "Empty search query?";
-            return View("Index", _db.Groups.ToList());
         }
 
         //GET

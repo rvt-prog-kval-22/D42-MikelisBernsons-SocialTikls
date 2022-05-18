@@ -7,6 +7,7 @@
     ViewData["Title"] = "Groups";
     int groupCount = Model.Count - 1;
     bool popular = ViewBag.Popular;
+    string searchQuery = ViewBag.SearchQuery;
 }
 
 
@@ -14,74 +15,50 @@
     <div class="row">
         <div class="col-3 bg-dark card m-2">
             <h2 Class="text-primary mx-auto">Group Browser</h2>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <div class="m-3 card-header">
+            <div class="m-3 card-header">
+                @if (SignInManager.IsSignedIn(User))
+                {
                     <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
                         <i class="bi bi-plus-square"></i> &nbsp Create New Group
                     </a>
+                }
+                <form class=" mb-2 pt-3" method="post">
+                    @Html.TextBox("searchQuery", @searchQuery, new {@Class="form-control"})
+                    <div class="row p-3">
+                        <fieldset class="col-6">
+                            <div class="form-check" title="Sort by date created">
+                                <label class="form-check-label">
+                                    @if (!popular)
+                                    {
+                                        <input type="radio" class="form-check-input" name="popular" value="false" checked="">
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" class="form-check-input" name="popular" value="false">
+                                    }
+                                    New
+                                </label>
+                            </div>
 
-                    <form class="d-flex mb-2 pt-3" method="post">
-                        @Html.TextBox("substr", "", new {@Class="form-control"})
-                        <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-
-                </div>
-            }
-            else
-            {
-                <div class="m-3 card-header">
-
-                    <form class="d-flex mb-2 pt-3" method="post">
-                        @Html.TextBox("substr", "", new {@Class="form-control"})
-                        <button asp-controller="Group" asp-action="Search" class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-
-                </div>
-            }
+                            <div class="form-check" title="Sort by most users in group">
+                                <label class="form-check-label">
+                                    @if (popular)
+                                    {
+                                        <input type="radio" class="form-check-input" name="popular" value="true" checked="">
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" class="form-check-input" name="popular" value="true">
+                                    }
+                                    Popular
+                                </label>
+                            </div>
+                        </fieldset>
+                        <button asp-controller="Group" asp-action="Search" class="btn btn-secondary col" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
             <br />
-
-            <form method="get">
-                <h3 class="ms-4">Select order by</h3>
-                <fieldset class="ms-4 pb-2">
-                    <div class="form-check" title="Sort by date created">
-                        <label class="form-check-label">
-                            @if (!popular)
-                            {
-                                <input type="radio" class="form-check-input" name="popular" value="false" checked="">
-                            }
-                            else
-                            {
-                                <input type="radio" class="form-check-input" name="popular" value="false">
-                            }
-                            New
-                        </label>
-                    </div>
-
-                    <div class="form-check" title="Sort by most users in group">
-                        <label class="form-check-label">
-                            @if (popular)
-                            {
-                                <input type="radio" class="form-check-input" name="popular" value="true" checked="">
-                            }
-                            else
-                            {
-                                <input type="radio" class="form-check-input" name="popular" value="true">
-                            }
-                            Popular
-                        </label>
-                    </div>
-                </fieldset>
-
-                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-
-                    <input type="radio" class="btn-check">
-                    <button asp-controller="Group" asp-action="Index" class="btn btn-outline-primary ms-4 mb-3" type="submit">
-                        Apply
-                    </button>
-                </div>
-            </form>
-
         </div>
         <div class="col-8 m-2">
             @for (int i = 0; groupCount >= 0; groupCount--)

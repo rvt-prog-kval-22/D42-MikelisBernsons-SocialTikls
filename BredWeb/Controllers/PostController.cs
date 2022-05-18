@@ -119,14 +119,14 @@ namespace BredWeb.Controllers
 
             string[] allowedFileTypes = {"image/jpeg" , "image/jpg", "image/png", "image/gif" };
             bool allowedType = false;
-            if (post.Image!.Length > 15000000)
+            if (post.File == null || post.File!.Length > 15000000)
             {
                 return RedirectToAction("Create", new { id = groupId, groupTitle = group.Title});
             }
 
             foreach(string type in allowedFileTypes)
             {
-                if (type.Equals(post.Image.ContentType))
+                if (type.Equals(post.File.ContentType))
                 {
                     allowedType = true;
                     break;
@@ -136,26 +136,30 @@ namespace BredWeb.Controllers
                 return RedirectToAction("Create", new { id = groupId, groupTitle = group.Title });
 
             Person user = await _userManager.GetUserAsync(User);
-            Post model = new();
+            
             string fileName;
 
             ViewBag.GroupTitle = group.Title;
-            model.Type = Post.TypeEnum.Image;
-            model.AuthorName = user.NickName;
-            model.PostDate = DateTime.Now;
-            model.Id = 0; // this fixes an error
-            model.Body = "";
-            model.Title = post.Title;
 
-            if (post.Image != null)
+            Post model = new()
+            {
+                Type = Post.TypeEnum.Image,
+                AuthorName = user.NickName,
+                PostDate = DateTime.Now,
+                Id = 0, // this fixes an error
+                Body = "",
+                Title = post.Title
+            };
+
+            if (post.File != null)
             {
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
-                fileName = Guid.NewGuid().ToString() + "_" + post.Image.FileName;
+                fileName = Guid.NewGuid().ToString() + "_" + post.File.FileName;
                 string filePath = Path.Combine(uploadsFolder, fileName);
 
                 using (FileStream stream = new FileStream(filePath, FileMode.Create))
                 {
-                    await post.Image.CopyToAsync(stream);
+                    await post.File.CopyToAsync(stream);
                     stream.Close();
                 }
 

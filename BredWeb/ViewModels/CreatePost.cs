@@ -16,7 +16,7 @@ namespace BredWeb.Models
         public string? Title { get; set; }
         public DateTime PostDate { get; set; }
         public int GroupId { get; set; }
-        public IFormFile? Image { get; set; }
+        public IFormFile? File { get; set; }
         public TypeEnum Type { get; set; } = TypeEnum.Text;
         public enum TypeEnum
         {

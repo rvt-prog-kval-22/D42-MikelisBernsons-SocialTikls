@@ -58,9 +58,11 @@
                         <span asp-validation-for="Title" class="text-warning"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Image"></label>
+                        <label>Supported file types = PNG, JPG, JPEG, PNG</label>
+                        <br />
+                        <label>File size below 15Mb</label>
                         <div>
-                            <input asp-for="Image" class="form-control" type="file"/>
+                            <input asp-for="File" class="form-control" type="file"/>
                         </div>
                     </div>
                     <input type="hidden" name="groupId" value=@ViewBag.id />

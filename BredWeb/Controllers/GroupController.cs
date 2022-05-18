@@ -28,7 +28,7 @@ namespace BredWeb.Controllers
         }
 
         //GET
-        public async Task<IActionResult> Index(bool popular = false)
+        public async Task<IActionResult> Index(bool popular = true)
         {
             ViewBag.nick = "";
             if (_signInManager.IsSignedIn(User))
@@ -38,7 +38,7 @@ namespace BredWeb.Controllers
             
             ViewBag.Popular = popular;
             ViewBag.SearchQuery = "";
-            return View(GetOrderedGroups());
+            return View(GetOrderedGroups(popular));
         }
 
         //GET
@@ -65,7 +65,7 @@ namespace BredWeb.Controllers
             return View("Index", GetOrderedGroups(popular));
         }
 
-        private List<Group> GetOrderedGroups(bool popular = false)
+        private List<Group> GetOrderedGroups(bool popular = true)
         {
             List<Group> objGroupList = _db.Groups.ToList();
             foreach (var group in objGroupList)

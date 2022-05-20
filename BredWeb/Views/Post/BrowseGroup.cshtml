@@ -230,7 +230,7 @@
                                 </div>
 
                                 <div class="w-35 btn-group ms-auto col-1">
-                                    @if (ViewBag.nick == Model[postCount].AuthorName && Model[postCount].Type == Post.TypeEnum.Text)
+                                    @if (ViewBag.nick == Model[postCount].AuthorName && Model[postCount].Type is Post.TypeEnum.Text)
                                     {
                                         <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model[postCount].Id"
                                         class="btn btn-primary btn-sm m-1">Edit</a>

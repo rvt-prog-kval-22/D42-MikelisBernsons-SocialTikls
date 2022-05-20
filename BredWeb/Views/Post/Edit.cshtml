@@ -1,4 +1,5 @@
-﻿@model Post
+﻿@using BredWeb.Models
+@model Post
 
 <form method="post">
     <div class="bg-dark p-3 mt-4 w-75">
@@ -13,8 +14,24 @@
             <span asp-validation-for="Title" class="text-warning"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Body"></label>
-            <textarea asp-for="Body" rows="6" class="form-control w-75"></textarea>
+            @{
+                if (Model.Type == Post.TypeEnum.Text)
+                {
+                    await Html.RenderPartialAsync("_PostContentTextPartial", Model);
+                }
+                else if (Model.Type == Post.TypeEnum.Youtube)
+                {
+                    <div class="card-body" style="white-space: pre-line">
+                        <p class="card-text">You can't edit a Youtube link based post :[</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="card-body" style="white-space: pre-line">
+                        <p class="card-text">You can't edit a file based post :[</p>
+                    </div>
+                }
+            }
             <span asp-validation-for="Body" class="text-warning"></span>
         </div>
         <button type="submit" class="btn btn-primary" style="width:150px">Submit</button>
@@ -23,6 +40,6 @@
 
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     }
 }

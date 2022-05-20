@@ -1,4 +1,5 @@
-﻿@model Post
+﻿@using BredWeb.Models
+@model Post
 
 <form method="post" asp-action="Delete">
     <div class="bg-dark p-3 mt-4">
@@ -12,8 +13,20 @@
                 <input asp-for="Title" class="form-control" />
             </div>
             <div class="mb-3">
-                <label asp-for="Body"></label>
-                <textarea readonly="" rows="5" asp-for="Body" class="form-control"></textarea>
+                @{
+                    if (Model.Type == Post.TypeEnum.Text)
+                    {
+                        await Html.RenderPartialAsync("_PostContentTextPartial", Model);
+                    }
+                    else if (Model.Type == Post.TypeEnum.Youtube)
+                    {
+                        await Html.RenderPartialAsync("_PostContentYTPartial", Model);
+                    }
+                    else
+                    {
+                        await Html.RenderPartialAsync("_PostContentImagePartial", Model);
+                    }
+                }
             </div>
             <div class="mb-3">
                 <label asp-for="PostDate"></label>

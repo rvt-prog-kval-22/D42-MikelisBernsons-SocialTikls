@@ -75,15 +75,15 @@
                             </div>
 
                             <div class="w-35 btn-group ms-auto col-1">
-                                @if (Model.UserNick == Model.Post.AuthorName  && Model.Post.Type == Post.TypeEnum.Text)
+                                @if (Model.UserNick == Model.Post.AuthorName  && Model.Post.Type is Post.TypeEnum.Text)
                                 {
                                     <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Post.Id"
-                               class="btn btn-primary btn-sm m-1">Edit</a>
+                                    class="btn btn-primary btn-sm m-1">Edit</a>
                                 }
                                 @if (Model.UserNick == Model.Post.AuthorName || User.IsInRole("Admin"))
                                 {
                                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.Id"
-                               class="btn btn-warning btn-sm m-1">Delete</a>
+                                    class="btn btn-warning btn-sm m-1">Delete</a>
                                 }
                             </div>
                         </div>

@@ -283,7 +283,32 @@ namespace BredWeb.Controllers
             _db.Entry(group).Collection(g => g.AdminList!).Load();
             if (User.IsInRole("Admin") || group.AdminList!.Any(x => x.AdminId == user.Id))
             {
-                return View(group);
+                EditGroupViewModel editGroup = new()
+                {
+                    Id = group.Id,
+                    Description = group.Description,
+                    Title = group.Title,
+                    StartDate = group.StartDate,
+                    Creator = group.Creator,
+                    UserList = group.UserList,
+                    UserCount = group.UserCount,
+                    Posts = group.Posts,
+                    AdminList = new()
+                };
+
+                foreach(Admin a in group.AdminList!)
+                {
+                    editGroup.AdminList.Add(new AdminViewModel
+                    {
+                        Id=a.Id,
+                        AdminId = a.AdminId,
+                        IsSelected = false,
+                        Email = a.Email,
+                        UserName = a.UserName
+                    });
+                }
+
+                return View(editGroup);
             }
 
             return Unauthorized();

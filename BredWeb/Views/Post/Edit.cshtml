@@ -17,7 +17,9 @@
             @{
                 if (Model.Type == Post.TypeEnum.Text)
                 {
-                    await Html.RenderPartialAsync("_PostContentTextPartial", Model);
+                    <label asp-for="Body"></label>
+                    <textarea asp-for="Body" rows="6" class="form-control w-75"></textarea>
+                    <span asp-validation-for="Body" class="text-warning"></span>
                 }
                 else if (Model.Type == Post.TypeEnum.Youtube)
                 {

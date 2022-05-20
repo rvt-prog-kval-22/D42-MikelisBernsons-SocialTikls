@@ -324,7 +324,7 @@ namespace BredWeb.Controllers
         [Authorize]
         [ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveAdmins(Group obj)
+        public async Task<IActionResult> RemoveAdmins(EditGroupViewModel obj)
         {
             Group? dbGroup = _db.Groups.Find(obj.Id);
 

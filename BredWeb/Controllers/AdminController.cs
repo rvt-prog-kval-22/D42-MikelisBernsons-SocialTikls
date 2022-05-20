@@ -97,110 +97,16 @@ namespace BredWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateRole()
+        public async Task<IActionResult> EditUsersInRole()
         {
-            return View();
-        }
+            string? roleId = _roleManager.FindByNameAsync("Admin").Result.Id;
 
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(Role obj)
-        {
-            if (ModelState.IsValid)
+            if(roleId == null)
             {
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Name = obj.RoleName
-                };
-
-                IdentityResult result = await _roleManager.CreateAsync(identityRole);
-
-                if (result.Succeeded)
-                {
-                    TempData["success"] = "Success";
-                    return RedirectToAction("ListRoles", "Admin");
-                }
-            }
-            return View(obj);
-        }
-
-        //GET
-        public IActionResult ListRoles()
-        {
-            var roles = _roleManager.Roles;
-            return View(roles);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> EditRole(string id)
-        {
-            var role = await _roleManager.FindByIdAsync(id);
-
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role [{id}] was not found";
+                ViewBag.ErrorMessage = "Admin role does not exist";
                 return View("Error");
             }
 
-            EditRole model = new()
-            {
-                Id = role.Id,
-                RoleName = role.Name
-            };
-
-            foreach(var user in _userManager.Users)
-            {
-                if(await _userManager.IsInRoleAsync(user, role.Name))
-                {
-                    model.Users.Add(user.UserName);
-                }
-            }
-
-            if(model == null)
-            {
-                ViewBag.ErrorMessage = $"Role [{id}] had no associated users";
-                return View("Error");
-            }
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditRole(EditRole model)
-        {
-            var role = await _roleManager.FindByIdAsync(model.Id);
-
-            if (role == null)
-            {
-                ViewBag.ErrorMessage = $"Role [{model.Id}] was not found";
-                return View("Error");
-            }
-            else if (role.Name == "Admin")
-            {
-                ViewBag.ErrorMessage = $"Why would you try to change the admin role name?\nAre you trying to break the site? Are you crazy!? :[";
-                return View("Error");
-            }
-            else
-            {
-                role.Name = model.RoleName;
-                var result = await _roleManager.UpdateAsync(role);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> EditUsersInRole(string roleId)
-        {
             ViewBag.RoleId = roleId;
 
             var role = await _roleManager.FindByIdAsync(roleId);
@@ -211,19 +117,19 @@ namespace BredWeb.Controllers
                 return View("Error");
             }
 
-            List<UserInRole> model = new();
+            List<UserInRoleViewModel> model = new();
 
             foreach (var user in _userManager.Users)
             {
                 if (await _userManager.IsInRoleAsync(user, role.Name))
-                    model.Add(new UserInRole { UserId = user.Id, UserName = user.UserName });
+                    model.Add(new UserInRoleViewModel { UserId = user.Id, UserName = user.UserName });
             }
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUsersInRole(List<UserInRole> model, string roleId)
+        public async Task<IActionResult> EditUsersInRole(List<UserInRoleViewModel> model, string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);
 

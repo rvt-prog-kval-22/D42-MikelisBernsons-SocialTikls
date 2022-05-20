@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class OpenPost
+    public class OpenPostViewModel
     {
         public List<Comment>? Comments { get; set; } = new();
         public Group Group { get; set; } = new();

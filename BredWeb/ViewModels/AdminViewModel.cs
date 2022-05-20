@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class Admin
+    public class AdminViewModel
     {
         public int Id { get; set; }
         [Required]

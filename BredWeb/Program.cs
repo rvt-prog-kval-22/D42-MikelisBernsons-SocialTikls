@@ -28,7 +28,7 @@ builder.Services.AddIdentity<Person, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=CoolDb.db;"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=CoolDb2.db;"));
 
 var app = builder.Build();
 

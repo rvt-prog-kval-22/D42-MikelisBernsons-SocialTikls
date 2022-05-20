@@ -58,7 +58,7 @@ namespace BredWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(Register obj)
+        public async Task<IActionResult> Register(RegisterViewModel obj)
         {
             if (ModelState.IsValid && obj != null)
             {
@@ -118,7 +118,7 @@ namespace BredWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(Login obj)
+        public async Task<IActionResult> Login(LoginViewModel obj)
         {
             if (ModelState.IsValid)
             {
@@ -206,7 +206,7 @@ namespace BredWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ForgotPassword(ForgotPassword model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -238,7 +238,7 @@ namespace BredWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(ResetPassword model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {

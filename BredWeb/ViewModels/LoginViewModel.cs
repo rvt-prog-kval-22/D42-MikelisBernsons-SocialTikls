@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class Login
+    public class LoginViewModel
     {
         [Required]
         [EmailAddress]

@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class EditRole
+    public class EditRoleViewModel
     {
         public string Id { get; set; } = string.Empty;
         [Required(ErrorMessage = "Role name required")]

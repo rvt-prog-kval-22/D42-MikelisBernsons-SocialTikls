@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BredWeb.Models
 {
-    public class CreatePost
+    public class CreatePostViewModel
     {
         [Required]
         [MaxLength(2000)]

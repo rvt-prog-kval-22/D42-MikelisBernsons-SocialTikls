@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BredWeb.Models
 {
-    public class Register
+    public class RegisterViewModel
     {
         [Required]
         [MaxLength(20)]

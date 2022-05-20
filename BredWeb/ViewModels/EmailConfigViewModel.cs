@@ -1,6 +1,6 @@
 ﻿namespace BredWeb.Models
 {
-    public record EmailConfig(
+    public record EmailConfigViewModel(
         EmailConfigData Production,
         EmailConfigData Development
     );

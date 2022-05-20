@@ -1,8 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using BredWeb.Models
+@using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<Person> SignInManager
 @inject UserManager<Person> UserManager
-@model OpenPost
+@model OpenPostViewModel
 @{
     ViewData["Title"] = @Model.Group.Title;
 }
@@ -10,11 +11,14 @@
 <div class="container">
     <div class="row">
         <div class="col-3 bg-dark card m-2">
-
-            <h2 Class="text-primary mx-auto">@Model.Group.Title</h2>
-            <br />
-            <h6 class="text-end">-@Model.Group.Creator</h6>
-            <h6 class="text-end">(@Model.Group.UserCount)</h6>
+            <a class="post-div" asp-controller="Post" asp-action="BrowseGroup" asp-route-id="@Model.Group.Id">
+                <h2 Class="text-primary position-absolute mt-4 start-50 translate-middle">@Model.Group.Title</h2>
+                <div>
+                    <br />
+                    <h6 class="text-end">-@Model.Group.Creator</h6>
+                    <h6 class="text-end">(@Model.Group.UserCount)</h6>
+                </div>
+            </a>
             <hr />
             <div style="white-space: pre-line" class="mb-4">
                 @Model.Group.Description
@@ -117,14 +121,7 @@
                         </div>
 
                         <div class="card-subtitle text-end me-3">
-                            @if (comment.IsEdited)
-                            {
-                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16) Edited</h6>
-                            }
-                            else
-                            {
-                                <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16)</h6>
-                            }
+                            <h6>-@comment.AuthorName @comment.PostDate.ToString().Substring(0, 16)</h6>
                         </div>
 
                         @if (Model.UserNick == comment.AuthorName || User.IsInRole("Admin") || Model.GroupAdmin)

@@ -40,7 +40,7 @@ namespace BredWeb.Controllers
             if (_signInManager.IsSignedIn(User))
             {
                 Person user = await _userManager.GetUserAsync(User);
-                HomeFeed model = new();
+                HomeFeedViewModel model = new();
                 List<Post> posts = new();
                 model.Groups = _db.Groups.Where(g => g.UserList!.Contains(user)).ToList();
                 if (model.Groups.Count > 0)

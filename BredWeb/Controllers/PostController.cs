@@ -111,7 +111,7 @@ namespace BredWeb.Controllers
         //POST
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateImage(CreatePost post, int groupId)
+        public async Task<IActionResult> CreateImage(CreatePostViewModel post, int groupId)
         {
             Group? group = _db.Groups.Find(groupId);
             if (group == null)
@@ -338,7 +338,7 @@ namespace BredWeb.Controllers
             if (group == null || post == null)
                 return NotFound();
 
-            OpenPost model = new();
+            OpenPostViewModel model = new();
 
             if (_signInManager.IsSignedIn(User))
             {

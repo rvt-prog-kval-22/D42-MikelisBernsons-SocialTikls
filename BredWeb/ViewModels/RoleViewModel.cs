@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class Role
+    public class RoleViewModel
     {
         [Required]
         [MinLength(3)]

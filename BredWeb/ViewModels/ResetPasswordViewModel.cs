@@ -2,7 +2,7 @@
 
 namespace BredWeb.Models
 {
-    public class ResetPassword
+    public class ResetPasswordViewModel
     {
         [Required]
         [EmailAddress]

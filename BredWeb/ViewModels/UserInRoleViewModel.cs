@@ -1,6 +1,6 @@
 ﻿namespace BredWeb.Models
 {
-    public class UserInRole
+    public class UserInRoleViewModel
     {
         public string UserId { get; set; } = string.Empty;
         public string UserName { get; set; } = string.Empty;

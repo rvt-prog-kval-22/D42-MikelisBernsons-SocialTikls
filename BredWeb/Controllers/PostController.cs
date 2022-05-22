@@ -223,21 +223,21 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id is null or 0)
-                return NotFound();
+                return RedirectToAction("Index", "Home");
 
             var post = _db.Posts.Find(id);
 
             if (post == null)
-                return NotFound();
+                return RedirectToAction("Index", "Home");
 
-            if(post.Type is Post.TypeEnum.Youtube or Post.TypeEnum.Image)
-                return View("Index", "Home");
+            if (post.Type is Post.TypeEnum.Youtube or Post.TypeEnum.Image)
+                return RedirectToAction("Index", "Home");
 
             var user = (await _userManager.GetUserAsync(User));
             if (post.AuthorName == user.NickName)
                 return View(post);
             else
-                return Unauthorized();
+                return RedirectToAction("Index", "Home");
         }
 
         //POST

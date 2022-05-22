@@ -16,9 +16,11 @@ namespace BredWeb.Models
         [MaxLength(30)]
         [MinLength(3)]
         public string? Title { get; set; }
+        [Display(Name = "Post date")]
         public DateTime PostDate { get; set; }
         public bool IsEdited { get; set; } = false;
         [MaxLength(20)]
+        [Display(Name = "Authors name")]
         public string? AuthorName { get; set; }
         public List<Rating>? RatingList { get; set; } = new();
         public List<Comment>? CommentList { get; set; } = new();

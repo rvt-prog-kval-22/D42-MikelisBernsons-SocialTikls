@@ -137,11 +137,11 @@ namespace BredWeb.Controllers
 
         public async Task<IActionResult> ConfirmAccount(string receiver)
         {
-            await SendEmail(receiver, "Test body.");
+            await SendEmailAsync(receiver, "Test body.");
             return RedirectToAction("Index", "Account");
         }
 
-        private async Task<IActionResult> SendEmail(string receiver, string body)
+        private async Task<IActionResult> SendEmailAsync(string receiver, string body)
         {
             string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -218,7 +218,7 @@ namespace BredWeb.Controllers
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                         new {email = model.Email, token = confirmationToken }, Request.Scheme);
 
-                    await SendEmail(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
+                    await SendEmailAsync(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
 
                     return View("ForgotPasswordConfirmation");
                 }

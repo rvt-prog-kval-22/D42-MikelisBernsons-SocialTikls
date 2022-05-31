@@ -3,6 +3,7 @@ using BredWeb.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BredWeb.Controllers
 {
@@ -76,13 +77,6 @@ namespace BredWeb.Controllers
             var result = await _userManager.CreateAsync(user, settingsPassword);
             if (result.Succeeded)
             {
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Name = "Admin"
-                };
-
-                IdentityResult result2 = await _roleManager.CreateAsync(identityRole);
-
                 await _userManager.AddToRoleAsync(user, "Admin");
                 ViewBag.ErrorMessage = "Admin account created successfuly\n"+
                                        "You can now log in.";
@@ -99,29 +93,23 @@ namespace BredWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole()
         {
-            string? roleId = _roleManager.FindByNameAsync("Admin").Result.Id;
-
-            if(roleId == null)
-            {
-                ViewBag.ErrorMessage = "Admin role does not exist";
-                return View("Error");
-            }
-
-            ViewBag.RoleId = roleId;
-
-            var role = await _roleManager.FindByIdAsync(roleId);
+            var role = await _roleManager.FindByNameAsync("Admin");
 
             if(role == null)
             {
-                ViewBag.ErrorMessage = $"Role [{roleId}] was not found";
+                ViewBag.ErrorMessage = "Role not found";
                 return View("Error");
             }
+
+            ViewBag.RoleId = role.Id;
 
             List<UserInRoleViewModel> model = new();
 
             foreach (var user in _userManager.Users)
             {
-                if (await _userManager.IsInRoleAsync(user, role.Name))
+                //var userIsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                var res = User.HasClaim(ClaimTypes.Role, "Admin");
+                if (res)
                     model.Add(new UserInRoleViewModel { UserId = user.Id, UserName = user.UserName });
             }
 

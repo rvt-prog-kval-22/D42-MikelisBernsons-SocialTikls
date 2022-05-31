@@ -403,6 +403,13 @@ namespace BredWeb.Controllers
             {
 
                 Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
+
+                if(newAdmin is null)
+                {
+                    TempData["Error"] = "email not found";
+                    return RedirectToAction("Edit", new { id = Id });
+                }
+
                 _db.Entry(group).Collection(g => g.AdminList!).Load();
                 var user = (await _userManager.GetUserAsync(User));
                 var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");

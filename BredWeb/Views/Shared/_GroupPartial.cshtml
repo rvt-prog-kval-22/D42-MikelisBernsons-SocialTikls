@@ -27,8 +27,6 @@
         <h6 class="card-subtitle text-success text-muted text-end">-@Model.Creator &nbsp @Model.StartDate &nbsp (@Model.UserCount)</h6>
     </div>
 
-    @if (SignInManager.IsSignedIn(User))
-    {
         <div class="w-100 btn-group card-footer" role="group">
 
             @if (!userJoined)
@@ -48,6 +46,5 @@
                 class="btn btn-warning mx-2 btn-sm">  Delete</a>
             }
         </div>
-    }
 </div>
 <br />

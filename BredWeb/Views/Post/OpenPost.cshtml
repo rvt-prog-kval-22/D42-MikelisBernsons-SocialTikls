@@ -14,7 +14,7 @@
             <a class="post-div mx-auto" asp-controller="Post" asp-action="BrowseGroup" asp-route-id="@Model.Group.Id">
                 <h2 Class="text-primary">@Model.Group.Title</h2>
                 <br />
-                
+
             </a>
             <a class="post-div mx-left" asp-controller="Post" asp-action="BrowseGroup" asp-route-id="@Model.Group.Id">
                 <h6 class="text-end">-@Model.Group.Creator</h6>
@@ -56,40 +56,41 @@
                     }
                 </div>
 
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <div class="w-100 card-footer container">
-                        <div class="row">
-                            <div class="col-3 btn-group" role="group">
-                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
+                <div class="w-100 card-footer container">
+                    <div class="row">
+                        <div class="col-3 btn-group" role="group">
+                            <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
                                class="btn btn-primary btn-sm m-1" style="width: 125px">
-                                    <i class="bi bi-arrow-up-square"></i>
-                                    Like
-                                </a>
+                                <i class="bi bi-arrow-up-square"></i>
+                                Like
+                            </a>
 
-                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
+                            <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
                                class="btn btn-secondary btn-sm m-1" style="width: 125px">
-                                    <i class="bi bi-arrow-down-square"></i>
-                                    Dislike
-                                </a>
+                                <i class="bi bi-arrow-down-square"></i>
+                                Dislike
+                            </a>
 
-                            </div>
+                        </div>
 
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
                             <div class="w-35 btn-group ms-auto col-1">
-                                @if (Model.UserNick == Model.Post.AuthorName  && Model.Post.Type is Post.TypeEnum.Text)
+                                @if (Model.UserNick == Model.Post.AuthorName && Model.Post.Type is Post.TypeEnum.Text)
                                 {
                                     <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Post.Id"
-                                    class="btn btn-primary btn-sm m-1">Edit</a>
+                               class="btn btn-primary btn-sm m-1">Edit</a>
                                 }
                                 @if (Model.UserNick == Model.Post.AuthorName || User.IsInRole("Admin"))
                                 {
                                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.Id"
-                                    class="btn btn-warning btn-sm m-1">Delete</a>
+                               class="btn btn-warning btn-sm m-1">Delete</a>
                                 }
                             </div>
-                        </div>
+                        }
                     </div>
-                }
+                </div>
 
             </div>
             <br />

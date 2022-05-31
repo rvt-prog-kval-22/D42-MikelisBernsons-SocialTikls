@@ -17,12 +17,9 @@
         <div class="col-3 bg-dark card m-2">
             <h2 Class="text-primary mx-auto">Group Browser</h2>
             <div class="m-3 card-header">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
-                        <i class="bi bi-plus-square"></i> &nbsp Create New Group
-                    </a>
-                }
+                <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
+                    <i class="bi bi-plus-square"></i> &nbsp Create New Group
+                </a>
                 <form class=" mb-2 pt-3" method="post">
                     @Html.TextBox("searchQuery", @searchQuery, new {@Class="form-control"})
                     <div class="row p-3">

@@ -164,7 +164,7 @@ namespace BredWeb.Controllers
                 }
 
                 _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
-                obj.AdminList!.Clear();
+                _db.Admins.RemoveRange(_db.Admins.Where(a => a.GroupId == id));
                 _db.Groups.Remove(obj);
                 _db.SaveChanges();
                 TempData["success"] = "Group deleted successfully";
@@ -372,6 +372,7 @@ namespace BredWeb.Controllers
                         {
                             if (admin.IsSelected)
                             {
+                                _db.Admins.Remove(_db.Admins.First(a => a.AdminId == admin.AdminId));
                                 dbGroup.AdminList.Remove(dbGroup.AdminList.Find(x => x.AdminId == admin.AdminId)!);
                             }
                         }

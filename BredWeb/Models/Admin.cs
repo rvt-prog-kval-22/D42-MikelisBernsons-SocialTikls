@@ -5,6 +5,7 @@ namespace BredWeb.Models
     public class Admin
     {
         public int Id { get; set; }
+        public int GroupId { get; set; }
         [Required]
         public string AdminId { get; set; } = string.Empty;
         [EmailAddress]

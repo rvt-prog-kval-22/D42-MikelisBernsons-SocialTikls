@@ -36,17 +36,14 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> Create(string body, int groupId, int postId)
         {
 
-            if (groupId == 0 || postId == 0)
-                return NotFound();
-
-            if(body == null)
+            if (groupId is 0 || postId is 0 || body is null)
                 return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
 
             Person user = await _userManager.GetUserAsync(User);
             Post? post = _db.Posts.Find(postId);
 
             if (post == null)
-                return NotFound();
+                return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
 
             if (body.Length >= 4)
             {
@@ -71,7 +68,7 @@ namespace BredWeb.Controllers
             var group = _db.Groups.Find(groupId);
 
             if (comment == null || group == null)
-                return NotFound();
+                return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
 
             _db.Entry(group).Collection(g => g.AdminList!).Load();
 
@@ -85,7 +82,7 @@ namespace BredWeb.Controllers
                 TempData["success"] = "Success";
                 return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
             }
-            return Unauthorized();
+            return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
         }
 
     }

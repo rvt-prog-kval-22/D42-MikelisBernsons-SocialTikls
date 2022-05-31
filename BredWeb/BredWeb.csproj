@@ -6,6 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	  <PreserveCompilationContext>true</PreserveCompilationContext>
 	  <UserSecretsId>e0de3e4b-a23e-4c0f-8117-8f403e56a936</UserSecretsId>
+	  <PackageIcon>favicon.ico</PackageIcon>
+	  <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +43,13 @@
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Images\Group\" />
     <Folder Include="wwwroot\Images\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

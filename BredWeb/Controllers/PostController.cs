@@ -50,15 +50,14 @@ namespace BredWeb.Controllers
         [Authorize]
         public async Task<IActionResult> Create(Post post, int groupId)
         {
-
-            if (groupId == 0)
-                return NotFound();
-
             Group? group = _db.Groups.Find(groupId);
-            Person user = await _userManager.GetUserAsync(User);
+            Person? user = await _userManager.GetUserAsync(User);
 
-            if (group == null)
-                return NotFound();
+            if (group is null)
+            {
+                TempData["Message"] = "post creation failed";
+                return RedirectToAction("Open", "Group", new { id = groupId });
+            }
 
             ViewBag.GroupTitle = group.Title;
             post.AuthorName = user.NickName;
@@ -71,7 +70,9 @@ namespace BredWeb.Controllers
                 _db.Groups.Update(group);
                 _db.SaveChanges();
                 TempData["success"] = "Post created successfully";
-            }            
+            }
+            else
+                TempData["Message"] = "post creation failed";
             
             return RedirectToAction("Open", "Group", new { id = groupId});
         }
@@ -365,7 +366,7 @@ namespace BredWeb.Controllers
         {
             var post = _db.Posts.Find(postId);
             if (post == null)
-                return BadRequest();
+                return RedirectToAction("Index", "Group");
             string userId = "";
             if(_signInManager.IsSignedIn(User))
                 userId = (await _userManager.GetUserAsync(User)).Id.ToString();

@@ -45,7 +45,7 @@ namespace BredWeb.Controllers
             if (post == null)
                 return RedirectToAction("OpenPost", "Post", new { groupId = groupId, postId = postId });
 
-            if (body.Length >= 4)
+            if (body.Length >= 4 && body.Length <= 500)
             {
                 post.CommentList!.Add(
                 new Comment{

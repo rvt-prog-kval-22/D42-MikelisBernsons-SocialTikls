@@ -163,7 +163,6 @@ namespace BredWeb.Controllers
                     _db.Posts.Remove(post);
                 }
 
-                _db.Posts.RemoveRange(_db.Posts.Where(p => p.GroupId == id));
                 _db.Admins.RemoveRange(_db.Admins.Where(a => a.GroupId == id));
                 _db.Groups.Remove(obj);
                 _db.SaveChanges();

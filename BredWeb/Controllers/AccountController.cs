@@ -2,26 +2,36 @@
 using BredWeb.Interfaces;
 using BredWeb.Models;
 using BredWeb.Services;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
+//using FluentEmail.Core;
+//using FluentEmail.Razor;
+//using FluentEmail.Smtp;
+
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+
+using MailKit;
+using MailKit.Net.Smtp;
+using MimeKit;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using MailKit.Security;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace BredWeb.Controllers
 {
     public class AccountController : Controller
     {
 
-        private readonly UserManager<Person> userManager;
-        private readonly SignInManager<Person> signInManager;
-        private readonly IConfiguration configuration;
-        private readonly ApplicationDbContext db;
+        private readonly UserManager<Person> _userManager;
+        private readonly SignInManager<Person> _signInManager;
+        private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _db;
         private readonly IAccountService _account;
 
         public AccountController(UserManager<Person> userManager,
@@ -30,24 +40,24 @@ namespace BredWeb.Controllers
                                  ApplicationDbContext db,
                                  IAccountService accountService)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.configuration = configuration;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+            this._configuration = configuration;
             this._account = accountService;
-            this.db = db;
+            this._db = db;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View(_account.GetAccountViewModel(await userManager.GetUserAsync(User)));
+            return View(_account.GetAccountViewModel(await _userManager.GetUserAsync(User)));
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
@@ -63,7 +73,7 @@ namespace BredWeb.Controllers
             if (ModelState.IsValid && obj != null)
             {
 
-                var users = db.Users;
+                var users = _db.Users;
                 if(users.FirstOrDefault(u => u.Email.Equals(obj.Email)) == null)
                 {
                     if (users.FirstOrDefault(u => u.NickName!.Equals(obj.NickName)) == null)
@@ -81,12 +91,12 @@ namespace BredWeb.Controllers
                         {
                             user.BirthDay = DateTime.Now;
                         }
-                        var result = await userManager.CreateAsync(user, obj.Password);
+                        var result = await _userManager.CreateAsync(user, obj.Password);
 
                         if (result.Succeeded)
                         {
-                            await userManager.ConfirmEmailAsync(user, await userManager.GenerateEmailConfirmationTokenAsync(user));
-                            await signInManager.SignInAsync(user, isPersistent: false);
+                            await _userManager.ConfirmEmailAsync(user, await _userManager.GenerateEmailConfirmationTokenAsync(user));
+                            await _signInManager.SignInAsync(user, isPersistent: false);
                         }
                         else
                         {
@@ -122,7 +132,7 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(obj.Email, obj.Password, obj.RememberMe, false);
 
                 if (result.Succeeded)
                 {
@@ -145,55 +155,38 @@ namespace BredWeb.Controllers
         {
             string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            var fromEmail = configuration.GetValue<string>($"EmailStrings:{env}:From");
-            string client = configuration.GetValue<string>($"EmailStrings:{env}:Client");
-            int port = configuration.GetValue<int>($"EmailStrings:{env}:Port");
-            string senderEmail = configuration.GetValue<string>($"EmailStrings:{env}:SenderEmail");
-            string senderPassword = configuration.GetValue<string>($"EmailStrings:{env}:SenderPassword");
+            var fromEmail = _configuration.GetValue<string>($"EmailStrings:{env}:From");
+            string clientProvider = _configuration.GetValue<string>($"EmailStrings:{env}:Client");
+            int port = _configuration.GetValue<int>($"EmailStrings:{env}:Port");
 
-            var sender = new SmtpSender();
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Breddit",fromEmail));
+            message.To.Add(new MailboxAddress("User?", receiver));
+            message.Subject = "Breddit password change";
+            message.Body = new TextPart("plain") { Text = body };
 
-            if (env == "Production")
+            if(env == "Production")
             {
-                sender = new SmtpSender(() => new SmtpClient(client)
+                using (var client = new SmtpClient())
                 {
-                    UseDefaultCredentials = false,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Port = port,
-                    Credentials = new NetworkCredential(senderEmail, senderPassword)
-                });
+                    var secretClient = new SecretClient(new Uri(Environment.GetEnvironmentVariable("VaultUri")), new DefaultAzureCredential());
+                    KeyVaultSecret BredditSenderEmail = await secretClient.GetSecretAsync("BredditSenderEmail");
+                    KeyVaultSecret BredditSenderPassword = await secretClient.GetSecretAsync("BredditSenderPassword");
+
+                    client.Connect(clientProvider, port, SecureSocketOptions.StartTls);
+                    client.Authenticate(BredditSenderEmail.Value.ToString(), BredditSenderPassword.Value.ToString());
+                    await client.SendAsync(message);
+                    client.Disconnect(true);
+                }
             }
             else
             {
-                sender = new SmtpSender(() => new SmtpClient(client)
+                using (var client = new SmtpClient())
                 {
-                    UseDefaultCredentials = false,
-                    EnableSsl = false,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    Port = port
-                });
-            }
-
-            Email.DefaultSender = sender;
-            Email.DefaultRenderer = new RazorRenderer();
-
-            StringBuilder template = new();
-            template.AppendLine("Hi," + "@Model.Name");
-            template.AppendLine($"<p>{body}</p>");
-            template.AppendLine("- Breddit");
-
-            var email = Email
-                .From(fromEmail)
-                .To(receiver)
-                .Subject("Email from breddit :o")
-                .UsingTemplate(template.ToString(), new { Name = "" });
-
-            var result = await email.SendAsync();
-
-            foreach (var error in result.ErrorMessages)
-            {
-                Console.WriteLine(error);
+                    client.Connect(clientProvider, port, false);
+                    await client.SendAsync(message);
+                    client.Disconnect(true);
+                }
             }
 
             return new EmptyResult();
@@ -210,10 +203,10 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                if(user != null && await userManager.IsEmailConfirmedAsync(user))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if(user != null && await _userManager.IsEmailConfirmedAsync(user))
                 {
-                    var confirmationToken = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var confirmationToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
                         new {email = model.Email, token = confirmationToken }, Request.Scheme);
@@ -242,10 +235,10 @@ namespace BredWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
+                var user = await _userManager.FindByEmailAsync(model.Email);
                 if(user != null)
                 {
-                    var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
                     if (result.Succeeded)
                     {
                         return View("ResetPasswordConfirmation");

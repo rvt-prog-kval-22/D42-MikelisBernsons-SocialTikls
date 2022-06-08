@@ -42,9 +42,7 @@ namespace BredWeb.Controllers
                             posts.AddRange(group.Posts);
                     }
                 }
-
                 model.Posts = posts.OrderByDescending(p => p.TotalRating).ToList();
-
                 return View(model);
             }
             return View();

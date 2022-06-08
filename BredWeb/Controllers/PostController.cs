@@ -152,7 +152,7 @@ namespace BredWeb.Controllers
                 Title = post.Title
             };
 
-            if (post.File != null)
+            if (post.File is not null)
             {
                 string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
                 fileName = Guid.NewGuid().ToString() + "_" + post.File.FileName;
@@ -179,21 +179,15 @@ namespace BredWeb.Controllers
         public async Task<IActionResult> BrowseGroup(int id, bool popular = false, string filter = "All")
         {
             var group = _db.Groups.Find(id);
-
             if (group == null)
                 return NotFound();
-
             _db.Entry(group).Collection(g => g.AdminList!).Load();
-
             ViewBag.Group = group;
-
             if (_signInManager.IsSignedIn(User))
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             else
                 ViewBag.nick = "";
-
             List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
-
             switch (filter)
             {
                 case "Day":
@@ -209,13 +203,10 @@ namespace BredWeb.Controllers
                     posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-365)).ToList();
                     break;
             }
-
             if (popular)
                 posts = posts.OrderBy(p => p.TotalRating).ToList();
-
             ViewBag.Filter = filter;
             ViewBag.Popular = popular;
-
             return View(posts);
         }
 

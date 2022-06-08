@@ -103,7 +103,7 @@
                     </div>
 
                     <div class="card-body">
-                        @Html.TextArea("body", "", new {@Class="form-control", @Rows="4"})
+                        @Html.TextArea("body", "4-500 characters", new {@Class="form-control", @Rows="4"})
                     </div>
                     <input type="hidden" name="groupId" value=@Model.Group.Id />
                     <input type="hidden" name="postId" value=@Model.Post.Id />

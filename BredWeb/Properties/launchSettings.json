@@ -12,7 +12,9 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://bredditvault.vault.azure.net/",
+        "AZURE_USERNAME": "82DMKBernsons@rvt.lv"
       },
       "applicationUrl": "https://localhost:7293;http://localhost:5293",
       "dotnetRunMessages": true
@@ -21,14 +23,18 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VaultUri": "https://bredditvault.vault.azure.net/",
+        "AZURE_USERNAME": "82DMKBernsons@rvt.lv"
       }
     },
     "FakeProd": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "VaultUri": "https://bredditvault.vault.azure.net/",
+        "AZURE_USERNAME": "82DMKBernsons@rvt.lv"
       }
     },
     "WSL": {
@@ -37,7 +43,9 @@
       "launchUrl": "https://localhost:7293",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://localhost:7293;http://localhost:5293"
+        "ASPNETCORE_URLS": "https://localhost:7293;http://localhost:5293",
+        "VaultUri": "https://bredditvault.vault.azure.net/",
+        "AZURE_USERNAME": "82DMKBernsons@rvt.lv"
       },
       "distributionName": ""
     }

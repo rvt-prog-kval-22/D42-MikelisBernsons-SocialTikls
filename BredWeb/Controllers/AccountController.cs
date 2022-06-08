@@ -153,43 +153,27 @@ namespace BredWeb.Controllers
 
         private async Task<IActionResult> SendEmailAsync(string receiver, string body)
         {
-            string? env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-            var fromEmail = _configuration.GetValue<string>($"EmailStrings:{env}:From");
-            string clientProvider = _configuration.GetValue<string>($"EmailStrings:{env}:Client");
-            int port = _configuration.GetValue<int>($"EmailStrings:{env}:Port");
+            string clientProvider = "smtp.gmail.com";
+            int port = 587;
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Breddit",fromEmail));
+            message.From.Add(new MailboxAddress("Breddit", "breddittest@gmail.com"));
             message.To.Add(new MailboxAddress("User?", receiver));
             message.Subject = "Breddit password change";
             message.Body = new TextPart("plain") { Text = body };
 
-            if(env == "Production")
+            using (var client = new SmtpClient())
             {
-                using (var client = new SmtpClient())
-                {
-                    var secretClient = new SecretClient(new Uri(Environment.GetEnvironmentVariable("VaultUri")), new DefaultAzureCredential());
-                    KeyVaultSecret BredditSenderEmail = await secretClient.GetSecretAsync("BredditSenderEmail");
-                    KeyVaultSecret BredditSenderPassword = await secretClient.GetSecretAsync("BredditSenderPassword");
-
-                    client.Connect(clientProvider, port, SecureSocketOptions.StartTls);
-                    client.Authenticate(BredditSenderEmail.Value.ToString(), BredditSenderPassword.Value.ToString());
-                    await client.SendAsync(message);
-                    client.Disconnect(true);
-                }
-            }
-            else
-            {
-                using (var client = new SmtpClient())
-                {
-                    client.Connect(clientProvider, port, false);
-                    await client.SendAsync(message);
-                    client.Disconnect(true);
-                }
+                var secretClient = new SecretClient(new Uri(Environment.GetEnvironmentVariable("VaultUri")), new DefaultAzureCredential());
+                KeyVaultSecret BredditSenderEmail = await secretClient.GetSecretAsync("BredditSenderEmail");
+                KeyVaultSecret BredditSenderPassword = await secretClient.GetSecretAsync("BredditSenderPassword");
+                await client.ConnectAsync(clientProvider, port, SecureSocketOptions.StartTls);
+                await client.AuthenticateAsync(BredditSenderEmail.Value.ToString(), BredditSenderPassword.Value.ToString());
+                await client.SendAsync(message);
+                client.Disconnect(true);
             }
 
-            return new EmptyResult();
+            return View("Index");
         }
 
         [HttpGet]
@@ -215,6 +199,7 @@ namespace BredWeb.Controllers
 
                     return View("ForgotPasswordConfirmation");
                 }
+                ViewData["Title"] = "Email Sent.";
                 return View("ForgotPasswordConfirmation");
             }
             return View(model);

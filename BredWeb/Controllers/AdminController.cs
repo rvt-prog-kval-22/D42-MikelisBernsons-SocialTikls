@@ -110,18 +110,13 @@ namespace BredWeb.Controllers
             }
 
             ViewBag.RoleId = role.Id;
-
             List<UserInRoleViewModel> model = new();
+            var adminList = await _userManager.GetUsersInRoleAsync("Admin");
 
-            foreach (var user in _userManager.Users)
+            foreach(var admin in adminList)
             {
-                //var userIsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                //User.HasClaim(ClaimTypes.Role, "Admin");
-                var res = await _userManager.IsInRoleAsync(user, "Admin");
-                if (res)
-                    model.Add(new UserInRoleViewModel { UserId = user.Id, UserName = user.UserName });
+                model.Add(new UserInRoleViewModel() {UserId = admin.Id, UserName = admin.NickName!, IsSelected = false });
             }
-
             return View(model);
         }
 

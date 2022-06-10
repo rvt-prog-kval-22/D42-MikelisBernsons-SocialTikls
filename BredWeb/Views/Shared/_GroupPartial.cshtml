@@ -4,11 +4,17 @@
 @inject SignInManager<Person> SignInManager
 @{
     string userId = "";
+    bool userJoined = false;
+    bool userGlobalAdmin = false;
+    bool userGroupAdmin = false;
     if (SignInManager.IsSignedIn(User))
+    {
         userId = (await UserManager.GetUserAsync(User)).Id;
-    bool userJoined = Model.UserList.Any(u => u.Id == userId);
-    bool userGlobalAdmin = User.IsInRole("Admin");
-    bool userGroupAdmin = Model.AdminList.Any(x => x.AdminId == userId);
+        userJoined = Model.UserList.Any(u => u.Id == userId);
+        userGlobalAdmin = User.IsInRole("Admin");
+        userGroupAdmin = Model.AdminList.Any(x => x.AdminId == userId);
+    }
+
 }
 
 <div class="card w-100 mx-auto">

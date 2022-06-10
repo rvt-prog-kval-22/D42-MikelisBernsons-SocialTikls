@@ -1,27 +1,17 @@
 ﻿using BredWeb.Data;
 using BredWeb.Interfaces;
 using BredWeb.Models;
-using BredWeb.Services;
-//using FluentEmail.Core;
-//using FluentEmail.Razor;
-//using FluentEmail.Smtp;
 
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 
-using MailKit;
-using MailKit.Net.Smtp;
 using MimeKit;
+using MailKit.Security;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using MailKit.Security;
-using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace BredWeb.Controllers
 {

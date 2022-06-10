@@ -35,10 +35,10 @@ namespace BredWeb.Controllers
             {
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
             }
-            
+
             ViewBag.Popular = popular;
             ViewBag.SearchQuery = "";
-            return View(GetOrderedGroups(popular));
+            return View(OrderGroups(_db.Groups.ToList()));
         }
 
         //GET
@@ -46,39 +46,40 @@ namespace BredWeb.Controllers
         {
             ViewBag.Popular = popular;
             ViewBag.SearchQuery = searchQuery;
+            List<Group>? result = new();
             if (searchQuery is not null and not "")
             {
-                var groups = GetOrderedGroups(popular);
-                var result = groups.Where(g => g.Title!.Contains(searchQuery)).ToList();
-                if (result.Count <= 0)
+                result = _db.Groups.Where(g => g.Title!.ToLower().Contains(searchQuery.ToLower())).ToList();
+                if (!result.Any())
                 {
                     TempData["Error"] = "No results found";
-                    return View("Index", groups);
+                    return View("Index", result);
                 }
-                return View("Index", result);
+                return View("Index", OrderGroups(result, popular));
             }
             else
             {
-                TempData["Error"] = "Empty search query?";
+                result = _db.Groups.ToList();
+                return View("Index", OrderGroups(result, popular));
             }
-
-            return View("Index", GetOrderedGroups(popular));
         }
 
-        private List<Group> GetOrderedGroups(bool popular = true)
+        private List<Group> OrderGroups(List<Group> groups, bool popular = true)
         {
-            List<Group> objGroupList = _db.Groups.ToList();
-            foreach (var group in objGroupList)
+            if (popular)
+            {
+                groups = groups.OrderBy(g => g.UserCount).ToList();
+            }
+            else // else = sort by newest (group creation date)
+            {
+                groups = groups.OrderBy(g => g.StartDate).ToList();
+            }
+            foreach(var group in groups)
             {
                 _db.Entry(group).Collection(g => g.AdminList!).Load();
                 _db.Entry(group).Collection(g => g.UserList!).Load();
             }
-            if (popular)
-            {
-                objGroupList = objGroupList.OrderBy(g => g.UserCount).ToList();
-            }
-
-            return objGroupList;
+            return groups;
         }
 
         //GET
@@ -158,7 +159,7 @@ namespace BredWeb.Controllers
                 foreach (var post in _db.Posts.Where(p => p.GroupId == id))
                 {
                     _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
-                    if(post.Type == Post.TypeEnum.Image)
+                    if (post.Type == Post.TypeEnum.Image)
                         DeleteFile(post);
                     _db.Posts.Remove(post);
                 }
@@ -212,7 +213,6 @@ namespace BredWeb.Controllers
                 return RedirectToAction("Index");
             }
             TempData["success"] = "Group Joined successfully";
-
             return RedirectToAction("BrowseGroup", "Post", new { id = group.Id });
         }
 
@@ -295,11 +295,11 @@ namespace BredWeb.Controllers
                     AdminList = new()
                 };
 
-                foreach(Admin a in group.AdminList!)
+                foreach (Admin a in group.AdminList!)
                 {
                     editGroup.AdminList.Add(new AdminViewModel
                     {
-                        Id=a.Id,
+                        Id = a.Id,
                         AdminId = a.AdminId,
                         IsSelected = false,
                         Email = a.Email,
@@ -404,7 +404,7 @@ namespace BredWeb.Controllers
 
                 Person? newAdmin = _db.People.FirstOrDefault(p => p.Email == email);
 
-                if(newAdmin is null)
+                if (newAdmin is null)
                 {
                     TempData["Error"] = "email not found";
                     return RedirectToAction("Edit", new { id = Id });

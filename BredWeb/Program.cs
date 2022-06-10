@@ -15,9 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services
-    .AddFluentEmail("test@test.test")
-    .AddSmtpSender("localhost", 25);
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddIdentity<Person, IdentityRole>(options =>
 {

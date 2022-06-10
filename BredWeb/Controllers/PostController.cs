@@ -180,29 +180,24 @@ namespace BredWeb.Controllers
         {
             var group = _db.Groups.Find(id);
             if (group == null)
-                return NotFound();
+                return RedirectToAction("Index","Group");
+
             _db.Entry(group).Collection(g => g.AdminList!).Load();
             ViewBag.Group = group;
+
+            ViewBag.nick = "";
             if (_signInManager.IsSignedIn(User))
                 ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
-            else
-                ViewBag.nick = "";
-            List<Post> posts = _db.Posts.Where(p => p.GroupId == group.Id).ToList();
-            switch (filter)
+
+            List<Post> posts = new();
+            posts = filter switch
             {
-                case "Day":
-                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-1)).ToList();
-                    break;
-                case "Week":
-                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-7)).ToList();
-                    break;
-                case "Month":
-                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-30)).ToList();
-                    break;
-                case "Year":
-                    posts = posts.Where(p => p.PostDate > DateTime.Now.AddDays(-365)).ToList();
-                    break;
-            }
+                "Day" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-1)).ToList(),
+                "Week" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-7)).ToList(),
+                "Month" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-30)).ToList(),
+                "Year" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-365)).ToList(),
+                _ => _db.Posts.Where(p => p.GroupId == group.Id).ToList(),
+            };
             if (popular)
                 posts = posts.OrderBy(p => p.TotalRating).ToList();
             ViewBag.Filter = filter;

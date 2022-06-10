@@ -18,8 +18,8 @@ body {
 }
 
 .my-image {
-    max-height: 450px;
-    max-width: 800px;
+    max-height: 2160px;
+    max-width: 100%;
 }
 
 iframe{
@@ -32,6 +32,10 @@ iframe{
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
+}
+
+.btn{
+    min-width: 84px;
 }
 
 .min-vh-35 {

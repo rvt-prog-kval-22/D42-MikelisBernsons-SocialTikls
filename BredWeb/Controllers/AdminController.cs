@@ -116,7 +116,8 @@ namespace BredWeb.Controllers
             foreach (var user in _userManager.Users)
             {
                 //var userIsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                var res = User.HasClaim(ClaimTypes.Role, "Admin");
+                //User.HasClaim(ClaimTypes.Role, "Admin");
+                var res = await _userManager.IsInRoleAsync(user, "Admin");
                 if (res)
                     model.Add(new UserInRoleViewModel { UserId = user.Id, UserName = user.UserName });
             }

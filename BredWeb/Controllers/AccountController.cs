@@ -135,12 +135,6 @@ namespace BredWeb.Controllers
             return View(obj);
         }
 
-        public async Task<IActionResult> ConfirmAccount(string receiver)
-        {
-            await SendEmailAsync(receiver, "Test body.");
-            return RedirectToAction("Index", "Account");
-        }
-
         private async Task<IActionResult> SendEmailAsync(string receiver, string body)
         {
             string clientProvider = "smtp.gmail.com";

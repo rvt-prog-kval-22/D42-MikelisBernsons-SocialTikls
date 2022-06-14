@@ -82,7 +82,7 @@
                                     <a asp-controller="Post" asp-action="Edit" asp-route-id="@Model.Post.Id"
                                class="btn btn-primary btn-sm m-1">Edit</a>
                                 }
-                                @if (Model.UserNick == Model.Post.AuthorName || User.IsInRole("Admin"))
+                                @if (Model.UserNick == Model.Post.AuthorName || User.IsInRole("Admin") || Model.Group.AdminList.Any(a => a.UserName == Model.UserNick))
                                 {
                                     <a asp-controller="Post" asp-action="Delete" asp-route-id="@Model.Post.Id"
                                class="btn btn-warning btn-sm m-1">Delete</a>

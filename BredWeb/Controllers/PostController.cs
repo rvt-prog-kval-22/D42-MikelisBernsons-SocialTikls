@@ -287,8 +287,9 @@ namespace BredWeb.Controllers
                 return NotFound();
 
             var user = (await _userManager.GetUserAsync(User));
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-            if (user.NickName == post.AuthorName || isAdmin)
+            var isSiteAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            var isGroupAdmin = _db.Admins.Any(a => a.GroupId == post.GroupId && a.AdminId == user.Id);
+            if (user.NickName == post.AuthorName || isSiteAdmin || isGroupAdmin)
             {
                 if (post.Type is Post.TypeEnum.Image)
                     DeleteFile(post);

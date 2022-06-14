@@ -1,5 +1,8 @@
 ﻿@using BredWeb.Models
 @model Post
+@{
+    ViewData["Title"] = "Delete " + Model.Title;
+}
 
 <form method="post" asp-action="Delete">
     <div class="bg-dark p-3 mt-4">

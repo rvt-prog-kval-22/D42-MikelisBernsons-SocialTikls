@@ -6,5 +6,6 @@ namespace BredWeb.Models
     {
         public List<Post>? Posts { get; set; } = new();
         public Person? Person { get; set; }
+        public Statistics Statistics { get; set; } = new();
     }
 }

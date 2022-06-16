@@ -11,16 +11,16 @@
         <div class="col-3 bg-dark card p-3 mt-2 min-vh-35">
             <div class="form-group w-100" style="padding:0px">
                 <fieldset disabled="">
-                    <div class="mb-3">
-                        <label class="text-success">NickName</label>
+                    <div class="mb-2">
+                        <label asp-for=Person.NickName class="text-success"></label>
                         <input value="@Model!.Person!.NickName" class="form-control" />
                     </div>
-                    <div class="mb-3">
-                        <label class="text-success">Email</label>
+                    <div class="mb-2">
+                        <label asp-for=Person.Email class="text-success"></label>
                         <input value="@Model.Person.Email" class="form-control" />
                     </div>
-                    <div class="mb-3">
-                        <label for="disabledInput" class="text-success">Birthday</label>
+                    <div class="mb-2">
+                        <label asp-for=Person.BirthDay for="disabledInput" class="text-success"></label>
                         <input class="form-control" id="disabledInput" type="text" disabled="" value="@Model.Person.BirthDay.ToString().Substring(0, 10)">
                     </div>
                 </fieldset>
@@ -29,6 +29,37 @@
                     <input name="Email" value="@Model.Person.Email" type="hidden" />
                     <button type="submit" class="btn btn-secondary" style="width:100%">Send email to change password</button>
                 </form>
+
+                <h3 class="text-center mt-5 mb-">Your statistics</h3>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.GroupsCreated)</td>
+                            <td class="text-right">@Model.Statistics.GroupsCreated</td>
+                        </tr>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.ModeratedGroups)</td>
+                            <td class="text-right">@Model.Statistics.ModeratedGroups</td>
+                        </tr>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.JoinedGroups)</td>
+                            <td class="text-right">@Model.Statistics.JoinedGroups</td>
+                        </tr>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.PostCount)</td>
+                            <td class="text-right">@Model.Statistics.PostCount</td>
+                        </tr>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.CommentCount)</td>
+                            <td class="text-right">@Model.Statistics.CommentCount</td>
+                        </tr>
+                        <tr>
+                            <td width="75%">@Html.DisplayNameFor(m => m.Statistics.TotalRating)</td>
+                            <td class="text-right">@Model.Statistics.TotalRating</td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
         </div>
         <div class="col-8 m-2">

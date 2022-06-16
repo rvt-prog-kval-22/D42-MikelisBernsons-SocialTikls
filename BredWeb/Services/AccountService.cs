@@ -36,37 +36,14 @@ namespace BredWeb.Services
             };
         }
 
-        private int GetGroupsCreatedCount(string user)
-        {
-            return _db.Groups.Count(g => g.Creator == user);
-        }
-
-        private int GetModeratedGroupCount(string user)
-        {
-            return _db.Admins.Count(a => a.AdminId == user);
-        }
-
-        private int GetJoinedGroupCount(Person user)
-        {
-            return _db.Groups.Count(g => g.UserList.Contains(user));
-        }
-
-        private int GetPostCount(string user)
-        {
-            return _db.Posts.Count(p => p.AuthorName == user);
-        }
-
-        private int GetCommentCount(string user)
-        {
-            return _db.Comments.Count(c => c.AuthorName == user);
-        }
-
-        private int GetTotalRating(string user)
-        {
-            return _db.Posts
-                   .Where(p => p.AuthorName == user)
-                   .Select(p => p.TotalRating)
-                   .Sum();
-        }
+        private int GetGroupsCreatedCount(string user) => _db.Groups.Count(g => g.Creator == user);
+        private int GetModeratedGroupCount(string user) => _db.Admins.Count(a => a.AdminId == user);
+        private int GetJoinedGroupCount(Person user) => _db.Groups.Count(g => g.UserList.Contains(user));
+        private int GetPostCount(string user) => _db.Posts.Count(p => p.AuthorName == user);
+        private int GetCommentCount(string user) => _db.Comments.Count(c => c.AuthorName == user);
+        private int GetTotalRating(string user) => _db.Posts
+            .Where(p => p.AuthorName == user)
+            .Select(p => p.TotalRating)
+            .Sum();
     }
 }

@@ -15,8 +15,8 @@ namespace BredWeb.Services
 
         public AccountViewModel GetAccountViewModel(Person user)
         {
-            var posts = _db.Posts.Where(p => p.AuthorName == user.NickName).ToList();
             AccountViewModel model = new();
+            var posts = _db.Posts.Where(p => p.AuthorName == user.NickName).OrderByDescending(p => p.PostDate).ToList();
             model.Person = user;
             model.Posts = posts;
             model.Statistics = GetAccountStatistics(user);

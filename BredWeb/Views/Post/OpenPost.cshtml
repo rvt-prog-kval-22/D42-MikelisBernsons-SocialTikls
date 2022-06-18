@@ -18,7 +18,7 @@
             </a>
             <a class="post-div mx-left" asp-controller="Post" asp-action="BrowseGroup" asp-route-id="@Model.Group.Id">
                 <h6 class="text-end">-@Model.Group.Creator</h6>
-                <h6 class="text-end">(@Model.Group.UserCount)</h6>
+                <h6 class="text-end">@Model.Group.UserCount members</h6>
             </a>
             <hr />
             <div style="white-space: pre-line" class="mb-4">

@@ -14,7 +14,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-3 bg-dark card m-2">
+        <div class="col-md-12 col-lg-3 bg-dark card m-2 pb-3">
             <h2 Class="text-primary mx-auto">Group Browser</h2>
             <div class="m-3 card-header">
                 <a asp-controller="Group" asp-action="Create" class="btn btn-primary w-100">
@@ -57,7 +57,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-8 m-2">
+        <div class="col-md-12 col-lg-8 m-2">
             @for (int i = 0; groupCount >= i; groupCount--)
             {
                 await Html.RenderPartialAsync("_GroupPartial", Model[groupCount]);

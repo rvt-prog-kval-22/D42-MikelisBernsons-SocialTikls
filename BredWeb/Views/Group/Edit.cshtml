@@ -3,68 +3,74 @@
 @{
     ViewData["Title"] = "Edit " + Model.Title;
 }
-<form method="post">
-    <div class="bg-dark p-3 mt-4 w-75">
-        <div class="row pb-2">
-            <h2 class="text-primary">Edit Group -@Model.Title</h2>
-            <hr />
-        </div>
-        <div asp-validation-summary="All"></div>
-        <div class="mb-3">
-            <label asp-for="Title"></label>
-            <input readonly="" asp-for="Title" class="form-control w-50" />
-            <span asp-validation-for="Title" class="text-warning"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Description"></label>
-            <textarea asp-for="Description" rows="8" class="form-control w-75"></textarea>
-            <span asp-validation-for="Description" class="text-warning"></span>
-        </div>
-        <input type="hidden" value="@Model.Id" name="Id" />
-        <button asp-controller="Group" asp-action="EditDescription" class="btn btn-primary" style="width:150px" type="submit">Update</button>
-    </div>
-</form>
-
-<form method="post">
-    <div class="bg-dark p-3 mt-4 w-75">
-        <div class="row pb-2">
-            <h2 class="text-primary">Remove admins</h2>
-            <hr />
-        </div>
-        <div class="mb-3">
-            @for (int i = 0; i < Model.AdminList.Count; i++)
-            {
+<div class="container">
+    <div class="d-flex flex-column col-lg-9 col-md-12">
+        <form method="post" class="bg-dark p-3 mt-4">
+            <div>
+                <div class="row pb-2">
+                    <h2 class="text-primary">Edit Group -@Model.Title</h2>
+                    <hr />
+                </div>
+                <div asp-validation-summary="All"></div>
                 <div class="mb-3">
-                    <input asp-for="@Model.AdminList[i].IsSelected" class="form-check-input" />
-                    <input type="hidden" asp-for="@Model.AdminList[i].AdminId" />
-                    <input type="hidden" asp-for="@Model.AdminList[i].Email" />
-                    <label>
-                        @Model.AdminList[i].UserName
-                    </label>
-                </div>                
-            }
-        </div>
-        <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
-        <input type="submit" value="Remove" class="btn btn-primary" style="width:150px" />
-    </div>
-</form>
-
-<form method="post">
-    <div class="bg-dark p-3 mt-4 w-75">
-        <div class="row pb-2">
-            <h2 class="text-primary">Add admin</h2>
-            <hr />
-        </div>
-        <div class="mb-3">
-            <div class="mb-3">
-                <label>Email</label>
-                <input name="email" class="form-control" />
+                    <label asp-for="Title"></label>
+                    <input readonly="" asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-warning"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" rows="8" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-warning"></span>
+                </div>
+                <input type="hidden" value="@Model.Id" name="Id" />
+                <button asp-controller="Group" asp-action="EditDescription" class="btn btn-primary" style="width:150px" type="submit">Update</button>
             </div>
-        </div>
-        <input type="hidden" value="@Model.Id" name="Id" />
-        <button asp-controller="Group" asp-action="AddAdmin" class="btn btn-primary" style="width:150px" type="submit">Add</button>
+        </form>
+
+        <form method="post" class="bg-dark p-3 mt-4">
+            <div>
+                <div class="row pb-2">
+                    <h2 class="text-primary">Remove admins</h2>
+                    <hr />
+                </div>
+                <div class="mb-3">
+                    @for (int i = 0; i < Model.AdminList.Count; i++)
+                    {
+                        <div class="mb-3">
+                            <input asp-for="@Model.AdminList[i].IsSelected" class="form-check-input" />
+                            <input type="hidden" asp-for="@Model.AdminList[i].AdminId" />
+                            <input type="hidden" asp-for="@Model.AdminList[i].Email" />
+                            <label>
+                                @Model.AdminList[i].UserName
+                            </label>
+                        </div>                
+                    }
+                </div>
+                <input type="hidden" asp-for="@Model.Id" value="@Model.Id" />
+                <input type="submit" value="Remove" class="btn btn-primary" style="width:150px" />
+            </div>
+        </form>
+
+        <form method="post" class="bg-dark p-3 mt-4">
+            <div>
+                <div class="row pb-2">
+                    <h2 class="text-primary">Add admin</h2>
+                    <hr />
+                </div>
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <label>Email</label>
+                        <input name="email" class="form-control" />
+                    </div>
+                </div>
+                <input type="hidden" value="@Model.Id" name="Id" />
+                <button asp-controller="Group" asp-action="AddAdmin" class="btn btn-primary" style="width:150px" type="submit">Add</button>
+            </div>
+        </form>
+
     </div>
-</form>
+
+</div>
 
 @section Scripts{
     @{

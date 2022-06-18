@@ -21,7 +21,7 @@
 {
     <div class="container">
         <div class="row">
-            <div class="col-3 bg-dark card m-2 min-vh-60">
+            <div class="col-md-12 col-lg-3 bg-dark card m-2 min-vh-25 pb-3">
                 <div class="m-3 card-header text-center">
                     <h2 Class="text-primary mx-auto">My groups</h2>
                 </div>
@@ -38,7 +38,7 @@
                 }
             </div>
 
-            <div class="col-8 m-2">
+            <div class="col-md-12 col-lg-8 m-2">
                 @foreach (Post post in Model.Posts)
                 {
                     <div class="card w-100 mx-auto" id="@post.Id">
@@ -72,13 +72,13 @@
                             <div class="row">
                                 <div class="col-3 btn-group" role="group">
                                     <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@post.Id" asp-route-home="true"
-                               class="btn btn-primary btn-sm m-1" style="width: 125px">
+                                        class="btn btn-primary btn-sm m-1" style="width: 125px">
                                         <i class="bi bi-arrow-up-square"></i>
                                         Like
                                     </a>
 
                                     <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@post.Id" asp-route-home="true"
-                               class="btn btn-secondary btn-sm m-1" style="width: 125px">
+                                        class="btn btn-secondary btn-sm m-1" style="width: 125px">
                                         <i class="bi bi-arrow-down-square"></i>
                                         Dislike
                                     </a>

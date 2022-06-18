@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12">
             <form method="post">
                 <div class="bg-dark p-3 mt-4 w-100">
                     <div class="row pb-2">
@@ -24,11 +24,11 @@
                         <span asp-validation-for="Body" class="text-warning"></span>
                     </div>
                     <input type="hidden" name="groupId" value=@ViewBag.id />
-                    <button type="submit" class="btn btn-primary" style="width:150px">Create</button>
+                    <button type="submit" class="btn btn-primary mt-4" style="width:150px">Create</button>
                 </div>
             </form>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-md-12">
             <form method="post" asp-action="CreateYT">
                 <div class="bg-dark p-3 mt-4 w-100">
                     <div class="row pb-2">

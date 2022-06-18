@@ -44,7 +44,7 @@ namespace BredWeb.Controllers
             return View(_account.GetAccountViewModel(await _userManager.GetUserAsync(User)));
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

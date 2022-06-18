@@ -234,8 +234,6 @@ namespace BredWeb.Controllers
                 {
                     group.UserList.Remove(user);
                     group.UserCount--;
-                    if (group.AdminList!.Any(x => x.AdminId == user.Id))
-                        group.AdminList!.Remove(group.AdminList.First(x => x.AdminId == user.Id));
                     _db.Groups.Update(group);
                     _db.SaveChanges();
                 }

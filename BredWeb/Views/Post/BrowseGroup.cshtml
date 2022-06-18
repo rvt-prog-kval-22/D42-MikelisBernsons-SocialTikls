@@ -11,7 +11,6 @@
         userId = (await UserManager.GetUserAsync(User)).Id;
 }
 
-
 <div class="container">
     <div class="row">
 
@@ -31,16 +30,28 @@
             <br />
             <h6 class="text-end">-@Model.Group.Creator</h6>
             <h6 class="text-end">(@Model.Group.UserCount)</h6>
-            @if (SignInManager.IsSignedIn(User) && Model.IsAdmin || User.IsInRole("Admin"))
-            {
-                <div class="m-3 w-35 ms-auto">
-                    <form method="get">
-                        <button asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Group.Id" class="btn btn-sm btn-secondary w-100" type="submit">
-                            &nbsp Edit group
-                        </button>
-                    </form>
-                </div>
-            }
+
+            <div class="w-100 pt-2" role="group">
+                @if (!Model.UserJoined)
+                {
+                    <a asp-controller="Group" asp-action="Join" asp-route-id="@Model.Group.Id"
+                    class="btn btn-outline-primary mb-1 btn-sm w-100">Join</a>
+                }
+                else
+                {
+                    <a asp-controller="Group" asp-action="Leave" asp-route-id="@Model.Group.Id"
+                    class="btn btn-outline-warning mb-1 btn-sm w-100">Leave</a>
+                }
+
+                @if (Model.IsAdmin || Model.isGroupAdmin)
+                {
+                    <a asp-controller="Group" asp-action="Delete" asp-route-id="@Model.Group.Id"
+                    class="btn btn-outline-warning mb-1 btn-sm w-100">  Delete</a>
+
+                    <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Group.Id" type="submit"
+                    class="btn btn-outline-secondary mb-1 btn-sm w-100">&nbsp Edit group</a>
+                }
+            </div>
             <form method="get">
                 <div class="container">
                     <div class="row">
@@ -267,7 +278,7 @@
                                             class="btn btn-primary btn-sm m-1">Edit</a>
                                         }
 
-                                        @if (ViewBag.nick == post.AuthorName || User.IsInRole("Admin") || Model.IsAdmin)
+                                        @if (ViewBag.nick == post.AuthorName || Model.isGroupAdmin || Model.IsAdmin)
                                         {
                                             <a asp-controller="Post" asp-action="Delete" asp-route-id="@post.Id"
                                             class="btn btn-warning btn-sm m-1">Delete</a>

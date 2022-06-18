@@ -182,9 +182,6 @@ namespace BredWeb.Controllers
             if (group == null)
                 return RedirectToAction("Index","Group");
 
-            _db.Entry(group).Collection(g => g.AdminList!).Load();
-            ViewBag.Group = group;
-
             BrowseGroupViewModel model = new();
             Person user = new();
             ViewBag.nick = "";
@@ -193,6 +190,13 @@ namespace BredWeb.Controllers
                 user = await _userManager.GetUserAsync(User);
                 model.UserRatings = await _db.Ratings.Where(r => r.UserId == user.Id).ToListAsync();
                 ViewBag.nick = user.NickName;
+
+                _db.Entry(group).Collection(g => g.AdminList!).Load();
+                _db.Entry(group).Collection(g => g.UserList!).Load();
+
+                model.UserJoined = group.UserList.Any(u => u.Id == user.Id);
+                model.isGroupAdmin = group.AdminList.Any(a => a.AdminId == user.Id);
+                model.IsAdmin = await _userManager.IsInRoleAsync(user, "Admin");
             }
 
             model.Posts = filter switch

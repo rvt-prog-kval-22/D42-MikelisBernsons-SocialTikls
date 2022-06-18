@@ -38,7 +38,7 @@ else
     KeyVaultSecret defaultConnection = await secretClient.GetSecretAsync("DefaultConnection");
 
     builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    defaultConnection.Value.ToString()
+    defaultConnection.Value.ToString() + ";MultipleActiveResultSets=True"
     ));
 }
 

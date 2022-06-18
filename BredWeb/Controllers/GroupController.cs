@@ -152,18 +152,20 @@ namespace BredWeb.Controllers
 
             _db.Entry(obj).Collection(g => g.AdminList!).Load();
             var user = (await _userManager.GetUserAsync(User));
-            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            bool isGroupAdmin = obj.AdminList!.Any(x => x.AdminId == user.Id);
 
-            if (obj.AdminList!.Any(x => x.AdminId == user.Id) || isAdmin)
+            if (isGroupAdmin || isAdmin)
             {
-                foreach (var post in _db.Posts.Where(p => p.GroupId == id))
+                IQueryable<Post> postsToDelete = _db.Posts.Where(p => p.GroupId == id);
+                foreach (var post in postsToDelete)
                 {
-                    _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
-                    if (post.Type == Post.TypeEnum.Image)
+                    if(post.Type == Post.TypeEnum.Image)
                         DeleteFile(post);
-                    _db.Posts.Remove(post);
+                    _db.Ratings.RemoveRange(_db.Ratings.Where(r => r.RatedItemId == post.Id));
+                    _db.Comments.RemoveRange(_db.Comments.Where(c => c.PostId == post.Id));
                 }
-
+                _db.Posts.RemoveRange(postsToDelete);
                 _db.Admins.RemoveRange(_db.Admins.Where(a => a.GroupId == id));
                 _db.Groups.Remove(obj);
                 _db.SaveChanges();

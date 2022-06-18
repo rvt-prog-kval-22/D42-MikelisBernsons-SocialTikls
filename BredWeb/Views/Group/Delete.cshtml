@@ -3,7 +3,7 @@
     ViewData["Title"] = "Delete " + Model.Title;
 }
 
-<form method="post" asp-action="Delete">
+<form method="post" asp-action="Delete" asp-route-id="@Model.Id">
     <div class="bg-dark p-3 mt-4">
         <fieldset disabled="">
             <div class="row pb-2">

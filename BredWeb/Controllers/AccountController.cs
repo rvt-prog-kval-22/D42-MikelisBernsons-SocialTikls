@@ -177,7 +177,7 @@ namespace BredWeb.Controllers
                     var confirmationToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                     var passwordResetLink = Url.Action("ResetPassword", "Account",
-                        new {email = model.Email, token = confirmationToken }, Request.Scheme);
+                        new {email = user.Email, token = confirmationToken }, Request.Scheme);
 
                     await SendEmailAsync(user.Email, "This is a link to reset your password in Breddit.\nIf you did not make this request it is safe to ignore it.\n\n" + passwordResetLink);
 

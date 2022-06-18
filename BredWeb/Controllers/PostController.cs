@@ -204,8 +204,10 @@ namespace BredWeb.Controllers
                 _ => _db.Posts.Where(p => p.GroupId == group.Id).ToList(),
             };
 
-            if (popular)
+            if (popular) //by most popular
                 model.Posts = model.Posts.OrderByDescending(p => p.TotalRating).ToList();
+            else // by newest
+                model.Posts = model.Posts.OrderByDescending(p => p.PostDate).ToList();
             model.Filter = filter;
             model.Popular = popular;
             model.Group = group;

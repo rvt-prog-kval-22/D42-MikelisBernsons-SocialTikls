@@ -185,12 +185,17 @@ namespace BredWeb.Controllers
             _db.Entry(group).Collection(g => g.AdminList!).Load();
             ViewBag.Group = group;
 
+            BrowseGroupViewModel model = new();
+            Person user = new();
             ViewBag.nick = "";
             if (_signInManager.IsSignedIn(User))
-                ViewBag.nick = (await _userManager.GetUserAsync(User)).NickName;
+            {
+                user = await _userManager.GetUserAsync(User);
+                model.UserRatings = await _db.Ratings.Where(r => r.UserId == user.Id).ToListAsync();
+                ViewBag.nick = user.NickName;
+            }
 
-            List<Post> posts = new();
-            posts = filter switch
+            model.Posts = filter switch
             {
                 "Day" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-1)).ToList(),
                 "Week" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-7)).ToList(),
@@ -198,11 +203,13 @@ namespace BredWeb.Controllers
                 "Year" => _db.Posts.Where(p => p.GroupId == group.Id && p.PostDate > DateTime.Now.AddDays(-365)).ToList(),
                 _ => _db.Posts.Where(p => p.GroupId == group.Id).ToList(),
             };
+
             if (popular)
-                posts = posts.OrderBy(p => p.TotalRating).ToList();
-            ViewBag.Filter = filter;
-            ViewBag.Popular = popular;
-            return View(posts);
+                model.Posts = model.Posts.OrderByDescending(p => p.TotalRating).ToList();
+            model.Filter = filter;
+            model.Popular = popular;
+            model.Group = group;
+            return View(model);
         }
 
         //GET
@@ -333,6 +340,8 @@ namespace BredWeb.Controllers
             {
                 model.UserNick = (await _userManager.GetUserAsync(User)).NickName!;
                 model.UserId = (await _userManager.GetUserAsync(User)).Id;
+                var user = (await _userManager.GetUserAsync(User));
+                model.UserRatings = await _db.Ratings.Where(r => r.UserId == user.Id).ToListAsync();
             }
 
             _db.Entry(group).Collection(g => g.AdminList!).Load();

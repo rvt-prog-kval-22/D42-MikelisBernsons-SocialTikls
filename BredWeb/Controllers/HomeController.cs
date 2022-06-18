@@ -43,6 +43,7 @@ namespace BredWeb.Controllers
                     }
                 }
                 model.Posts = posts.OrderByDescending(p => p.TotalRating).ToList();
+                model.UserRatings = await _db.Ratings.Where(r => r.UserId == user.Id).ToListAsync();
                 return View(model);
             }
             return View();

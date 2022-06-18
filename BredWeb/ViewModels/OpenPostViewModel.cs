@@ -10,5 +10,6 @@ namespace BredWeb.Models
         public string UserId { get; set; } = "";
         public bool GroupAdmin { get; set; } = false;
         public string UserNick { get; set; } = "";
+        public List<Rating> UserRatings { get; set; } = new();
     }
 }

@@ -6,5 +6,6 @@ namespace BredWeb.Models
     {
         public List<Group> Groups { get; set; } = new();
         public List<Post> Posts { get; set; } = new();
+        public List<Rating> UserRatings { get; set; } = new();
     }
 }

@@ -59,21 +59,56 @@
                 <div class="w-100 card-footer container">
                     <div class="row">
                         <div class="col-3 btn-group" role="group">
-                            <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
-                               class="btn btn-primary btn-sm m-1" style="width: 125px">
+                            @{
+                                Rating? rating = Model.UserRatings.FirstOrDefault(r => r.RatedItemId == Model.Post.Id);
+                            }
+
+                            @if(rating is not null && rating.Value is not 0)//if there is a rating and it is not empty
+                            {
+                                if(rating.Value == Rating.Status.Upvoted)//rating == upvoted
+                                {
+                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                    class="btn btn-primary btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-up-square"></i>
+                                    Liked
+                                </a>
+
+                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                    class="btn btn-dark btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-down-square"></i>
+                                    Dislike
+                                </a>
+                                }
+                                else//rating == downvoted
+                                {
+                                <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                    class="btn btn-dark btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-up-square"></i>
+                                    Like
+                                </a>
+
+                                <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                    class="btn btn-secondary btn-sm m-1" style="width: 125px">
+                                    <i class="bi bi-arrow-down-square"></i>
+                                    Disliked
+                                </a>
+                                }
+                            }
+                            else
+                            {
+                            <a asp-controller="Post" asp-action="Upvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                class="btn btn-dark btn-sm m-1" style="width: 125px">
                                 <i class="bi bi-arrow-up-square"></i>
                                 Like
                             </a>
 
-                            <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-selfRedirect="@true" asp-route-groupId="@Model.Post.GroupId"
-                               class="btn btn-secondary btn-sm m-1" style="width: 125px">
+                            <a asp-controller="Post" asp-action="Downvote" asp-route-postId="@Model.Post.Id" asp-route-groupId="@Model.Group.Id" asp-route-selfRedirect="true"
+                                class="btn btn-dark btn-sm m-1" style="width: 125px">
                                 <i class="bi bi-arrow-down-square"></i>
                                 Dislike
                             </a>
-
+                            }
                         </div>
-
-
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <div class="w-35 btn-group ms-auto col-1">
@@ -131,7 +166,7 @@
                             <div class="w-100 card-footer">
                                 <form method="post">
                                     <a asp-controller="Comment" asp-action="Delete" asp-route-id="@comment.Id" asp-route-groupId="@Model.Group.Id" asp-route-postId="@Model.Post.Id"
-                           class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
+                                    class="btn btn-sm btn-warning ms-auto mb-1 me-3" style="width:150px">
                                         Delete
                                     </a>
                                 </form>

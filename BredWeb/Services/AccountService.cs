@@ -20,6 +20,7 @@ namespace BredWeb.Services
             model.Person = user;
             model.Posts = posts;
             model.Statistics = GetAccountStatistics(user);
+            model.UserRatings = _db.Ratings.Where(r => r.UserId == user.Id).ToList();
             return model;
         }
 

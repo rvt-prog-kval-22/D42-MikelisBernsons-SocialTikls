@@ -16,8 +16,11 @@ Reģistrētiem lietotājiem, kas pievienojas grupām tiek parādīts šo grupu s
 7.	vietnes apskatīšana viesiem jeb nereģistrētiem lietotājiem.
 
 ## Izmantotās tehnoloģijas:
-HTML, CSS, JS  
-C#, ASP.NET Core MVC  
+HTML, CSS, JS, Bootstrap
+C#  
+.NET 6 MVC  
+Visual Studio  
+Gmail SMTP + MailKit  
 Azure:  
 -Web app  
 -SQL Server  

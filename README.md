@@ -1,4 +1,4 @@
-# sociālo diskusiju portāla datu uzskaites automatizēta sistēma
+# https://breddit.azurewebsites.net/
 
 ## Apraksts:
 Mājaslapa paredzēta lietotājiem, kas vēlas apspriest kopīgas intereses, dalīties ar domām un līdzīgām interesēm utml. ar citiem cilvēkiem.
